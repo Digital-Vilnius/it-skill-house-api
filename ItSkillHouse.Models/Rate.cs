@@ -17,6 +17,6 @@ namespace ItSkillHouse.Models
         
         public List<Contract> Contracts { get; set; }
         
-        public bool IsActive => DateFrom >= DateTime.UtcNow && DateTo <= DateTime.UtcNow;
+        public bool IsActive => DateFrom <= DateTime.UtcNow && (!DateTo.HasValue || DateTo >= DateTime.UtcNow);
     }
 }

@@ -49,7 +49,7 @@ namespace ItSkillHouse.Controllers
             var response = await _recruiterService.GetAsync<RecruitersListItemDto>(request);
             return Ok(response);
         }
-        
+
         [HttpGet("{id}")]
         [Authorize]
         public async Task<IActionResult> Get([FromRoute] Guid id)

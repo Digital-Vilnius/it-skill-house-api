@@ -24,7 +24,7 @@ namespace ItSkillHouse.Models
         public List<ContractorNote> Notes { get; set; }
         public List<Rate> Rates { get; set; }
         public List<Contract> Contracts { get; set; }
-        public Rate ActiveRate => Rates.FirstOrDefault(rate => rate.IsActive);
-        public bool IsAvailable => AvailableFrom >= DateTime.UtcNow && AvailableFrom <= DateTime.UtcNow;
+        public Rate ActiveRate => Rates.ToList().FirstOrDefault(rate => rate.IsActive);
+        public bool IsAvailable => AvailableFrom <= DateTime.UtcNow;
     }
 }

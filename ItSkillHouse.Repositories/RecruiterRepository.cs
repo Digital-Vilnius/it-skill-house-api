@@ -21,13 +21,13 @@ namespace ItSkillHouse.Repositories
             return query.Include(recruiter => recruiter.User);
         }
 
-        public async Task<List<Recruiter>> GetAsync(RecruitersFilter filter, Sort sort, Paging paging)
+        public async Task<List<Recruiter>> GetAsync(RecruitersFilter filter = null, Sort sort = null, Paging paging = null)
         {
             IQueryable<Recruiter> query = Context.Set<Recruiter>();
             query = FormatQuery(query);
-            query = ApplyFilter(query, filter);
-            query = ApplySort(query, sort);
-            query = ApplyPaging(query, paging);
+            if (filter != null) query = ApplyFilter(query, filter);
+            if (sort != null) query = ApplySort(query, sort);;
+            if (paging != null) query = ApplyPaging(query, paging);
             query = query.Where(model => model.IsDeleted == false);
             return await query.ToListAsync();
         }
@@ -36,7 +36,7 @@ namespace ItSkillHouse.Repositories
         {
             IQueryable<Recruiter> query = Context.Set<Recruiter>();
             query = FormatQuery(query);
-            query = ApplyFilter(query, filter);
+            if (filter != null) query = ApplyFilter(query, filter);
             query = query.Where(model => model.IsDeleted == false);
             return await query.CountAsync();
         }

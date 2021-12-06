@@ -19,6 +19,7 @@ namespace ItSkillHouse.Repositories.Context
             
             OnUserModelCreating(modelBuilder);
             OnUserRoleModelCreating(modelBuilder);
+            OnTokenModelCreating(modelBuilder);
             
             OnClientProjectModelCreating(modelBuilder);
             OnClientUserModelCreating(modelBuilder);
@@ -184,6 +185,14 @@ namespace ItSkillHouse.Repositories.Context
                 .HasForeignKey(rate => rate.ContractorId);
         }
         
+        private static void OnTokenModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Token>()
+                .HasOne(token => token.User)
+                .WithMany(user => user.Tokens)
+                .HasForeignKey(token => token.UserId);
+        }
+        
         private static void OnContractorTechnologyModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<ContractorTechnology>()
@@ -204,6 +213,7 @@ namespace ItSkillHouse.Repositories.Context
         public DbSet<Role> Roles { get; set; }
         public DbSet<Recruiter> Recruiters { get; set; }
 
+        public DbSet<Token> Tokens { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<UserRole> UsersRoles { get; set; }
         

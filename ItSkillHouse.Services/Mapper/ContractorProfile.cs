@@ -43,7 +43,7 @@ namespace ItSkillHouse.Services.Mapper
                 )
                 .ForMember(
                     dest => dest.Rate,
-                    opt => opt.MapFrom(src => src.Rates.Select(rate => rate.Amount))
+                    opt => opt.MapFrom(src => src.ActiveRate.Amount)
                 );
             
             CreateMap<Contractor, ContractorsListItemDto>()
@@ -69,7 +69,7 @@ namespace ItSkillHouse.Services.Mapper
                 )
                 .ForMember(
                     dest => dest.Rate,
-                    opt => opt.MapFrom(src => src.Rates.FirstOrDefault().Amount)
+                    opt => opt.MapFrom(src => src.ActiveRate.Amount)
                 );
         }
     }

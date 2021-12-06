@@ -53,7 +53,7 @@ namespace ItSkillHouse.Services
         {
             var filter = _mapper.Map<ListRecruitersRequest, RecruitersFilter>(request);
             var sort = _mapper.Map<ListRecruitersRequest, Sort>(request);
-            var paging = _mapper.Map<ListRecruitersRequest, Paging>(request);
+            var paging = request.Skip.HasValue ?_mapper.Map<ListRecruitersRequest, Paging>(request) : null;
 
             var recruiters = await _recruiterRepository.GetAsync(filter, sort, paging);
             var recruitersCount = await _recruiterRepository.CountAsync(filter);

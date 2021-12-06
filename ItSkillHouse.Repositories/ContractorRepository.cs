@@ -59,14 +59,15 @@ namespace ItSkillHouse.Repositories
                                                   || contractor.Recruiter.User.FirstName.Contains(filter.Keyword) 
                                                   || contractor.Recruiter.User.LastName.Contains(filter.Keyword));
             }
-            if (filter.RateFrom.HasValue) query = query.Where(contractor => contractor.ActiveRate.Amount >= filter.RateFrom.Value);
-            if (filter.RateTo.HasValue) query = query.Where(contractor => contractor.ActiveRate.Amount <= filter.RateTo.Value);
+            if (filter.RateFrom.HasValue) query = query.Where(contractor => contractor.Rates.FirstOrDefault(rate => rate.DateFrom <= DateTime.UtcNow && (!rate.DateTo.HasValue || rate.DateTo >= DateTime.UtcNow)).Amount >= filter.RateFrom.Value);
+            if (filter.RateTo.HasValue) query = query.Where(contractor => contractor.Rates.FirstOrDefault(rate => rate.DateFrom <= DateTime.UtcNow && (!rate.DateTo.HasValue || rate.DateTo >= DateTime.UtcNow)).Amount <= filter.RateTo.Value);
             if (filter.AvailableFrom.HasValue) query = query.Where(contractor => contractor.AvailableFrom >= filter.AvailableFrom.Value);
             if (filter.AvailableTo.HasValue) query = query.Where(contractor => contractor.AvailableFrom <= filter.AvailableTo.Value);
             if (filter.IsPublic.HasValue) query = query.Where(contractor => contractor.IsPublic == filter.IsPublic.Value);
             if (filter.IsRemote.HasValue) query = query.Where(contractor => contractor.IsRemote == filter.IsRemote.Value);
-            if (filter.IsAvailable.HasValue) query = query.Where(contractor => contractor.IsAvailable == filter.IsRemote.Value);
+            if (filter.IsAvailable.HasValue) query = query.Where(contractor => contractor.IsAvailable == filter.IsAvailable.Value);
             if (filter.RecruitersIds.Count > 0) query = query.Where(contractor => filter.RecruitersIds.Contains(contractor.RecruiterId));
+            if (filter.TechnologiesIds.Count > 0) query = query.Where(contractor => filter.TechnologiesIds.Contains(contractor.RecruiterId));
             return query;
         }
 
