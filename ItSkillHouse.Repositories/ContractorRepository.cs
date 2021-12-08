@@ -95,8 +95,8 @@ namespace ItSkillHouse.Repositories
                 }
                 case "rate":
                 {
-                    if (sort.SortDirection == "asc") query = query.OrderBy(contractor => contractor.Rates.FirstOrDefault(rate => rate.DateFrom >= DateTime.UtcNow && rate.DateTo <= DateTime.UtcNow).Amount);
-                    if (sort.SortDirection == "desc") query = query.OrderByDescending(contractor => contractor.Rates.FirstOrDefault(rate => rate.DateFrom >= DateTime.UtcNow && rate.DateTo <= DateTime.UtcNow).Amount);
+                    if (sort.SortDirection == "asc") query = query.OrderBy(contractor => contractor.Rates.FirstOrDefault(rate => rate.DateFrom <= DateTime.UtcNow && (!rate.DateTo.HasValue || rate.DateTo >= DateTime.UtcNow)).Amount);
+                    if (sort.SortDirection == "desc") query = query.OrderByDescending(contractor => contractor.Rates.FirstOrDefault(rate => rate.DateFrom <= DateTime.UtcNow && (!rate.DateTo.HasValue || rate.DateTo >= DateTime.UtcNow)).Amount);
                     break;
                 }
                 case "recruiter":
