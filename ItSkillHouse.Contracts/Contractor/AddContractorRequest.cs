@@ -11,6 +11,7 @@ namespace ItSkillHouse.Contracts.Contractor
         public string Phone { get; set; }
         public DateTime AvailableFrom { get; set; }
         public List<Guid> TechnologiesIds { get; set; }
+        public Guid MainTechnologyId { get; set; }
         public bool IsRemote { get; set; }
         public bool IsPublic { get; set; }
         public string Location { get; set; }

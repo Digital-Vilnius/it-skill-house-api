@@ -17,6 +17,7 @@ namespace ItSkillHouse.Contracts.Contractor
         public DateTime? AvailableFrom { get; set; }
         public decimal Rate { get; set; }
         public List<TechnologiesListItemDto> Technologies { get; set; }
+        public TechnologiesListItemDto MainTechnology { get; set; }
         public RecruitersListItemDto Recruiter { get; set; }
     }
 }

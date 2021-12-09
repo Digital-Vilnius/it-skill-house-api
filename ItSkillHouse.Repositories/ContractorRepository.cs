@@ -67,7 +67,7 @@ namespace ItSkillHouse.Repositories
             if (filter.IsRemote.HasValue) query = query.Where(contractor => contractor.IsRemote == filter.IsRemote.Value);
             if (filter.IsAvailable.HasValue) query = query.Where(contractor => contractor.IsAvailable == filter.IsAvailable.Value);
             if (filter.RecruitersIds.Count > 0) query = query.Where(contractor => filter.RecruitersIds.Contains(contractor.RecruiterId));
-            if (filter.TechnologiesIds.Count > 0) query = query.Where(contractor => filter.TechnologiesIds.Contains(contractor.RecruiterId));
+            if (filter.TechnologiesIds.Count > 0) query = query.Where(contractor => contractor.Technologies.Any(technology => filter.TechnologiesIds.Contains(technology.TechnologyId)));
             return query;
         }
 
@@ -75,6 +75,12 @@ namespace ItSkillHouse.Repositories
         {
             switch (sort.SortBy)
             {
+                case "mainTechnology":
+                {
+                    if (sort.SortDirection == "asc") query = query.OrderBy(contractor => contractor.Technologies.FirstOrDefault(technology => technology.IsMain).Technology.Name);
+                    if (sort.SortDirection == "desc") query = query.OrderByDescending(contractor => contractor.Technologies.FirstOrDefault(technology => technology.IsMain).Technology.Name);
+                    break;
+                }
                 case "availableFrom":
                 {
                     if (sort.SortDirection == "asc") query = query.OrderBy(contractor => contractor.AvailableFrom);

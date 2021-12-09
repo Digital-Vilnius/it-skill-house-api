@@ -34,7 +34,9 @@ namespace ItSkillHouse.Services
             var user = _mapper.Map<AddContractorRequest, User>(request);
             var contractor = _mapper.Map<AddContractorRequest, Contractor>(request);
             var rate = _mapper.Map<AddContractorRequest, Rate>(request);
+            
             var technologies = request.TechnologiesIds.Select(id => new ContractorTechnology {TechnologyId = id}).ToList();
+            technologies.Add(new ContractorTechnology{TechnologyId = request.MainTechnologyId, IsMain = true});
             
             contractor.User = user;
             contractor.Rates = new List<Rate>{rate};
