@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using ItSkillHouse.Contracts.Technology;
 using ItSkillHouse.Models.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -25,18 +24,10 @@ namespace ItSkillHouse.Controllers
             var response = await _technologyService.AddAsync<TechnologyDto>(request);
             return Ok(response);
         }
-        
-        [HttpPut("{id}")]
-        [Authorize]
-        public async Task<IActionResult> Edit([FromRoute] Guid id, [FromBody] EditTechnologyRequest request)
-        {
-            var response = await _technologyService.EditAsync<TechnologyDto>(id, request);
-            return Ok(response);
-        }
 
         [HttpDelete("{id}")]
         [Authorize]
-        public async Task<IActionResult> Delete([FromRoute] Guid id)
+        public async Task<IActionResult> Delete([FromRoute] int id)
         {
             await _technologyService.DeleteAsync(id);
             return Ok();
@@ -46,13 +37,13 @@ namespace ItSkillHouse.Controllers
         [Authorize]
         public async Task<IActionResult> List()
         {
-            var response = await _technologyService.GetAsync<TechnologiesListItemDto>();
+            var response = await _technologyService.GetAsync<TechnologyDto>();
             return Ok(response);
         }
         
         [HttpGet("{id}")]
         [Authorize]
-        public async Task<IActionResult> Get([FromRoute] Guid id)
+        public async Task<IActionResult> Get([FromRoute] int id)
         {
             var response = await _technologyService.GetAsync<TechnologyDto>(id);
             return Ok(response);

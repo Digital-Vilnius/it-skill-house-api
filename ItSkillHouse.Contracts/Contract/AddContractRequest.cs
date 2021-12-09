@@ -6,9 +6,9 @@ namespace ItSkillHouse.Contracts.Contract
     {
         public DateTime DateFrom { get; set; }
         public DateTime DateTo { get; set; }
-        public Guid ContractorId { get; set; }
-        public Guid RateId { get; set; }
-        public Guid ClientProjectId { get; set; }
-        public Guid RecruiterId { get; set; }
+        public int ContractorId { get; set; }
+        public int RateId { get; set; }
+        public int ClientProjectId { get; set; }
+        public int RecruiterId { get; set; }
     }
 }

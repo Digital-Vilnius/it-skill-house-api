@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ItSkillHouse.Repositories.Migrations
 {
     [DbContext(typeof(SqlContext))]
-    [Migration("20211205234930_RatesRenaming1")]
-    partial class RatesRenaming1
+    [Migration("20211209135103_Init")]
+    partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -26,9 +26,11 @@ namespace ItSkillHouse.Repositories.Migrations
 
             modelBuilder.Entity("ItSkillHouse.Models.Client", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
@@ -49,12 +51,14 @@ namespace ItSkillHouse.Repositories.Migrations
 
             modelBuilder.Entity("ItSkillHouse.Models.ClientProject", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("int");
 
-                    b.Property<Guid>("ClientId")
-                        .HasColumnType("uniqueidentifier");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("ClientId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
@@ -77,11 +81,11 @@ namespace ItSkillHouse.Repositories.Migrations
 
             modelBuilder.Entity("ItSkillHouse.Models.ClientUser", b =>
                 {
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
 
-                    b.Property<Guid>("ClientId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("ClientId")
+                        .HasColumnType("int");
 
                     b.HasKey("UserId", "ClientId");
 
@@ -92,15 +96,17 @@ namespace ItSkillHouse.Repositories.Migrations
 
             modelBuilder.Entity("ItSkillHouse.Models.Contract", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("int");
 
-                    b.Property<Guid>("ClientProjectId")
-                        .HasColumnType("uniqueidentifier");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<Guid>("ContractorId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("ClientProjectId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ContractorId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
@@ -114,11 +120,11 @@ namespace ItSkillHouse.Repositories.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
-                    b.Property<Guid>("RateId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("RateId")
+                        .HasColumnType("int");
 
-                    b.Property<Guid>("RecruiterId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("RecruiterId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime?>("Updated")
                         .HasColumnType("datetime2");
@@ -139,17 +145,31 @@ namespace ItSkillHouse.Repositories.Migrations
 
             modelBuilder.Entity("ItSkillHouse.Models.Contractor", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("int");
 
-                    b.Property<DateTime?>("AvailableFrom")
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<DateTime>("AvailableFrom")
                         .HasColumnType("datetime2");
+
+                    b.Property<int?>("CinodeId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("CodaId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
 
+                    b.Property<DateTime>("ExperienceSince")
+                        .HasColumnType("datetime2");
+
                     b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsOnSite")
                         .HasColumnType("bit");
 
                     b.Property<bool>("IsPublic")
@@ -158,17 +178,20 @@ namespace ItSkillHouse.Repositories.Migrations
                     b.Property<bool>("IsRemote")
                         .HasColumnType("bit");
 
+                    b.Property<string>("LinkedInUrl")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Location")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("RecruiterId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("RecruiterId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime?>("Updated")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -180,50 +203,34 @@ namespace ItSkillHouse.Repositories.Migrations
                     b.ToTable("Contractors");
                 });
 
-            modelBuilder.Entity("ItSkillHouse.Models.ContractorNote", b =>
+            modelBuilder.Entity("ItSkillHouse.Models.ContractorTag", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("ContractorId")
+                        .HasColumnType("int");
 
-                    b.Property<string>("Content")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("TagId")
+                        .HasColumnType("int");
 
-                    b.Property<Guid>("ContractorId")
-                        .HasColumnType("uniqueidentifier");
+                    b.HasKey("ContractorId", "TagId");
 
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("datetime2");
+                    b.HasIndex("TagId");
 
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Title")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("Updated")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ContractorId");
-
-                    b.ToTable("ContractorNotes");
+                    b.ToTable("ContractorsTags");
                 });
 
             modelBuilder.Entity("ItSkillHouse.Models.ContractorTechnology", b =>
                 {
-                    b.Property<Guid>("ContractorId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("ContractorId")
+                        .HasColumnType("int");
 
-                    b.Property<Guid>("TechnologyId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("TechnologyId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("Id")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -244,20 +251,58 @@ namespace ItSkillHouse.Repositories.Migrations
                     b.ToTable("ContractorsTechnologies");
                 });
 
+            modelBuilder.Entity("ItSkillHouse.Models.Note", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Content")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ContractorId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("Updated")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ContractorId");
+
+                    b.ToTable("Notes");
+                });
+
             modelBuilder.Entity("ItSkillHouse.Models.Rate", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<decimal>("Amount")
                         .HasColumnType("decimal(10,2)");
 
-                    b.Property<Guid>("ContractorId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("ContractorId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("Currency")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("DateFrom")
                         .HasColumnType("datetime2");
@@ -280,9 +325,11 @@ namespace ItSkillHouse.Repositories.Migrations
 
             modelBuilder.Entity("ItSkillHouse.Models.Recruiter", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
@@ -293,8 +340,8 @@ namespace ItSkillHouse.Repositories.Migrations
                     b.Property<DateTime?>("Updated")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -306,9 +353,11 @@ namespace ItSkillHouse.Repositories.Migrations
 
             modelBuilder.Entity("ItSkillHouse.Models.Role", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
@@ -334,11 +383,38 @@ namespace ItSkillHouse.Repositories.Migrations
                     b.ToTable("Roles");
                 });
 
+            modelBuilder.Entity("ItSkillHouse.Models.Tag", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("Updated")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Tags");
+                });
+
             modelBuilder.Entity("ItSkillHouse.Models.Technology", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
@@ -363,9 +439,11 @@ namespace ItSkillHouse.Repositories.Migrations
 
             modelBuilder.Entity("ItSkillHouse.Models.Token", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
@@ -385,8 +463,8 @@ namespace ItSkillHouse.Repositories.Migrations
                     b.Property<DateTime?>("Updated")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Value")
                         .HasColumnType("nvarchar(max)");
@@ -395,14 +473,16 @@ namespace ItSkillHouse.Repositories.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Token");
+                    b.ToTable("Tokens");
                 });
 
             modelBuilder.Entity("ItSkillHouse.Models.User", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
@@ -448,11 +528,11 @@ namespace ItSkillHouse.Repositories.Migrations
 
             modelBuilder.Entity("ItSkillHouse.Models.UserRole", b =>
                 {
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
 
-                    b.Property<Guid>("RoleId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("RoleId")
+                        .HasColumnType("int");
 
                     b.HasKey("UserId", "RoleId");
 
@@ -545,15 +625,23 @@ namespace ItSkillHouse.Repositories.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("ItSkillHouse.Models.ContractorNote", b =>
+            modelBuilder.Entity("ItSkillHouse.Models.ContractorTag", b =>
                 {
                     b.HasOne("ItSkillHouse.Models.Contractor", "Contractor")
-                        .WithMany("Notes")
+                        .WithMany("Tags")
                         .HasForeignKey("ContractorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("ItSkillHouse.Models.Tag", "Tag")
+                        .WithMany("Contractors")
+                        .HasForeignKey("TagId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Contractor");
+
+                    b.Navigation("Tag");
                 });
 
             modelBuilder.Entity("ItSkillHouse.Models.ContractorTechnology", b =>
@@ -565,7 +653,7 @@ namespace ItSkillHouse.Repositories.Migrations
                         .IsRequired();
 
                     b.HasOne("ItSkillHouse.Models.Technology", "Technology")
-                        .WithMany("TechnologyContractors")
+                        .WithMany("Contractors")
                         .HasForeignKey("TechnologyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -573,6 +661,17 @@ namespace ItSkillHouse.Repositories.Migrations
                     b.Navigation("Contractor");
 
                     b.Navigation("Technology");
+                });
+
+            modelBuilder.Entity("ItSkillHouse.Models.Note", b =>
+                {
+                    b.HasOne("ItSkillHouse.Models.Contractor", "Contractor")
+                        .WithMany("Notes")
+                        .HasForeignKey("ContractorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Contractor");
                 });
 
             modelBuilder.Entity("ItSkillHouse.Models.Rate", b =>
@@ -647,6 +746,8 @@ namespace ItSkillHouse.Repositories.Migrations
 
                     b.Navigation("Rates");
 
+                    b.Navigation("Tags");
+
                     b.Navigation("Technologies");
                 });
 
@@ -667,9 +768,14 @@ namespace ItSkillHouse.Repositories.Migrations
                     b.Navigation("RoleUsers");
                 });
 
+            modelBuilder.Entity("ItSkillHouse.Models.Tag", b =>
+                {
+                    b.Navigation("Contractors");
+                });
+
             modelBuilder.Entity("ItSkillHouse.Models.Technology", b =>
                 {
-                    b.Navigation("TechnologyContractors");
+                    b.Navigation("Contractors");
                 });
 
             modelBuilder.Entity("ItSkillHouse.Models.User", b =>

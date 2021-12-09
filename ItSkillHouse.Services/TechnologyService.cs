@@ -36,22 +36,6 @@ namespace ItSkillHouse.Services
             return new ResultResponse<TModel>(technologyDto);
         }
 
-        public async Task<ResultResponse<TModel>> EditAsync<TModel>(Guid id, EditTechnologyRequest request)
-        {
-            var duplicate = await _technologyRepository.GetAsync(technology => technology.Name == request.Name && technology.Id != id);
-            if (duplicate != null) throw new Exception("Technology with this name is already exist");
-            
-            var technology = await _technologyRepository.GetByIdAsync(id);
-            if (technology == null) throw new Exception("Technology is not found");
-            
-            technology = _mapper.Map(request, technology);
-            _technologyRepository.Update(technology);
-            await _unitOfWork.SaveChangesAsync();
-            
-            var technologyDto = _mapper.Map<Technology, TModel>(technology);
-            return new ResultResponse<TModel>(technologyDto);
-        }
-
         public async Task<ListResponse<TModel>> GetAsync<TModel>()
         {
             var technologies = await _technologyRepository.GetAsync();
@@ -61,7 +45,7 @@ namespace ItSkillHouse.Services
             return new ListResponse<TModel>(technologiesDtosList, technologiesCount);
         }
 
-        public async Task<ResultResponse<TModel>> GetAsync<TModel>(Guid id)
+        public async Task<ResultResponse<TModel>> GetAsync<TModel>(int id)
         {
             var technology = await _technologyRepository.GetByIdAsync(id);
             if (technology == null) throw new Exception("Technology is not found");
@@ -70,7 +54,7 @@ namespace ItSkillHouse.Services
             return new ResultResponse<TModel>(technologyDto);
         }
 
-        public async Task DeleteAsync(Guid id)
+        public async Task DeleteAsync(int id)
         {
             var technology = await _technologyRepository.GetByIdAsync(id);
             if (technology == null) throw new Exception("Technology is not found");

@@ -4,7 +4,7 @@ namespace ItSkillHouse.Contracts
 {
     public class BaseDto
     {
-        public Guid Id { get; set; }
+        public int Id { get; set; }
         
         public DateTime? Updated { get; set; }
         

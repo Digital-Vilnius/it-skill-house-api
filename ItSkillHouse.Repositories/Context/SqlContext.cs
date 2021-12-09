@@ -27,8 +27,9 @@ namespace ItSkillHouse.Repositories.Context
             OnContractModelCreating(modelBuilder);
             OnContractorTechnologyModelCreating(modelBuilder);
             OnContractorModelCreating(modelBuilder);
-            OnContractorNoteModelCreating(modelBuilder);
+            OnNoteModelCreating(modelBuilder);
             OnRateModelCreating(modelBuilder);
+            OnContractorTagModelCreating(modelBuilder);
         }
         
         private static void OnTechnologyModelCreating(ModelBuilder modelBuilder)
@@ -169,12 +170,12 @@ namespace ItSkillHouse.Repositories.Context
                 .OnDelete(DeleteBehavior.Restrict);
         }
         
-        private static void OnContractorNoteModelCreating(ModelBuilder modelBuilder)
+        private static void OnNoteModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<ContractorNote>()
-                .HasOne(contractorNote => contractorNote.Contractor)
+            modelBuilder.Entity<Note>()
+                .HasOne(note => note.Contractor)
                 .WithMany(contractor => contractor.Notes)
-                .HasForeignKey(contractorNote => contractorNote.ContractorId);
+                .HasForeignKey(note => note.ContractorId);
         }
         
         private static void OnRateModelCreating(ModelBuilder modelBuilder)
@@ -205,8 +206,24 @@ namespace ItSkillHouse.Repositories.Context
 
             modelBuilder.Entity<ContractorTechnology>()
                 .HasOne(contractorTechnology => contractorTechnology.Technology)
-                .WithMany(technology => technology.TechnologyContractors)
+                .WithMany(technology => technology.Contractors)
                 .HasForeignKey(contractorTechnology => contractorTechnology.TechnologyId);
+        }
+        
+        private static void OnContractorTagModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<ContractorTag>()
+                .HasKey(contractorTag => new { contractorTag.ContractorId, contractorTag.TagId });
+
+            modelBuilder.Entity<ContractorTag>()
+                .HasOne(contractorTag => contractorTag.Contractor)
+                .WithMany(contractor => contractor.Tags)
+                .HasForeignKey(contractorTag => contractorTag.ContractorId);
+
+            modelBuilder.Entity<ContractorTag>()
+                .HasOne(contractorTag => contractorTag.Tag)
+                .WithMany(tag => tag.Contractors)
+                .HasForeignKey(contractorTag => contractorTag.TagId);
         }
 
         public DbSet<Technology> Technologies { get; set; }
@@ -223,8 +240,11 @@ namespace ItSkillHouse.Repositories.Context
 
         public DbSet<Contract> Contracts { get; set; }
         public DbSet<Contractor> Contractors { get; set; }
-        public DbSet<ContractorNote> ContractorNotes { get; set; }
+        public DbSet<Note> Notes { get; set; }
+        public DbSet<Tag> Tags { get; set; }
         public DbSet<Rate> Rates { get; set; }
+        
         public DbSet<ContractorTechnology> ContractorsTechnologies { get; set; }
+        public DbSet<ContractorTag> ContractorsTags { get; set; }
     }
 }

@@ -7,16 +7,16 @@ namespace ItSkillHouse.Models
         public DateTime DateFrom { get; set; }
         public DateTime DateTo { get; set; }
         
-        public Guid ContractorId { get; set; }
+        public int ContractorId { get; set; }
         public Contractor Contractor { get; set; }
         
-        public Guid RateId { get; set; }
+        public int RateId { get; set; }
         public Rate Rate { get; set; }
         
-        public Guid ClientProjectId { get; set; }
+        public int ClientProjectId { get; set; }
         public ClientProject ClientProject { get; set; }
         
-        public Guid RecruiterId { get; set; }
+        public int RecruiterId { get; set; }
         public Recruiter Recruiter { get; set; }
     }
 }

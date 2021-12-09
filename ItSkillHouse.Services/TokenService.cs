@@ -25,7 +25,7 @@ namespace ItSkillHouse.Services
             _issuer = configuration["Jwt:Issuer"];
         }
         
-        public Token GenerateRefreshToken(Guid userId)
+        public Token GenerateRefreshToken(int userId)
         {
             var randomHash = new byte[64];
             var cryptoServiceProvider = new RNGCryptoServiceProvider();
@@ -54,7 +54,7 @@ namespace ItSkillHouse.Services
             };
         }
 
-        public string GenerateToken(Guid id)
+        public string GenerateToken(int id)
         {
             var claims = new ClaimsIdentity(new[] { new Claim(ClaimTypes.NameIdentifier, id.ToString()) });
             var secret = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_secret));

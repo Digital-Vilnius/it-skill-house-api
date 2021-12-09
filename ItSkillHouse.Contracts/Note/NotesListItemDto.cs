@@ -1,8 +1,8 @@
 ﻿using ItSkillHouse.Contracts.Contractor;
 
-namespace ItSkillHouse.Contracts.ContractorNote
+namespace ItSkillHouse.Contracts.Note
 {
-    public class ContractorNoteDto : BaseDto
+    public class NotesListItemDto : BaseDto
     {
         public string Title { get; set; }
         public string Content { get; set; }

@@ -46,7 +46,7 @@ namespace ItSkillHouse.Repositories
             return await models.FirstOrDefaultAsync(filter);
         }
         
-        public async Task<TModel> GetByIdAsync(Guid id)
+        public async Task<TModel> GetByIdAsync(int id)
         {
             IQueryable<TModel> models = Context.Set<TModel>();
             models = FormatQuery(models);

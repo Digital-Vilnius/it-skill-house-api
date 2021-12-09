@@ -36,7 +36,7 @@ namespace ItSkillHouse.Services
             return new ResultResponse<TModel>(recruiterDto);
         }
 
-        public async Task<ResultResponse<TModel>> EditAsync<TModel>(Guid id, EditRecruiterRequest request)
+        public async Task<ResultResponse<TModel>> EditAsync<TModel>(int id, EditRecruiterRequest request)
         {
             var recruiter = await _recruiterRepository.GetByIdAsync(id);
             if (recruiter == null) throw new Exception("Recruiter is not found");
@@ -62,7 +62,7 @@ namespace ItSkillHouse.Services
             return new ListResponse<TModel>(recruitersDtosList, recruitersCount);
         }
 
-        public async Task<ResultResponse<TModel>> GetAsync<TModel>(Guid id)
+        public async Task<ResultResponse<TModel>> GetAsync<TModel>(int id)
         {
             var recruiter = await _recruiterRepository.GetByIdAsync(id);
             if (recruiter == null) throw new Exception("Recruiter is not found");
@@ -71,7 +71,7 @@ namespace ItSkillHouse.Services
             return new ResultResponse<TModel>(recruiterDto);
         }
 
-        public async Task DeleteAsync(Guid id)
+        public async Task DeleteAsync(int id)
         {
             var recruiter = await _recruiterRepository.GetByIdAsync(id);
             if (recruiter == null) throw new Exception("Recruiter is not found");

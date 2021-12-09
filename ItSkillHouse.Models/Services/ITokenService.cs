@@ -4,10 +4,10 @@ namespace ItSkillHouse.Models.Services
 {
     public interface ITokenService
     {
-        Token GenerateRefreshToken(Guid userId);
+        Token GenerateRefreshToken(int userId);
         
         Token GenerateRefreshToken();
         
-        string GenerateToken(Guid id);
+        string GenerateToken(int id);
     }
 }

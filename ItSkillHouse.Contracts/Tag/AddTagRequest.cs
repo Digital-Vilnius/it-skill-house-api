@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace ItSkillHouse.Contracts.Technology
+namespace ItSkillHouse.Contracts.Tag
 {
-    public class EditTechnologyRequest
+    public class AddTagRequest
     {
         [Required]
         public string Name { get; set; }

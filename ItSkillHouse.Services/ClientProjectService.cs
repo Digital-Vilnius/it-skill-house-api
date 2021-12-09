@@ -36,7 +36,7 @@ namespace ItSkillHouse.Services
             return new ResultResponse<TModel>(clientProjectDto);
         }
 
-        public async Task<ResultResponse<TModel>> EditAsync<TModel>(Guid id, EditClientProjectRequest request)
+        public async Task<ResultResponse<TModel>> EditAsync<TModel>(int id, EditClientProjectRequest request)
         {
             var duplicate = await _clientProjectRepository.GetAsync(clientProject => clientProject.Name == request.Name && clientProject.Id != id);
             if (duplicate != null) throw new Exception("Client project with this name is already exist");
@@ -61,7 +61,7 @@ namespace ItSkillHouse.Services
             return new ListResponse<TModel>(clientProjectsDtosList, clientProjectsCount);
         }
 
-        public async Task<ResultResponse<TModel>> GetAsync<TModel>(Guid id)
+        public async Task<ResultResponse<TModel>> GetAsync<TModel>(int id)
         {
             var clientProject = await _clientProjectRepository.GetByIdAsync(id);
             if (clientProject == null) throw new Exception("Client project is not found");
@@ -70,7 +70,7 @@ namespace ItSkillHouse.Services
             return new ResultResponse<TModel>(clientProjectDto);
         }
 
-        public async Task DeleteAsync(Guid id)
+        public async Task DeleteAsync(int id)
         {
             var clientProject = await _clientProjectRepository.GetByIdAsync(id);
             if (clientProject == null) throw new Exception("Client project is not found");

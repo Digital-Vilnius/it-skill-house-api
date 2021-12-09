@@ -3,73 +3,73 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using ItSkillHouse.Contracts;
-using ItSkillHouse.Contracts.ContractorNote;
+using ItSkillHouse.Contracts.Note;
 using ItSkillHouse.Models;
 using ItSkillHouse.Models.Repositories;
 using ItSkillHouse.Models.Services;
 
 namespace ItSkillHouse.Services
 {
-    public class ContractorNoteService : IContractorNoteService
+    public class NoteService : INoteService
     {
-        private readonly IContractorNoteRepository _contractorNoteRepository;
+        private readonly INoteRepository _noteRepository;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public ContractorNoteService(IContractorNoteRepository contractorNoteRepository, IMapper mapper, IUnitOfWork unitOfWork)
+        public NoteService(INoteRepository noteRepository, IMapper mapper, IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
-            _contractorNoteRepository = contractorNoteRepository;
+            _noteRepository = noteRepository;
         }
         
-        public async Task<ResultResponse<TModel>> AddAsync<TModel>(AddContractorNoteRequest request)
+        public async Task<ResultResponse<TModel>> AddAsync<TModel>(AddNoteRequest request)
         {
-            var contractorNote = _mapper.Map<AddContractorNoteRequest, ContractorNote>(request);
-            await _contractorNoteRepository.AddAsync(contractorNote);
+            var note = _mapper.Map<AddNoteRequest, Note>(request);
+            await _noteRepository.AddAsync(note);
             await _unitOfWork.SaveChangesAsync();
             
-            var contractorNoteDto = _mapper.Map<ContractorNote, TModel>(contractorNote);
-            return new ResultResponse<TModel>(contractorNoteDto);
+            var noteDto = _mapper.Map<Note, TModel>(note);
+            return new ResultResponse<TModel>(noteDto);
         }
 
-        public async Task<ResultResponse<TModel>> EditAsync<TModel>(Guid id, EditContractorNoteRequest request)
+        public async Task<ResultResponse<TModel>> EditAsync<TModel>(int id, EditNoteRequest request)
         {
-            var contractorNote = await _contractorNoteRepository.GetByIdAsync(id);
-            if (contractorNote == null) throw new Exception("Contractor note is not found");
+            var note = await _noteRepository.GetByIdAsync(id);
+            if (note == null) throw new Exception("Note is not found");
             
-            contractorNote = _mapper.Map(request, contractorNote);
-            _contractorNoteRepository.Update(contractorNote);
+            note = _mapper.Map(request, note);
+            _noteRepository.Update(note);
             await _unitOfWork.SaveChangesAsync();
             
-            var contractorNoteDto = _mapper.Map<ContractorNote, TModel>(contractorNote);
-            return new ResultResponse<TModel>(contractorNoteDto);
+            var noteDto = _mapper.Map<Note, TModel>(note);
+            return new ResultResponse<TModel>(noteDto);
         }
 
         public async Task<ListResponse<TModel>> GetAsync<TModel>()
         {
-            var contractorNotes = await _contractorNoteRepository.GetAsync();
-            var contractorNotesCount = await _contractorNoteRepository.CountAsync();
+            var notes = await _noteRepository.GetAsync();
+            var notesCount = await _noteRepository.CountAsync();
 
-            var contractorNotesDtosList = _mapper.Map<List<ContractorNote>, List<TModel>>(contractorNotes);
-            return new ListResponse<TModel>(contractorNotesDtosList, contractorNotesCount);
+            var notesDtosList = _mapper.Map<List<Note>, List<TModel>>(notes);
+            return new ListResponse<TModel>(notesDtosList, notesCount);
         }
 
-        public async Task<ResultResponse<TModel>> GetAsync<TModel>(Guid id)
+        public async Task<ResultResponse<TModel>> GetAsync<TModel>(int id)
         {
-            var contractorNote = await _contractorNoteRepository.GetByIdAsync(id);
-            if (contractorNote == null) throw new Exception("Contractor note is not found");
+            var note = await _noteRepository.GetByIdAsync(id);
+            if (note == null) throw new Exception("Note is not found");
 
-            var contractorNoteDto = _mapper.Map<ContractorNote, TModel>(contractorNote);
-            return new ResultResponse<TModel>(contractorNoteDto);
+            var noteDto = _mapper.Map<Note, TModel>(note);
+            return new ResultResponse<TModel>(noteDto);
         }
 
-        public async Task DeleteAsync(Guid id)
+        public async Task DeleteAsync(int id)
         {
-            var contractorNote = await _contractorNoteRepository.GetByIdAsync(id);
-            if (contractorNote == null) throw new Exception("Contractor note is not found");
+            var note = await _noteRepository.GetByIdAsync(id);
+            if (note == null) throw new Exception("Note is not found");
 
-            _contractorNoteRepository.Delete(contractorNote);
+            _noteRepository.Delete(note);
             await _unitOfWork.SaveChangesAsync();
         }
     }

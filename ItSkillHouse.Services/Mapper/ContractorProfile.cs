@@ -42,6 +42,10 @@ namespace ItSkillHouse.Services.Mapper
                     opt => opt.MapFrom(src => src.Technologies.Select(technology => technology.Technology))
                 )
                 .ForMember(
+                    dest => dest.Tags,
+                    opt => opt.MapFrom(src => src.Tags.Select(tag => tag.Tag))
+                )
+                .ForMember(
                     dest => dest.MainTechnology,
                     opt => opt.MapFrom(src => src.Technologies.FirstOrDefault(technology => technology.IsMain).Technology)
                 )
@@ -70,6 +74,10 @@ namespace ItSkillHouse.Services.Mapper
                 .ForMember(
                     dest => dest.Technologies,
                     opt => opt.MapFrom(src => src.Technologies.Select(technology => technology.Technology))
+                )
+                .ForMember(
+                    dest => dest.Tags,
+                    opt => opt.MapFrom(src => src.Tags.Select(tag => tag.Tag))
                 )
                 .ForMember(
                     dest => dest.MainTechnology,

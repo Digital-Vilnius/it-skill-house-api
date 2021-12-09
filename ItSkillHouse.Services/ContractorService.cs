@@ -49,7 +49,7 @@ namespace ItSkillHouse.Services
             return new ResultResponse<TModel>(contractorDto);
         }
 
-        public async Task<ResultResponse<TModel>> EditAsync<TModel>(Guid id, EditContractorRequest request)
+        public async Task<ResultResponse<TModel>> EditAsync<TModel>(int id, EditContractorRequest request)
         {
             var contractor = await _contractorRepository.GetByIdAsync(id);
             if (contractor == null) throw new Exception("Contractor is not found");
@@ -75,7 +75,7 @@ namespace ItSkillHouse.Services
             return new ListResponse<TModel>(contractorsDtosList, contractorsCount);
         }
 
-        public async Task<ResultResponse<TModel>> GetAsync<TModel>(Guid id)
+        public async Task<ResultResponse<TModel>> GetAsync<TModel>(int id)
         {
             var contractor = await _contractorRepository.GetByIdAsync(id);
             if (contractor == null) throw new Exception("Contractor is not found");
@@ -84,7 +84,7 @@ namespace ItSkillHouse.Services
             return new ResultResponse<TModel>(contractorDto);
         }
 
-        public async Task DeleteAsync(Guid id)
+        public async Task DeleteAsync(int id)
         {
             var contractor = await _contractorRepository.GetByIdAsync(id);
             if (contractor == null) throw new Exception("Contractor is not found");

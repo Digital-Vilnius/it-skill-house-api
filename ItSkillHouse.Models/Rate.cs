@@ -11,8 +11,10 @@ namespace ItSkillHouse.Models
         
         [Column(TypeName = "decimal(10,2)")]
         public decimal Amount { get; set; }
+        
+        public string Currency { get; set; }
      
-        public Guid ContractorId { get; set; }
+        public int ContractorId { get; set; }
         public Contractor Contractor { get; set; }
         
         public List<Contract> Contracts { get; set; }

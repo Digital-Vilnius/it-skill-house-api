@@ -16,10 +16,11 @@ namespace ItSkillHouse.Services.DI
                 configure.AddProfile<TechnologyProfile>();
                 configure.AddProfile<ClientProfile>();
                 configure.AddProfile<ClientProjectProfile>();
-                configure.AddProfile<ContractorNoteProfile>();
+                configure.AddProfile<NoteProfile>();
                 configure.AddProfile<ContractorProfile>();
                 configure.AddProfile<RecruiterProfile>();
                 configure.AddProfile<ContractProfile>();
+                configure.AddProfile<TagProfile>();
             }, typeof(ServicesModule));
             
             services.AddScoped<IAuthenticationService, AuthenticationService>();
@@ -30,11 +31,12 @@ namespace ItSkillHouse.Services.DI
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IClientProjectService, ClientProjectService>();
             services.AddScoped<IClientService, ClientService>();
-            services.AddScoped<IContractorNoteService, ContractorNoteService>();
+            services.AddScoped<INoteService, NoteService>();
             services.AddScoped<IRateService, RateService>();
             services.AddScoped<IContractorService, ContractorService>();
             services.AddScoped<IRecruiterService, RecruiterService>();
             services.AddScoped<IContractService, ContractService>();
+            services.AddScoped<ITagService, TagService>();
         }
     }
 }

@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ItSkillHouse.Repositories.Migrations
 {
-    public partial class MainTechnology : Migration
+    public partial class Init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -13,7 +13,8 @@ namespace ItSkillHouse.Repositories.Migrations
                 name: "Clients",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Updated = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
@@ -28,7 +29,8 @@ namespace ItSkillHouse.Repositories.Migrations
                 name: "Roles",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     Permissions = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Updated = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -41,10 +43,27 @@ namespace ItSkillHouse.Repositories.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Tags",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Updated = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    Created = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Tags", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Technologies",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     Updated = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
@@ -59,7 +78,8 @@ namespace ItSkillHouse.Repositories.Migrations
                 name: "Users",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Phone = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     FirstName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -67,7 +87,6 @@ namespace ItSkillHouse.Repositories.Migrations
                     Status = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     PasswordSalt = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
                     PasswordHash = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
-                    RefreshToken = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     LastLoginDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Updated = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
@@ -82,9 +101,10 @@ namespace ItSkillHouse.Repositories.Migrations
                 name: "ClientProjects",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ClientId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ClientId = table.Column<int>(type: "int", nullable: false),
                     Updated = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     Created = table.Column<DateTime>(type: "datetime2", nullable: false)
@@ -104,8 +124,8 @@ namespace ItSkillHouse.Repositories.Migrations
                 name: "ClientsUsers",
                 columns: table => new
                 {
-                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ClientId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    ClientId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -128,8 +148,9 @@ namespace ItSkillHouse.Repositories.Migrations
                 name: "Recruiters",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<int>(type: "int", nullable: false),
                     Updated = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     Created = table.Column<DateTime>(type: "datetime2", nullable: false)
@@ -146,11 +167,37 @@ namespace ItSkillHouse.Repositories.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Tokens",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Value = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Expires = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Revoked = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Type = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    Updated = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    Created = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Tokens", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Tokens_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "UsersRoles",
                 columns: table => new
                 {
-                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    RoleId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    RoleId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -173,13 +220,19 @@ namespace ItSkillHouse.Repositories.Migrations
                 name: "Contractors",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    LinkedInUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Location = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CodaId = table.Column<int>(type: "int", nullable: true),
+                    CinodeId = table.Column<int>(type: "int", nullable: true),
+                    IsOnSite = table.Column<bool>(type: "bit", nullable: false),
                     IsRemote = table.Column<bool>(type: "bit", nullable: false),
                     IsPublic = table.Column<bool>(type: "bit", nullable: false),
-                    AvailableFrom = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    RecruiterId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    AvailableFrom = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ExperienceSince = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    RecruiterId = table.Column<int>(type: "int", nullable: false),
                     Updated = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     Created = table.Column<DateTime>(type: "datetime2", nullable: false)
@@ -202,48 +255,25 @@ namespace ItSkillHouse.Repositories.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ContractorNotes",
+                name: "ContractorsTags",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Content = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ContractorId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Updated = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    Created = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    ContractorId = table.Column<int>(type: "int", nullable: false),
+                    TagId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ContractorNotes", x => x.Id);
+                    table.PrimaryKey("PK_ContractorsTags", x => new { x.ContractorId, x.TagId });
                     table.ForeignKey(
-                        name: "FK_ContractorNotes_Contractors_ContractorId",
+                        name: "FK_ContractorsTags_Contractors_ContractorId",
                         column: x => x.ContractorId,
                         principalTable: "Contractors",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ContractorRates",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    DateFrom = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    DateTo = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    Amount = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
-                    ContractorId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Updated = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    Created = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ContractorRates", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ContractorRates_Contractors_ContractorId",
-                        column: x => x.ContractorId,
-                        principalTable: "Contractors",
+                        name: "FK_ContractorsTags_Tags_TagId",
+                        column: x => x.TagId,
+                        principalTable: "Tags",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -252,11 +282,11 @@ namespace ItSkillHouse.Repositories.Migrations
                 name: "ContractorsTechnologies",
                 columns: table => new
                 {
-                    ContractorId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    TechnologyId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ContractorId = table.Column<int>(type: "int", nullable: false),
+                    TechnologyId = table.Column<int>(type: "int", nullable: false),
                     Level = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     IsMain = table.Column<bool>(type: "bit", nullable: false),
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false),
                     Updated = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     Created = table.Column<DateTime>(type: "datetime2", nullable: false)
@@ -279,16 +309,67 @@ namespace ItSkillHouse.Repositories.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Notes",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Content = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ContractorId = table.Column<int>(type: "int", nullable: false),
+                    Updated = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    Created = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Notes", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Notes_Contractors_ContractorId",
+                        column: x => x.ContractorId,
+                        principalTable: "Contractors",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Rates",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    DateFrom = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    DateTo = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Amount = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
+                    Currency = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ContractorId = table.Column<int>(type: "int", nullable: false),
+                    Updated = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    Created = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Rates", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Rates_Contractors_ContractorId",
+                        column: x => x.ContractorId,
+                        principalTable: "Contractors",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Contracts",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     DateFrom = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DateTo = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ContractorId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ContractorRateId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ClientProjectId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    RecruiterId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ContractorId = table.Column<int>(type: "int", nullable: false),
+                    RateId = table.Column<int>(type: "int", nullable: false),
+                    ClientProjectId = table.Column<int>(type: "int", nullable: false),
+                    RecruiterId = table.Column<int>(type: "int", nullable: false),
                     Updated = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     Created = table.Column<DateTime>(type: "datetime2", nullable: false)
@@ -303,15 +384,15 @@ namespace ItSkillHouse.Repositories.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Contracts_ContractorRates_ContractorRateId",
-                        column: x => x.ContractorRateId,
-                        principalTable: "ContractorRates",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
                         name: "FK_Contracts_Contractors_ContractorId",
                         column: x => x.ContractorId,
                         principalTable: "Contractors",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Contracts_Rates_RateId",
+                        column: x => x.RateId,
+                        principalTable: "Rates",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
@@ -333,16 +414,6 @@ namespace ItSkillHouse.Repositories.Migrations
                 column: "ClientId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ContractorNotes_ContractorId",
-                table: "ContractorNotes",
-                column: "ContractorId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ContractorRates_ContractorId",
-                table: "ContractorRates",
-                column: "ContractorId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Contractors_RecruiterId",
                 table: "Contractors",
                 column: "RecruiterId");
@@ -352,6 +423,11 @@ namespace ItSkillHouse.Repositories.Migrations
                 table: "Contractors",
                 column: "UserId",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ContractorsTags_TagId",
+                table: "ContractorsTags",
+                column: "TagId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ContractorsTechnologies_TechnologyId",
@@ -370,14 +446,24 @@ namespace ItSkillHouse.Repositories.Migrations
                 column: "ContractorId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Contracts_ContractorRateId",
+                name: "IX_Contracts_RateId",
                 table: "Contracts",
-                column: "ContractorRateId");
+                column: "RateId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Contracts_RecruiterId",
                 table: "Contracts",
                 column: "RecruiterId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Notes_ContractorId",
+                table: "Notes",
+                column: "ContractorId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Rates_ContractorId",
+                table: "Rates",
+                column: "ContractorId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Recruiters_UserId",
@@ -400,6 +486,11 @@ namespace ItSkillHouse.Repositories.Migrations
                 filter: "[Name] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Tokens_UserId",
+                table: "Tokens",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Users_Email",
                 table: "Users",
                 column: "Email",
@@ -418,7 +509,7 @@ namespace ItSkillHouse.Repositories.Migrations
                 name: "ClientsUsers");
 
             migrationBuilder.DropTable(
-                name: "ContractorNotes");
+                name: "ContractorsTags");
 
             migrationBuilder.DropTable(
                 name: "ContractorsTechnologies");
@@ -427,7 +518,16 @@ namespace ItSkillHouse.Repositories.Migrations
                 name: "Contracts");
 
             migrationBuilder.DropTable(
+                name: "Notes");
+
+            migrationBuilder.DropTable(
+                name: "Tokens");
+
+            migrationBuilder.DropTable(
                 name: "UsersRoles");
+
+            migrationBuilder.DropTable(
+                name: "Tags");
 
             migrationBuilder.DropTable(
                 name: "Technologies");
@@ -436,7 +536,7 @@ namespace ItSkillHouse.Repositories.Migrations
                 name: "ClientProjects");
 
             migrationBuilder.DropTable(
-                name: "ContractorRates");
+                name: "Rates");
 
             migrationBuilder.DropTable(
                 name: "Roles");

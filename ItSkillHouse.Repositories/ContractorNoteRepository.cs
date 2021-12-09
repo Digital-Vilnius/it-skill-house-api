@@ -4,9 +4,9 @@ using ItSkillHouse.Repositories.Context;
 
 namespace ItSkillHouse.Repositories
 {
-    public class ContractorNoteRepository : BaseRepository<ContractorNote>, IContractorNoteRepository
+    public class NoteRepository : BaseRepository<Note>, INoteRepository
     {
-        public ContractorNoteRepository(SqlContext context) : base(context)
+        public NoteRepository(SqlContext context) : base(context)
         {
         }
     }

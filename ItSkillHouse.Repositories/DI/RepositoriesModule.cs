@@ -22,9 +22,10 @@ namespace ItSkillHouse.Repositories.DI
             services.AddScoped<IContractorTechnologyRepository, ContractorTechnologyRepository>();
             services.AddScoped<IContractRepository, ContractRepository>();
             services.AddScoped<IRateRepository, RateRepository>();
-            services.AddScoped<IContractorNoteRepository, ContractorNoteRepository>();
+            services.AddScoped<INoteRepository, NoteRepository>();
             services.AddScoped<IRecruiterRepository, RecruiterRepository>();
             services.AddScoped<ITokenRepository, TokenRepository>();
+            services.AddScoped<ITagRepository, TagRepository>();
         }
     }
 }

@@ -5,7 +5,7 @@ namespace ItSkillHouse.Models
 {
     public class Recruiter : BaseModel
     {
-        public Guid UserId { get; set; }
+        public int UserId { get; set; }
         public User User { get; set; }
         
         public List<Contractor> Contractors { get; set; }

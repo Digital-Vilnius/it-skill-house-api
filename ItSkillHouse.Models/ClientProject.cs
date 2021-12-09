@@ -6,7 +6,7 @@ namespace ItSkillHouse.Models
     {
         public string Name { get; set; }
         
-        public Guid ClientId { get; set; }
+        public int ClientId { get; set; }
         public Client Client { get; set; }
         public Contract Contract { get; set; }
     }

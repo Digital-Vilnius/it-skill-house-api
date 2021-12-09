@@ -36,7 +36,7 @@ namespace ItSkillHouse.Services
             return new ResultResponse<TModel>(roleDto);
         }
 
-        public async Task<ResultResponse<TModel>> EditAsync<TModel>(Guid id, EditRoleRequest request)
+        public async Task<ResultResponse<TModel>> EditAsync<TModel>(int id, EditRoleRequest request)
         {
             var duplicate = await _roleRepository.GetAsync(role => role.Name == request.Name && role.Id != id);
             if (duplicate != null) throw new Exception("Role with this name is already exist");
@@ -61,7 +61,7 @@ namespace ItSkillHouse.Services
             return new ListResponse<TModel>(rolesDtosList, rolesCount);
         }
 
-        public async Task<ResultResponse<TModel>> GetAsync<TModel>(Guid id)
+        public async Task<ResultResponse<TModel>> GetAsync<TModel>(int id)
         {
             var role = await _roleRepository.GetByIdAsync(id);
             if (role == null) throw new Exception("Role is not found");
@@ -70,7 +70,7 @@ namespace ItSkillHouse.Services
             return new ResultResponse<TModel>(roleDto);
         }
 
-        public async Task DeleteAsync(Guid id)
+        public async Task DeleteAsync(int id)
         {
             var role = await _roleRepository.GetByIdAsync(id);
             if (role == null) throw new Exception("Role is not found");

@@ -36,7 +36,7 @@ namespace ItSkillHouse.Services
             return new ResultResponse<TModel>(userDto);
         }
 
-        public async Task<ResultResponse<TModel>> EditAsync<TModel>(Guid id, EditUserRequest request)
+        public async Task<ResultResponse<TModel>> EditAsync<TModel>(int id, EditUserRequest request)
         {
             var duplicate = await _userRepository.GetAsync(user => user.Email == request.Email && user.Id != id);
             if (duplicate != null) throw new Exception("User with this email is already exist");
@@ -65,7 +65,7 @@ namespace ItSkillHouse.Services
             return new ListResponse<TModel>(usersDtosList, usersCount);
         }
 
-        public async Task<ResultResponse<TModel>> GetAsync<TModel>(Guid id)
+        public async Task<ResultResponse<TModel>> GetAsync<TModel>(int id)
         {
             var user = await _userRepository.GetByIdAsync(id);
             if (user == null) throw new Exception("User is not found");
@@ -74,7 +74,7 @@ namespace ItSkillHouse.Services
             return new ResultResponse<TModel>(userDto);
         }
 
-        public async Task DeleteAsync(Guid id)
+        public async Task DeleteAsync(int id)
         {
             var user = await _userRepository.GetByIdAsync(id);
             if (user == null) throw new Exception("User is not found");

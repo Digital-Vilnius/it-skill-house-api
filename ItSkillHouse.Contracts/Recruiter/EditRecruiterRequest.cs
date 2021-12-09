@@ -1,9 +1,7 @@
-﻿using System;
-
-namespace ItSkillHouse.Contracts.Recruiter
+﻿namespace ItSkillHouse.Contracts.Recruiter
 {
     public class EditRecruiterRequest
     {
-        public Guid UserId { get; set; }
+        public int UserId { get; set; }
     }
 }

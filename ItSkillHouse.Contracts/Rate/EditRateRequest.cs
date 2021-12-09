@@ -7,6 +7,6 @@ namespace ItSkillHouse.Contracts.Rate
         public DateTime DateFrom { get; set; }
         public DateTime? DateTo { get; set; }
         public decimal Amount { get; set; }
-        public Guid ContractorId { get; set; }
+        public int ContractorId { get; set; }
     }
 }

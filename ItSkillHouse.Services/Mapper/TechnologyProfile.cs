@@ -9,9 +9,7 @@ namespace ItSkillHouse.Services.Mapper
         public TechnologyProfile()
         {
             CreateMap<AddTechnologyRequest, Technology>();
-            CreateMap<EditTechnologyRequest, Technology>();
             CreateMap<Technology, TechnologyDto>();
-            CreateMap<Technology, TechnologiesListItemDto>();
         }
     }
 }

@@ -33,7 +33,7 @@ namespace ItSkillHouse.Services
             return new ResultResponse<TModel>(rateNoteDto);
         }
 
-        public async Task<ResultResponse<TModel>> EditAsync<TModel>(Guid id, EditRateRequest request)
+        public async Task<ResultResponse<TModel>> EditAsync<TModel>(int id, EditRateRequest request)
         {
             var rate = await _rateRepository.GetByIdAsync(id);
             if (rate == null) throw new Exception("Rate is not found");
@@ -55,7 +55,7 @@ namespace ItSkillHouse.Services
             return new ListResponse<TModel>(ratesDtosList, ratesCount);
         }
 
-        public async Task<ResultResponse<TModel>> GetAsync<TModel>(Guid id)
+        public async Task<ResultResponse<TModel>> GetAsync<TModel>(int id)
         {
             var rate = await _rateRepository.GetByIdAsync(id);
             if (rate == null) throw new Exception("Rate is not found");
@@ -64,7 +64,7 @@ namespace ItSkillHouse.Services
             return new ResultResponse<TModel>(rateDto);
         }
 
-        public async Task DeleteAsync(Guid id)
+        public async Task DeleteAsync(int id)
         {
             var rate = await _rateRepository.GetByIdAsync(id);
             if (rate == null) throw new Exception("Rate is not found");

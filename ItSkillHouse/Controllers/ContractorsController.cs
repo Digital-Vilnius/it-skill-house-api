@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using ItSkillHouse.Contracts.Contractor;
 using ItSkillHouse.Models.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -28,7 +27,7 @@ namespace ItSkillHouse.Controllers
         
         [HttpPut("{id}")]
         [Authorize]
-        public async Task<IActionResult> Edit([FromRoute] Guid id, [FromBody] EditContractorRequest request)
+        public async Task<IActionResult> Edit([FromRoute] int id, [FromBody] EditContractorRequest request)
         {
             var response = await _contractorService.EditAsync<ContractorDto>(id, request);
             return Ok(response);
@@ -36,7 +35,7 @@ namespace ItSkillHouse.Controllers
 
         [HttpDelete("{id}")]
         [Authorize]
-        public async Task<IActionResult> Delete([FromRoute] Guid id)
+        public async Task<IActionResult> Delete([FromRoute] int id)
         {
             await _contractorService.DeleteAsync(id);
             return Ok();
@@ -52,7 +51,7 @@ namespace ItSkillHouse.Controllers
         
         [HttpGet("{id}")]
         [Authorize]
-        public async Task<IActionResult> Get([FromRoute] Guid id)
+        public async Task<IActionResult> Get([FromRoute] int id)
         {
             var response = await _contractorService.GetAsync<ContractorDto>(id);
             return Ok(response);
