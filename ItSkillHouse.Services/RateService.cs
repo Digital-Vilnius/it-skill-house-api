@@ -29,8 +29,8 @@ namespace ItSkillHouse.Services
             await _rateRepository.AddAsync(rate);
             await _unitOfWork.SaveChangesAsync();
             
-            var rateNoteDto = _mapper.Map<Rate, TModel>(rate);
-            return new ResultResponse<TModel>(rateNoteDto);
+            var rateDto = _mapper.Map<Rate, TModel>(rate);
+            return new ResultResponse<TModel>(rateDto);
         }
 
         public async Task<ResultResponse<TModel>> EditAsync<TModel>(int id, EditRateRequest request)

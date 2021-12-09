@@ -25,6 +25,8 @@ namespace ItSkillHouse.Repositories
                 .ThenInclude(recruiter => recruiter.User)
                 .Include(contractor => contractor.Technologies)
                 .ThenInclude(technology => technology.Technology)
+                .Include(contractor => contractor.Tags)
+                .ThenInclude(tag => tag.Tag)
                 .Include(contractor => contractor.Rates);
         }
 

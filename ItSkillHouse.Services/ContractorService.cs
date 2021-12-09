@@ -38,9 +38,12 @@ namespace ItSkillHouse.Services
             var technologies = request.TechnologiesIds.Select(id => new ContractorTechnology {TechnologyId = id}).ToList();
             technologies.Add(new ContractorTechnology{TechnologyId = request.MainTechnologyId, IsMain = true});
             
+            var tags = request.TagsIds.Select(id => new ContractorTag {TagId = id}).ToList();
+            
             contractor.User = user;
             contractor.Rates = new List<Rate>{rate};
             contractor.Technologies = technologies;
+            contractor.Tags = tags;
 
             await _contractorRepository.AddAsync(contractor);
             await _unitOfWork.SaveChangesAsync();
