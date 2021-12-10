@@ -11,32 +11,26 @@ namespace ItSkillHouse.Services.DI
             services.AddAutoMapper(configure => {
                 configure.AddProfile<BaseProfile>();
                 configure.AddProfile<AuthenticationProfile>();
-                configure.AddProfile<RoleProfile>();
                 configure.AddProfile<UserProfile>();
                 configure.AddProfile<TechnologyProfile>();
-                configure.AddProfile<ClientProfile>();
-                configure.AddProfile<ClientProjectProfile>();
                 configure.AddProfile<NoteProfile>();
                 configure.AddProfile<ContractorProfile>();
                 configure.AddProfile<RecruiterProfile>();
-                configure.AddProfile<ContractProfile>();
                 configure.AddProfile<TagProfile>();
+                configure.AddProfile<ProfessionProfile>();
             }, typeof(ServicesModule));
             
             services.AddScoped<IAuthenticationService, AuthenticationService>();
             services.AddScoped<IUserService, UserService>();
-            services.AddScoped<IRoleService, RoleService>();
             services.AddScoped<ITechnologyService, TechnologyService>();
             services.AddScoped<IEncryptionService, EncryptionService>();
             services.AddScoped<ITokenService, TokenService>();
-            services.AddScoped<IClientProjectService, ClientProjectService>();
-            services.AddScoped<IClientService, ClientService>();
             services.AddScoped<INoteService, NoteService>();
             services.AddScoped<IRateService, RateService>();
             services.AddScoped<IContractorService, ContractorService>();
             services.AddScoped<IRecruiterService, RecruiterService>();
-            services.AddScoped<IContractService, ContractService>();
             services.AddScoped<ITagService, TagService>();
+            services.AddScoped<IProfessionService, ProfessionService>();
         }
     }
 }

@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using ItSkillHouse.Contracts.Role;
 
 namespace ItSkillHouse.Contracts.User
 {
@@ -17,7 +15,5 @@ namespace ItSkillHouse.Contracts.User
         public string Status { get; set; }
 
         public DateTime? LastLoginDate { get; set; }
-
-        public List<RolesListItemDto> Roles { get; set; }
     }
 }

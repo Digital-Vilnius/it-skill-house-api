@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using ItSkillHouse.Contracts.Contract;
 using ItSkillHouse.Contracts.Rate;
 using ItSkillHouse.Models;
 

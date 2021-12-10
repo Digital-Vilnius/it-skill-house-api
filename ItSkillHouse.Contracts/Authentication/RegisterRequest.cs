@@ -15,5 +15,8 @@ namespace ItSkillHouse.Contracts.Authentication
         
         [Required]
         public string LastName { get; set; }
+        
+        [Required]
+        public string Phone { get; set; }
     }
 }

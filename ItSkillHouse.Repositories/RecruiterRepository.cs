@@ -94,6 +94,17 @@ namespace ItSkillHouse.Repositories
                     if (sort.SortDirection == "desc") query = query.OrderByDescending(recruiter => recruiter.User.LastName);
                     break;
                 }
+                case "id":
+                {
+                    if (sort.SortDirection == "asc") query = query.OrderBy(recruiter => recruiter.Id);
+                    if (sort.SortDirection == "desc") query = query.OrderByDescending(recruiter => recruiter.Id);
+                    break;
+                }
+                default:
+                {
+                    query = query.OrderByDescending(recruiter => recruiter.Created);
+                    break;
+                }
             }
 
             return query;

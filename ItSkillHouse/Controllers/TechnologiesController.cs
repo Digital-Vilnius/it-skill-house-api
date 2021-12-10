@@ -35,17 +35,9 @@ namespace ItSkillHouse.Controllers
 
         [HttpGet]
         [Authorize]
-        public async Task<IActionResult> List()
+        public async Task<IActionResult> List([FromQuery] ListTechnologiesRequest request)
         {
-            var response = await _technologyService.GetAsync<TechnologyDto>();
-            return Ok(response);
-        }
-        
-        [HttpGet("{id}")]
-        [Authorize]
-        public async Task<IActionResult> Get([FromRoute] int id)
-        {
-            var response = await _technologyService.GetAsync<TechnologyDto>(id);
+            var response = await _technologyService.GetAsync<TechnologyDto>(request);
             return Ok(response);
         }
     }

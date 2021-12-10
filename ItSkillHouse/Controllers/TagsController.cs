@@ -27,18 +27,19 @@ namespace ItSkillHouse.Controllers
 
         [HttpGet]
         [Authorize]
-        public async Task<IActionResult> List()
+        public async Task<IActionResult> List([FromQuery] ListTagsRequest request)
         {
-            var response = await _tagService.GetAsync<TagDto>();
+            var response = await _tagService.GetAsync<TagDto>(request);
             return Ok(response);
         }
         
-        [HttpGet("{id}")]
+        
+        [HttpDelete("{id}")]
         [Authorize]
-        public async Task<IActionResult> Get([FromRoute] int id)
+        public async Task<IActionResult> Delete([FromRoute] int id)
         {
-            var response = await _tagService.GetAsync<TagDto>(id);
-            return Ok(response);
+            await _tagService.DeleteAsync(id);
+            return Ok();
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace ItSkillHouse.Contracts.User
 {
-    public class UsersFilter : BaseFilter
+    public class UsersFilter
     {
         public string Keyword { get; set; }
     }

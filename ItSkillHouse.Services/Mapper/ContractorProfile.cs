@@ -19,7 +19,7 @@ namespace ItSkillHouse.Services.Mapper
                 );
             
             CreateMap<EditContractorRequest, Contractor>();
-            
+
             CreateMap<Contractor, ContractorDto>()
                 .ForMember(
                     dest => dest.FirstName,
@@ -53,7 +53,7 @@ namespace ItSkillHouse.Services.Mapper
                     dest => dest.Rate,
                     opt => opt.MapFrom(src => src.ActiveRate.Amount)
                 );
-            
+
             CreateMap<Contractor, ContractorsListItemDto>()
                 .ForMember(
                     dest => dest.FirstName,

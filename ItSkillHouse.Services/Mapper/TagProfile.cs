@@ -10,6 +10,7 @@ namespace ItSkillHouse.Services.Mapper
         {
             CreateMap<AddTagRequest, Tag>();
             CreateMap<Tag, TagDto>();
+            CreateMap<ListTagsRequest, TagsFilter>();
         }
     }
 }

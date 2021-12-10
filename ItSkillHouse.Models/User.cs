@@ -16,8 +16,6 @@ namespace ItSkillHouse.Models
         
         public Contractor Contractor { get; set; }
         public Recruiter Recruiter { get; set; }
-        public List<ClientUser> UserClients { get; set; }
         public List<Token> Tokens { get; set; }
-        public List<UserRole> UserRoles { get; set; }
     }
 }

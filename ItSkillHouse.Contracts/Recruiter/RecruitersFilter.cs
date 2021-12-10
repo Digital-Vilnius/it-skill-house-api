@@ -1,6 +1,6 @@
 ﻿namespace ItSkillHouse.Contracts.Recruiter
 {
-    public class RecruitersFilter : BaseFilter
+    public class RecruitersFilter
     {
         public string Keyword { get; set; }
     }

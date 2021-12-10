@@ -36,22 +36,17 @@ namespace ItSkillHouse.Services
             return new ResultResponse<TModel>(technologyDto);
         }
 
-        public async Task<ListResponse<TModel>> GetAsync<TModel>()
+        public async Task<ListResponse<TModel>> GetAsync<TModel>(ListTechnologiesRequest request)
         {
-            var technologies = await _technologyRepository.GetAsync();
-            var technologiesCount = await _technologyRepository.CountAsync();
+            var filter = _mapper.Map<ListTechnologiesRequest, TechnologiesFilter>(request);
+            var sort = _mapper.Map<ListTechnologiesRequest, Sort>(request);
+            var paging = _mapper.Map<ListTechnologiesRequest, Paging>(request);
+            
+            var technologies = await _technologyRepository.GetAsync(filter, sort, paging);
+            var technologiesCount = await _technologyRepository.CountAsync(filter);
 
             var technologiesDtosList = _mapper.Map<List<Technology>, List<TModel>>(technologies);
             return new ListResponse<TModel>(technologiesDtosList, technologiesCount);
-        }
-
-        public async Task<ResultResponse<TModel>> GetAsync<TModel>(int id)
-        {
-            var technology = await _technologyRepository.GetByIdAsync(id);
-            if (technology == null) throw new Exception("Technology is not found");
-
-            var technologyDto = _mapper.Map<Technology, TModel>(technology);
-            return new ResultResponse<TModel>(technologyDto);
         }
 
         public async Task DeleteAsync(int id)

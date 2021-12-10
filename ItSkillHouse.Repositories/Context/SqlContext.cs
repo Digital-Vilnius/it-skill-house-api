@@ -1,7 +1,5 @@
-﻿using System.Collections.Generic;
-using ItSkillHouse.Models;
+﻿using ItSkillHouse.Models;
 using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
 
 namespace ItSkillHouse.Repositories.Context
 {
@@ -13,22 +11,20 @@ namespace ItSkillHouse.Repositories.Context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            OnProfessionModelCreating(modelBuilder);
+            OnTagModelCreating(modelBuilder);
             OnTechnologyModelCreating(modelBuilder);
-            OnRoleModelCreating(modelBuilder);
+            
+            OnNoteModelCreating(modelBuilder);
+            OnRateModelCreating(modelBuilder);
+            
             OnRecruiterModelCreating(modelBuilder);
             
             OnUserModelCreating(modelBuilder);
-            OnUserRoleModelCreating(modelBuilder);
             OnTokenModelCreating(modelBuilder);
             
-            OnClientProjectModelCreating(modelBuilder);
-            OnClientUserModelCreating(modelBuilder);
-
-            OnContractModelCreating(modelBuilder);
             OnContractorTechnologyModelCreating(modelBuilder);
             OnContractorModelCreating(modelBuilder);
-            OnNoteModelCreating(modelBuilder);
-            OnRateModelCreating(modelBuilder);
             OnContractorTagModelCreating(modelBuilder);
         }
         
@@ -40,27 +36,22 @@ namespace ItSkillHouse.Repositories.Context
                 .IsUnique();
         }
         
-        private static void OnRoleModelCreating(ModelBuilder modelBuilder)
+        private static void OnProfessionModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder
-                .Entity<Role>()
-                .HasIndex(role => role.Name)
+                .Entity<Profession>()
+                .HasIndex(profession => profession.Name)
                 .IsUnique();
-
-            modelBuilder
-                .Entity<Role>()
-                .Property(role => role.Name)
-                .HasConversion(name => name.ToLower(), name => name);
-            
-            modelBuilder
-                .Entity<Role>()
-                .Property(role => role.Permissions)
-                .HasConversion(
-                    permissions => JsonConvert.SerializeObject(permissions),
-                    permissions => JsonConvert.DeserializeObject<List<string>>(permissions)
-                );
         }
         
+        private static void OnTagModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder
+                .Entity<Tag>()
+                .HasIndex(tag => tag.Name)
+                .IsUnique();
+        }
+
         private static void OnRecruiterModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Recruiter>()
@@ -79,80 +70,13 @@ namespace ItSkillHouse.Repositories.Context
             
             modelBuilder
                 .Entity<User>()
+                .HasIndex(user => user.Phone)
+                .IsUnique();
+            
+            modelBuilder
+                .Entity<User>()
                 .Property(user => user.Email)
                 .HasConversion(email => email.ToLower(), email => email);
-        }
-        
-        private static void OnUserRoleModelCreating(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<UserRole>()
-                .HasKey(userRole => new { userRole.UserId, userRole.RoleId });
-
-            modelBuilder.Entity<UserRole>()
-                .HasOne(userRole => userRole.User)
-                .WithMany(user => user.UserRoles)
-                .HasForeignKey(userRole => userRole.UserId);
-
-            modelBuilder.Entity<UserRole>()
-                .HasOne(userRole => userRole.Role)
-                .WithMany(role => role.RoleUsers)
-                .HasForeignKey(userRole => userRole.RoleId);
-        }
-
-        private static void OnClientProjectModelCreating(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<ClientProject>()
-                .HasOne(clientProject => clientProject.Client)
-                .WithMany(client => client.ClientProjects)
-                .HasForeignKey(clientProject => clientProject.ClientId);
-
-            modelBuilder.Entity<ClientProject>()
-                .HasOne(clientProject => clientProject.Contract)
-                .WithOne(contract => contract.ClientProject)
-                .HasForeignKey<Contract>(contract => contract.ClientProjectId);
-        }
-        
-        private static void OnClientUserModelCreating(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<ClientUser>()
-                .HasKey(clientUser => new { clientUser.UserId, clientUser.ClientId });
-
-            modelBuilder.Entity<ClientUser>()
-                .HasOne(clientUser => clientUser.User)
-                .WithMany(user => user.UserClients)
-                .HasForeignKey(clientUser => clientUser.UserId);
-
-            modelBuilder.Entity<ClientUser>()
-                .HasOne(clientUser => clientUser.Client)
-                .WithMany(client => client.ClientUsers)
-                .HasForeignKey(clientUser => clientUser.ClientId);
-        }
-
-        private static void OnContractModelCreating(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<Contract>()
-                .HasOne(contract => contract.Contractor)
-                .WithMany(contractor => contractor.Contracts)
-                .HasForeignKey(contract => contract.ContractorId)
-                .OnDelete(DeleteBehavior.Restrict);
-            
-            modelBuilder.Entity<Contract>()
-                .HasOne(contract => contract.Rate)
-                .WithMany(rate => rate.Contracts)
-                .HasForeignKey(contract => contract.RateId)
-                .OnDelete(DeleteBehavior.Restrict);
-            
-            modelBuilder.Entity<Contract>()
-                .HasOne(contract => contract.ClientProject)
-                .WithOne(clientProject => clientProject.Contract)
-                .HasForeignKey<Contract>(contract => contract.ClientProjectId)
-                .OnDelete(DeleteBehavior.Restrict);
-            
-            modelBuilder.Entity<Contract>()
-                .HasOne(contract => contract.Recruiter)
-                .WithMany(recruiter => recruiter.Contracts)
-                .HasForeignKey(contract => contract.RecruiterId)
-                .OnDelete(DeleteBehavior.Restrict);
         }
         
         private static void OnContractorModelCreating(ModelBuilder modelBuilder)
@@ -161,6 +85,12 @@ namespace ItSkillHouse.Repositories.Context
                 .HasOne(contractor => contractor.User)
                 .WithOne(user => user.Contractor)
                 .HasForeignKey<Contractor>(contractor => contractor.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
+            
+            modelBuilder.Entity<Contractor>()
+                .HasOne(contractor => contractor.Profession)
+                .WithMany(profession => profession.Contractors)
+                .HasForeignKey(contractor => contractor.ProfessionId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Contractor>()
@@ -227,23 +157,18 @@ namespace ItSkillHouse.Repositories.Context
         }
 
         public DbSet<Technology> Technologies { get; set; }
-        public DbSet<Role> Roles { get; set; }
+        public DbSet<Tag> Tags { get; set; }
+        public DbSet<Profession> Professions { get; set; }
+        
         public DbSet<Recruiter> Recruiters { get; set; }
 
         public DbSet<Token> Tokens { get; set; }
         public DbSet<User> Users { get; set; }
-        public DbSet<UserRole> UsersRoles { get; set; }
         
-        public DbSet<Client> Clients { get; set; }
-        public DbSet<ClientProject> ClientProjects { get; set; }
-        public DbSet<ClientUser> ClientsUsers { get; set; }
-
-        public DbSet<Contract> Contracts { get; set; }
-        public DbSet<Contractor> Contractors { get; set; }
         public DbSet<Note> Notes { get; set; }
-        public DbSet<Tag> Tags { get; set; }
         public DbSet<Rate> Rates { get; set; }
         
+        public DbSet<Contractor> Contractors { get; set; }
         public DbSet<ContractorTechnology> ContractorsTechnologies { get; set; }
         public DbSet<ContractorTag> ContractorsTags { get; set; }
     }

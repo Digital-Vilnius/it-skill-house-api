@@ -75,9 +75,9 @@ namespace ItSkillHouse.Repositories
             return query;
         }
         
-        protected virtual IQueryable<TModel> ApplyPaging(IQueryable<TModel> query, Paging paging)
+        protected IQueryable<TModel> ApplyPaging(IQueryable<TModel> query, Paging paging)
         {
-            return query.Skip(paging.Skip).Take(paging.Take);
+            return paging.Take == 0 ? query : query.Skip(paging.Skip).Take(paging.Take);
         }
     }
 }

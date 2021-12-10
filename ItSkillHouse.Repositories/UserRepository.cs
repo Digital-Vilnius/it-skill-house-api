@@ -89,6 +89,17 @@ namespace ItSkillHouse.Repositories
                     if (sort.SortDirection == "desc") query = query.OrderByDescending(user => user.LastName);
                     break;
                 }
+                case "id":
+                {
+                    if (sort.SortDirection == "asc") query = query.OrderBy(user => user.Id);
+                    if (sort.SortDirection == "desc") query = query.OrderByDescending(user => user.Id);
+                    break;
+                }
+                default:
+                {
+                    query = query.OrderByDescending(user => user.Created);
+                    break;
+                }
             }
 
             return query;

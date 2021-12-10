@@ -10,6 +10,7 @@ namespace ItSkillHouse.Services.Mapper
         {
             CreateMap<AddTechnologyRequest, Technology>();
             CreateMap<Technology, TechnologyDto>();
+            CreateMap<ListTechnologiesRequest, TechnologiesFilter>();
         }
     }
 }

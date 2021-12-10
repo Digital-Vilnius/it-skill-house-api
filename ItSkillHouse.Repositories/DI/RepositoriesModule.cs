@@ -14,18 +14,14 @@ namespace ItSkillHouse.Repositories.DI
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IUserRepository, UserRepository>();
-            services.AddScoped<IRoleRepository, RoleRepository>();
             services.AddScoped<ITechnologyRepository, TechnologyRepository>();
-            services.AddScoped<IClientProjectRepository, ClientProjectRepository>();
-            services.AddScoped<IClientRepository, ClientRepository>();
             services.AddScoped<IContractorRepository, ContractorRepository>();
-            services.AddScoped<IContractorTechnologyRepository, ContractorTechnologyRepository>();
-            services.AddScoped<IContractRepository, ContractRepository>();
             services.AddScoped<IRateRepository, RateRepository>();
             services.AddScoped<INoteRepository, NoteRepository>();
             services.AddScoped<IRecruiterRepository, RecruiterRepository>();
             services.AddScoped<ITokenRepository, TokenRepository>();
             services.AddScoped<ITagRepository, TagRepository>();
+            services.AddScoped<IProfessionRepository, ProfessionRepository>();
         }
     }
 }

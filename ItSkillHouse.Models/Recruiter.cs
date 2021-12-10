@@ -9,6 +9,5 @@ namespace ItSkillHouse.Models
         public User User { get; set; }
         
         public List<Contractor> Contractors { get; set; }
-        public List<Contract> Contracts { get; set; }
     }
 }
