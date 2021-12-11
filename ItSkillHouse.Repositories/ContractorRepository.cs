@@ -27,8 +27,7 @@ namespace ItSkillHouse.Repositories
                 .Include(contractor => contractor.Technologies)
                 .ThenInclude(technology => technology.Technology)
                 .Include(contractor => contractor.Tags)
-                .ThenInclude(tag => tag.Tag)
-                .Include(contractor => contractor.Rates);
+                .ThenInclude(tag => tag.Tag);
         }
 
         public async Task<List<Contractor>> GetAsync(ContractorsFilter filter, Sort sort, Paging paging)
@@ -64,8 +63,8 @@ namespace ItSkillHouse.Repositories
                                                   || contractor.Recruiter.User.LastName.Contains(filter.Keyword));
             }
             
-            if (filter.RateFrom.HasValue) query = query.Where(contractor => contractor.Rates.FirstOrDefault(rate => rate.DateFrom <= DateTime.UtcNow && (!rate.DateTo.HasValue || rate.DateTo >= DateTime.UtcNow)).Amount >= filter.RateFrom.Value);
-            if (filter.RateTo.HasValue) query = query.Where(contractor => contractor.Rates.FirstOrDefault(rate => rate.DateFrom <= DateTime.UtcNow && (!rate.DateTo.HasValue || rate.DateTo >= DateTime.UtcNow)).Amount <= filter.RateTo.Value);
+            if (filter.RateFrom.HasValue) query = query.Where(contractor => contractor.Rate >= filter.RateFrom.Value);
+            if (filter.RateTo.HasValue) query = query.Where(contractor => contractor.Rate <= filter.RateTo.Value);
             
             if (filter.AvailableFrom.HasValue) query = query.Where(contractor => contractor.AvailableFrom >= filter.AvailableFrom.Value);
             if (filter.AvailableTo.HasValue) query = query.Where(contractor => contractor.AvailableFrom <= filter.AvailableTo.Value);
@@ -101,6 +100,12 @@ namespace ItSkillHouse.Repositories
                     if (sort.SortDirection == "desc") query = query.OrderByDescending(contractor => contractor.AvailableFrom);
                     break;
                 }
+                case "experienceSince":
+                {
+                    if (sort.SortDirection == "asc") query = query.OrderBy(contractor => contractor.ExperienceSince);
+                    if (sort.SortDirection == "desc") query = query.OrderByDescending(contractor => contractor.ExperienceSince);
+                    break;
+                }
                 case "isRemote":
                 {
                     if (sort.SortDirection == "asc") query = query.OrderBy(contractor => contractor.IsRemote);
@@ -133,8 +138,8 @@ namespace ItSkillHouse.Repositories
                 }
                 case "rate":
                 {
-                    if (sort.SortDirection == "asc") query = query.OrderBy(contractor => contractor.Rates.FirstOrDefault(rate => rate.DateFrom <= DateTime.UtcNow && (!rate.DateTo.HasValue || rate.DateTo >= DateTime.UtcNow)).Amount);
-                    if (sort.SortDirection == "desc") query = query.OrderByDescending(contractor => contractor.Rates.FirstOrDefault(rate => rate.DateFrom <= DateTime.UtcNow && (!rate.DateTo.HasValue || rate.DateTo >= DateTime.UtcNow)).Amount);
+                    if (sort.SortDirection == "asc") query = query.OrderBy(contractor => contractor.Rate);
+                    if (sort.SortDirection == "desc") query = query.OrderByDescending(contractor => contractor.Rate);
                     break;
                 }
                 case "recruiter":

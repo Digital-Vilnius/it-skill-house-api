@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using ItSkillHouse.Contracts;
@@ -30,21 +29,9 @@ namespace ItSkillHouse.Services
         {
             var duplicate = await _userRepository.GetAsync(user => user.Email == request.Email);
             if (duplicate != null) throw new Exception("User with this email is already exist");
-            
-            var user = _mapper.Map<AddContractorRequest, User>(request);
-            var contractor = _mapper.Map<AddContractorRequest, Contractor>(request);
-            var rate = _mapper.Map<AddContractorRequest, Rate>(request);
-            
-            var technologies = request.TechnologiesIds.Select(id => new ContractorTechnology {TechnologyId = id}).ToList();
-            technologies.Add(new ContractorTechnology{TechnologyId = request.MainTechnologyId, IsMain = true});
-            
-            var tags = request.TagsIds.Select(id => new ContractorTag {TagId = id}).ToList();
-            
-            contractor.User = user;
-            contractor.Rates = new List<Rate>{rate};
-            contractor.Technologies = technologies;
-            contractor.Tags = tags;
 
+            var contractor = _mapper.Map<AddContractorRequest, Contractor>(request);
+            contractor.Technologies.Add(new ContractorTechnology{TechnologyId = request.MainTechnologyId, IsMain = true});
             await _contractorRepository.AddAsync(contractor);
             await _unitOfWork.SaveChangesAsync();
             
@@ -56,8 +43,9 @@ namespace ItSkillHouse.Services
         {
             var contractor = await _contractorRepository.GetByIdAsync(id);
             if (contractor == null) throw new Exception("Contractor is not found");
-            
+
             contractor = _mapper.Map(request, contractor);
+            contractor.Technologies.Add(new ContractorTechnology{TechnologyId = request.MainTechnologyId, IsMain = true});
             _contractorRepository.Update(contractor);
             await _unitOfWork.SaveChangesAsync();
             

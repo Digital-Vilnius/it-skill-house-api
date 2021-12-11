@@ -26,7 +26,6 @@ namespace ItSkillHouse.Services.DI
             services.AddScoped<IEncryptionService, EncryptionService>();
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<INoteService, NoteService>();
-            services.AddScoped<IRateService, RateService>();
             services.AddScoped<IContractorService, ContractorService>();
             services.AddScoped<IRecruiterService, RecruiterService>();
             services.AddScoped<ITagService, TagService>();

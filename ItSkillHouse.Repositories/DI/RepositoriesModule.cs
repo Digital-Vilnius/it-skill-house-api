@@ -16,7 +16,6 @@ namespace ItSkillHouse.Repositories.DI
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<ITechnologyRepository, TechnologyRepository>();
             services.AddScoped<IContractorRepository, ContractorRepository>();
-            services.AddScoped<IRateRepository, RateRepository>();
             services.AddScoped<INoteRepository, NoteRepository>();
             services.AddScoped<IRecruiterRepository, RecruiterRepository>();
             services.AddScoped<ITokenRepository, TokenRepository>();

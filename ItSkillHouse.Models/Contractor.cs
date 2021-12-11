@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 
 namespace ItSkillHouse.Models
@@ -16,6 +17,10 @@ namespace ItSkillHouse.Models
         public bool IsPublic { get; set; }
         public bool HasContract { get; set; }
         
+        [Column(TypeName = "decimal(10,2)")]
+        public decimal Rate { get; set; }
+        public string Currency { get; set; }
+        
         public DateTime AvailableFrom { get; set; }
         public DateTime ExperienceSince { get; set; }
 
@@ -31,9 +36,7 @@ namespace ItSkillHouse.Models
         public List<ContractorTag> Tags { get; set; }
         public List<ContractorTechnology> Technologies { get; set; }
         public List<Note> Notes { get; set; }
-        public List<Rate> Rates { get; set; }
 
-        public Rate ActiveRate => Rates.ToList().FirstOrDefault(rate => rate.IsActive);
         public bool IsAvailable => AvailableFrom <= DateTime.UtcNow;
     }
 }

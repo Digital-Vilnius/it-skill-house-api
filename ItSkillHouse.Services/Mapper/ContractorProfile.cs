@@ -10,15 +10,29 @@ namespace ItSkillHouse.Services.Mapper
         public ContractorProfile()
         {
             CreateMap<ListContractorsRequest, ContractorsFilter>();
-            CreateMap<AddContractorRequest, Contractor>();
-            CreateMap<AddContractorRequest, User>();
-            CreateMap<AddContractorRequest, Rate>()
+            CreateMap<AddContractorRequest, Contractor>()
                 .ForMember(
-                    dest => dest.Amount,
-                    opt => opt.MapFrom(src => src.Rate)
+                    dest => dest.User,
+                    opt => opt.MapFrom(src => new User {Email = src.Email, Phone = src.Phone, FirstName = src.FirstName, LastName = src.LastName})
+                )
+                .ForMember(
+                    dest => dest.Technologies,
+                    opt => opt.MapFrom(src => src.TechnologiesIds.Select(id => new ContractorTechnology {TechnologyId = id}))
+                )
+                .ForMember(
+                    dest => dest.Tags,
+                    opt => opt.MapFrom(src => src.TagsIds.Select(id => new ContractorTag {TagId = id}))
                 );
             
-            CreateMap<EditContractorRequest, Contractor>();
+            CreateMap<EditContractorRequest, Contractor>()
+                .ForMember(
+                    dest => dest.Technologies,
+                    opt => opt.MapFrom(src => src.TechnologiesIds.Select(id => new ContractorTechnology {TechnologyId = id}))
+                )
+                .ForMember(
+                    dest => dest.Tags,
+                    opt => opt.MapFrom(src => src.TagsIds.Select(id => new ContractorTag {TagId = id}))
+                );
 
             CreateMap<Contractor, ContractorDto>()
                 .ForMember(
@@ -39,7 +53,9 @@ namespace ItSkillHouse.Services.Mapper
                 )
                 .ForMember(
                     dest => dest.Technologies,
-                    opt => opt.MapFrom(src => src.Technologies.Select(technology => technology.Technology))
+                    opt => opt.MapFrom(src =>
+                        src.Technologies.Where(technology => technology.IsMain == false).ToList()
+                            .Select(technology => technology.Technology))
                 )
                 .ForMember(
                     dest => dest.Tags,
@@ -48,44 +64,6 @@ namespace ItSkillHouse.Services.Mapper
                 .ForMember(
                     dest => dest.MainTechnology,
                     opt => opt.MapFrom(src => src.Technologies.FirstOrDefault(technology => technology.IsMain).Technology)
-                )
-                .ForMember(
-                    dest => dest.Rate,
-                    opt => opt.MapFrom(src => src.ActiveRate.Amount)
-                );
-
-            CreateMap<Contractor, ContractorsListItemDto>()
-                .ForMember(
-                    dest => dest.FirstName,
-                    opt => opt.MapFrom(src => src.User.FirstName)
-                )
-                .ForMember(
-                    dest => dest.Phone,
-                    opt => opt.MapFrom(src => src.User.Phone)
-                )
-                .ForMember(
-                    dest => dest.LastName,
-                    opt => opt.MapFrom(src => src.User.LastName)
-                )
-                .ForMember(
-                    dest => dest.Email,
-                    opt => opt.MapFrom(src => src.User.Email)
-                )
-                .ForMember(
-                    dest => dest.Technologies,
-                    opt => opt.MapFrom(src => src.Technologies.Select(technology => technology.Technology))
-                )
-                .ForMember(
-                    dest => dest.Tags,
-                    opt => opt.MapFrom(src => src.Tags.Select(tag => tag.Tag))
-                )
-                .ForMember(
-                    dest => dest.MainTechnology,
-                    opt => opt.MapFrom(src => src.Technologies.FirstOrDefault(technology => technology.IsMain).Technology)
-                )
-                .ForMember(
-                    dest => dest.Rate,
-                    opt => opt.MapFrom(src => src.ActiveRate.Amount)
                 );
         }
     }

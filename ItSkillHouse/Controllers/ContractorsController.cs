@@ -45,7 +45,7 @@ namespace ItSkillHouse.Controllers
         [Authorize]
         public async Task<IActionResult> List([FromQuery] ListContractorsRequest request)
         {
-            var response = await _contractorService.GetAsync<ContractorsListItemDto>(request);
+            var response = await _contractorService.GetAsync<ContractorDto>(request);
             return Ok(response);
         }
         
