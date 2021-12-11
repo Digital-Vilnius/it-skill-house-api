@@ -9,8 +9,12 @@ namespace ItSkillHouse.Services.Mapper
         public TagProfile()
         {
             CreateMap<AddTagRequest, Tag>();
-            CreateMap<Tag, TagDto>();
             CreateMap<ListTagsRequest, TagsFilter>();
+            CreateMap<Tag, TagDto>()
+                .ForMember(
+                    dest => dest.Count,
+                    opt => opt.MapFrom(src => src.Contractors.Count)
+                );
         }
     }
 }

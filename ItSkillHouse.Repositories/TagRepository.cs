@@ -15,6 +15,11 @@ namespace ItSkillHouse.Repositories
         public TagRepository(SqlContext context) : base(context)
         {
         }
+        
+        protected override IQueryable<Tag> FormatQuery(IQueryable<Tag> query)
+        {
+            return query.Include(tag => tag.Contractors);
+        }
 
         public async Task<List<Tag>> GetAsync(TagsFilter filter, Sort sort, Paging paging)
         {
@@ -72,7 +77,7 @@ namespace ItSkillHouse.Repositories
                 }
                 default:
                 {
-                    query = query.OrderByDescending(technology => technology.Name);
+                    query = query.OrderByDescending(tag => tag.Contractors.Count).ThenBy(tag => tag.Name);
                     break;
                 }
             }

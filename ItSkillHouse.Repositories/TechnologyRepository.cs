@@ -15,6 +15,11 @@ namespace ItSkillHouse.Repositories
         public TechnologyRepository(SqlContext context) : base(context)
         {
         }
+        
+        protected override IQueryable<Technology> FormatQuery(IQueryable<Technology> query)
+        {
+            return query.Include(technology => technology.Contractors);
+        }
 
         public async Task<List<Technology>> GetAsync(TechnologiesFilter filter, Sort sort, Paging paging)
         {
@@ -72,7 +77,7 @@ namespace ItSkillHouse.Repositories
                 }
                 default:
                 {
-                    query = query.OrderByDescending(technology => technology.Name);
+                    query = query.OrderByDescending(technology => technology.Contractors.Count).ThenBy(technology => technology.Name);
                     break;
                 }
             }

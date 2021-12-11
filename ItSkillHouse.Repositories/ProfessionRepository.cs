@@ -15,6 +15,11 @@ namespace ItSkillHouse.Repositories
         public ProfessionRepository(SqlContext context) : base(context)
         {
         }
+        
+        protected override IQueryable<Profession> FormatQuery(IQueryable<Profession> query)
+        {
+            return query.Include(profession => profession.Contractors);
+        }
 
         public async Task<List<Profession>> GetAsync(ProfessionsFilter filter, Sort sort, Paging paging)
         {
@@ -72,7 +77,7 @@ namespace ItSkillHouse.Repositories
                 }
                 default:
                 {
-                    query = query.OrderByDescending(profession => profession.Name);
+                    query = query.OrderByDescending(profession => profession.Contractors.Count).ThenBy(profession => profession.Name);
                     break;
                 }
             }
