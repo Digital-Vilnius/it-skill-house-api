@@ -9,6 +9,7 @@ namespace ItSkillHouse.Contracts.Contractor
         
         public List<int> RecruitersIds { get; set; }
         public List<int> TechnologiesIds { get; set; }
+        public List<int> MainTechnologiesIds { get; set; }
         public List<int> ProfessionsIds { get; set; }
         
         public bool? HasContractor { get; set; }

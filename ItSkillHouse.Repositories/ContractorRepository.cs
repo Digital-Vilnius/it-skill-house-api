@@ -80,7 +80,8 @@ namespace ItSkillHouse.Repositories
             
             if (filter.RecruitersIds.Count > 0) query = query.Where(contractor => filter.RecruitersIds.Contains(contractor.RecruiterId));
             if (filter.ProfessionsIds.Count > 0) query = query.Where(contractor => filter.ProfessionsIds.Contains(contractor.ProfessionId));
-            if (filter.TechnologiesIds.Count > 0) query = query.Where(contractor => contractor.Technologies.Any(technology => filter.TechnologiesIds.Contains(technology.TechnologyId)));
+            if (filter.MainTechnologiesIds.Count > 0) query = query.Where(contractor => filter.MainTechnologiesIds.Contains(contractor.Technologies.FirstOrDefault(technology => technology.IsMain == true).TechnologyId));
+            if (filter.TechnologiesIds.Count > 0) query = query.Where(contractor => contractor.Technologies.Any(technology => filter.TechnologiesIds.Contains(technology.TechnologyId) && technology.IsMain == false));
             return query;
         }
 
