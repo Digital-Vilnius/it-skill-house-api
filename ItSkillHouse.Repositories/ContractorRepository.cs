@@ -20,6 +20,7 @@ namespace ItSkillHouse.Repositories
         protected override IQueryable<Contractor> FormatQuery(IQueryable<Contractor> query)
         {
             return query
+                .Include(contractor => contractor.Events)
                 .Include(contractor => contractor.User)
                 .Include(contractor => contractor.Profession)
                 .Include(contractor => contractor.Recruiter)
@@ -74,7 +75,7 @@ namespace ItSkillHouse.Repositories
             
             if (filter.IsPublic.HasValue) query = query.Where(contractor => contractor.IsPublic == filter.IsPublic.Value);
             if (filter.IsRemote.HasValue) query = query.Where(contractor => contractor.IsRemote == filter.IsRemote.Value);
-            if (filter.IsAvailable.HasValue) query = query.Where(contractor => contractor.IsAvailable == filter.IsAvailable.Value);
+            if (filter.IsAvailable.HasValue) query = query.Where(contractor => contractor.AvailableFrom <= DateTime.UtcNow == filter.IsAvailable.Value);
             if (filter.HasContractor.HasValue) query = query.Where(contractor => contractor.HasContract == filter.HasContractor.Value);
             if (filter.IsOnSite.HasValue) query = query.Where(contractor => contractor.IsOnSite == filter.IsOnSite.Value);
             
@@ -107,10 +108,22 @@ namespace ItSkillHouse.Repositories
                     if (sort.SortDirection == "desc") query = query.OrderByDescending(contractor => contractor.ExperienceSince);
                     break;
                 }
+                case "nearestEvent":
+                {
+                    if (sort.SortDirection == "asc") query = query.OrderBy(contractor => contractor.Events.Where(e => e.Date >= DateTime.UtcNow).OrderByDescending(e => e.Date).FirstOrDefault().Date);
+                    if (sort.SortDirection == "desc") query = query.OrderByDescending(contractor => contractor.Events.Where(e => e.Date >= DateTime.UtcNow).OrderByDescending(e => e.Date).FirstOrDefault().Date);
+                    break;
+                }
                 case "isRemote":
                 {
                     if (sort.SortDirection == "asc") query = query.OrderBy(contractor => contractor.IsRemote);
                     if (sort.SortDirection == "desc") query = query.OrderByDescending(contractor => contractor.IsRemote);
+                    break;
+                }
+                case "isAvailable":
+                {
+                    if (sort.SortDirection == "asc") query = query.OrderBy(contractor => contractor.AvailableFrom <= DateTime.UtcNow);
+                    if (sort.SortDirection == "desc") query = query.OrderByDescending(contractor => contractor.AvailableFrom <= DateTime.UtcNow);
                     break;
                 }
                 case "hasContract":

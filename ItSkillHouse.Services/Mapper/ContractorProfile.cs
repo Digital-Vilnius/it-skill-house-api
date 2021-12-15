@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using AutoMapper;
 using ItSkillHouse.Contracts.Contractor;
 using ItSkillHouse.Models;
@@ -53,9 +54,11 @@ namespace ItSkillHouse.Services.Mapper
                 )
                 .ForMember(
                     dest => dest.Technologies,
-                    opt => opt.MapFrom(src =>
-                        src.Technologies.Where(technology => technology.IsMain == false).ToList()
-                            .Select(technology => technology.Technology))
+                    opt => opt.MapFrom(src => src.Technologies.Where(technology => technology.IsMain == false).ToList().Select(technology => technology.Technology))
+                )
+                .ForMember(
+                    dest => dest.NearestEvent,
+                    opt => opt.MapFrom(src => src.NearestEvent)
                 )
                 .ForMember(
                     dest => dest.Tags,

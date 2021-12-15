@@ -36,7 +36,10 @@ namespace ItSkillHouse.Models
         public List<ContractorTag> Tags { get; set; }
         public List<ContractorTechnology> Technologies { get; set; }
         public List<Note> Notes { get; set; }
+        public List<Event> Events { get; set; }
 
         public bool IsAvailable => AvailableFrom <= DateTime.UtcNow;
+
+        public Event NearestEvent => Events.Where(e => e.Date >= DateTime.UtcNow).OrderByDescending(e => e.Date).FirstOrDefault();
     }
 }

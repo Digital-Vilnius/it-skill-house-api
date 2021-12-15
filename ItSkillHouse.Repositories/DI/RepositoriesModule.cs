@@ -21,6 +21,7 @@ namespace ItSkillHouse.Repositories.DI
             services.AddScoped<ITokenRepository, TokenRepository>();
             services.AddScoped<ITagRepository, TagRepository>();
             services.AddScoped<IProfessionRepository, ProfessionRepository>();
+            services.AddScoped<IEventRepository, EventRepository>();
         }
     }
 }

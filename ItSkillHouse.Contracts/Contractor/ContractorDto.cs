@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using ItSkillHouse.Contracts.Event;
 using ItSkillHouse.Contracts.Note;
 using ItSkillHouse.Contracts.Profession;
 using ItSkillHouse.Contracts.Recruiter;
@@ -18,6 +19,7 @@ namespace ItSkillHouse.Contracts.Contractor
         public string Location { get; set; }
         public decimal Rate { get; set; }
         
+        public EventDto NearestEvent { get; set; }
         public ProfessionDto Profession { get; set; }
         public RecruitersListItemDto Recruiter { get; set; }
         public TechnologyDto MainTechnology { get; set; }
@@ -33,6 +35,7 @@ namespace ItSkillHouse.Contracts.Contractor
         public int CodaId { get; set; }
         public int CinodeId { get; set; }
         
+        public bool IsAvailable { get; set; }
         public bool IsRemote { get; set; }
         public bool IsPublic { get; set; }
         public bool HasContract { get; set; }

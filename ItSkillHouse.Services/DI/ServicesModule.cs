@@ -18,6 +18,7 @@ namespace ItSkillHouse.Services.DI
                 configure.AddProfile<RecruiterProfile>();
                 configure.AddProfile<TagProfile>();
                 configure.AddProfile<ProfessionProfile>();
+                configure.AddProfile<EventProfile>();
             }, typeof(ServicesModule));
             
             services.AddScoped<IAuthenticationService, AuthenticationService>();
@@ -30,6 +31,7 @@ namespace ItSkillHouse.Services.DI
             services.AddScoped<IRecruiterService, RecruiterService>();
             services.AddScoped<ITagService, TagService>();
             services.AddScoped<IProfessionService, ProfessionService>();
+            services.AddScoped<IEventService, EventService>();
         }
     }
 }

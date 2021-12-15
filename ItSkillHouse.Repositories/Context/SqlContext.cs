@@ -16,6 +16,7 @@ namespace ItSkillHouse.Repositories.Context
             OnTechnologyModelCreating(modelBuilder);
             
             OnNoteModelCreating(modelBuilder);
+            OnEventModelCreating(modelBuilder);
 
             OnRecruiterModelCreating(modelBuilder);
             
@@ -106,6 +107,14 @@ namespace ItSkillHouse.Repositories.Context
                 .WithMany(contractor => contractor.Notes)
                 .HasForeignKey(note => note.ContractorId);
         }
+        
+        private static void OnEventModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Event>()
+                .HasOne(e => e.Contractor)
+                .WithMany(contractor => contractor.Events)
+                .HasForeignKey(e => e.ContractorId);
+        }
 
         private static void OnTokenModelCreating(ModelBuilder modelBuilder)
         {
@@ -156,6 +165,7 @@ namespace ItSkillHouse.Repositories.Context
         public DbSet<Token> Tokens { get; set; }
         public DbSet<User> Users { get; set; }
         
+        public DbSet<Event> Events { get; set; }
         public DbSet<Note> Notes { get; set; }
 
         public DbSet<Contractor> Contractors { get; set; }
