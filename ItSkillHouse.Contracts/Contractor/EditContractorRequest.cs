@@ -5,8 +5,11 @@ namespace ItSkillHouse.Contracts.Contractor
 {
     public class EditContractorRequest
     {
-        public string Location { get; set; }
+        public string CountryCode { get; set; }
+        public string City { get; set; }
+        
         public decimal Rate { get; set; }
+        public string Currency { get; set; }
         
         public int ProfessionId { get; set; }
         public int RecruiterId { get; set; }

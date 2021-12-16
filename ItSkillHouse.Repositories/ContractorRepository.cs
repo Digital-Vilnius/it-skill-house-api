@@ -79,6 +79,7 @@ namespace ItSkillHouse.Repositories
             if (filter.HasContractor.HasValue) query = query.Where(contractor => contractor.HasContract == filter.HasContractor.Value);
             if (filter.IsOnSite.HasValue) query = query.Where(contractor => contractor.IsOnSite == filter.IsOnSite.Value);
             
+            if (filter.CountriesCodes.Count > 0) query = query.Where(contractor => filter.CountriesCodes.Contains(contractor.CountryCode));
             if (filter.RecruitersIds.Count > 0) query = query.Where(contractor => filter.RecruitersIds.Contains(contractor.RecruiterId));
             if (filter.ProfessionsIds.Count > 0) query = query.Where(contractor => filter.ProfessionsIds.Contains(contractor.ProfessionId));
             if (filter.MainTechnologiesIds.Count > 0) query = query.Where(contractor => filter.MainTechnologiesIds.Contains(contractor.Technologies.FirstOrDefault(technology => technology.IsMain == true).TechnologyId));
@@ -196,12 +197,6 @@ namespace ItSkillHouse.Repositories
                 {
                     if (sort.SortDirection == "asc") query = query.OrderBy(contractor => contractor.User.LastName);
                     if (sort.SortDirection == "desc") query = query.OrderByDescending(contractor => contractor.User.LastName);
-                    break;
-                }
-                case "location":
-                {
-                    if (sort.SortDirection == "asc") query = query.OrderBy(contractor => contractor.Location);
-                    if (sort.SortDirection == "desc") query = query.OrderByDescending(contractor => contractor.Location);
                     break;
                 }
                 case "id":

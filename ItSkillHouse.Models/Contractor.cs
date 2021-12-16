@@ -8,9 +8,11 @@ namespace ItSkillHouse.Models
     public class Contractor : BaseModel
     {
         public string LinkedInUrl { get; set; }
-        public string Location { get; set; }
         public int? CodaId { get; set; }
         public int? CinodeId { get; set; }
+        
+        public string CountryCode { get; set; }
+        public string City { get; set; }
 
         public bool IsOnSite { get; set; }
         public bool IsRemote { get; set; }

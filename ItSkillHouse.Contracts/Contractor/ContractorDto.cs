@@ -16,8 +16,11 @@ namespace ItSkillHouse.Contracts.Contractor
         public string Email { get; set; }
         public string Phone { get; set; }
         
-        public string Location { get; set; }
+        public string CountryCode { get; set; }
+        public string City { get; set; }
+        
         public decimal Rate { get; set; }
+        public string Currency { get; set; }
         
         public EventDto NearestEvent { get; set; }
         public ProfessionDto Profession { get; set; }
@@ -27,6 +30,7 @@ namespace ItSkillHouse.Contracts.Contractor
         public List<TechnologyDto> Technologies { get; set; }
         public List<NotesListItemDto> Notes { get; set; }
         public List<TagDto> Tags { get; set; }
+        public List<EventDto> Events { get; set; }
 
         public DateTime ExperienceSince { get; set; }
         public DateTime AvailableFrom { get; set; }

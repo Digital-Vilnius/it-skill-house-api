@@ -11,6 +11,7 @@ namespace ItSkillHouse.Contracts.Contractor
         public List<int> TechnologiesIds { get; set; }
         public List<int> MainTechnologiesIds { get; set; }
         public List<int> ProfessionsIds { get; set; }
+        public List<string> CountriesCodes { get; set; }
         
         public bool? HasContractor { get; set; }
         public bool? IsRemote { get; set; }
