@@ -20,6 +20,7 @@ namespace ItSkillHouse.Repositories
         protected override IQueryable<Contractor> FormatQuery(IQueryable<Contractor> query)
         {
             return query
+                .Include(contractor => contractor.Notes)
                 .Include(contractor => contractor.Events)
                 .Include(contractor => contractor.User)
                 .Include(contractor => contractor.Profession)

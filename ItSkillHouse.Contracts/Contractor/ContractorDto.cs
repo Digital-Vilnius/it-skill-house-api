@@ -28,9 +28,8 @@ namespace ItSkillHouse.Contracts.Contractor
         public TechnologyDto MainTechnology { get; set; }
 
         public List<TechnologyDto> Technologies { get; set; }
-        public List<NotesListItemDto> Notes { get; set; }
+        public List<NoteDto> Notes { get; set; }
         public List<TagDto> Tags { get; set; }
-        public List<EventDto> Events { get; set; }
 
         public DateTime ExperienceSince { get; set; }
         public DateTime AvailableFrom { get; set; }

@@ -11,7 +11,6 @@ namespace ItSkillHouse.Services.Mapper
             CreateMap<AddNoteRequest, Note>();
             CreateMap<EditNoteRequest, Note>();
             CreateMap<Note, NoteDto>();
-            CreateMap<Note, NotesListItemDto>();
         }
     }
 }

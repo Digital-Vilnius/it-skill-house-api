@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using ItSkillHouse.Models;
 using ItSkillHouse.Models.Repositories;
 using ItSkillHouse.Repositories.Context;
@@ -13,7 +14,7 @@ namespace ItSkillHouse.Repositories
 
         public Task<Token> GetValidRefreshToken(string refreshToken)
         {
-            return GetAsync(token => token.Value == refreshToken && token.IsValid);
+            return GetAsync(token => token.Value == refreshToken && token.Revoked == null && token.Expires > DateTime.UtcNow);
         }
     }
 }
