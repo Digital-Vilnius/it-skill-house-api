@@ -7,7 +7,5 @@ namespace ItSkillHouse.Models.Repositories
 {
     public interface ITechnologyRepository : IBaseRepository<Technology>
     {
-        Task<List<Technology>> GetAsync(TechnologiesFilter filter, Sort sort, Paging paging);
-        Task<int> CountAsync(TechnologiesFilter filter);
     }
 }

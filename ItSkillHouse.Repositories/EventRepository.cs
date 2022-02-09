@@ -21,7 +21,7 @@ namespace ItSkillHouse.Repositories
             IQueryable<Event> query = Context.Set<Event>();
             query = FormatQuery(query);
             query = ApplyFilter(query, filter);
-            query = ApplySort(query, sort);
+            query = query.OrderByDescending(model => model.Date);
             query = ApplyPaging(query, paging);
             query = query.Where(model => model.IsDeleted == false);
             return await query.ToListAsync();
@@ -38,54 +38,10 @@ namespace ItSkillHouse.Repositories
         
         private static IQueryable<Event> ApplyFilter(IQueryable<Event> query, EventsFilter filter)
         {
-            if (filter.Query != null) query = query.Where(e => e.Title.Contains(filter.Query));
-            if (filter.ContractorId.HasValue) query = query.Where(e => e.ContractorId == filter.ContractorId.Value);
-            if (filter.DateFrom.HasValue) query = query.Where(e => e.Date >= filter.DateFrom.Value);
-            if (filter.DateTo.HasValue) query = query.Where(e => e.Date <= filter.DateTo.Value);
-            return query;
-        }
-        
-        private static IQueryable<Event> ApplySort(IQueryable<Event> query, Sort sort)
-        {
-            switch (sort.SortBy)
-            {
-                case "created":
-                {
-                    if (sort.SortDirection == "asc") query = query.OrderBy(e => e.Created);
-                    if (sort.SortDirection == "desc") query = query.OrderByDescending(e => e.Created);
-                    break;
-                }
-                case "updated":
-                {
-                    if (sort.SortDirection == "asc") query = query.OrderBy(e => e.Updated);
-                    if (sort.SortDirection == "desc") query = query.OrderByDescending(e => e.Updated);
-                    break;
-                }
-                case "title":
-                {
-                    if (sort.SortDirection == "asc") query = query.OrderBy(e => e.Title);
-                    if (sort.SortDirection == "desc") query = query.OrderByDescending(e => e.Title);
-                    break;
-                }
-                case "date":
-                {
-                    if (sort.SortDirection == "asc") query = query.OrderBy(e => e.Date);
-                    if (sort.SortDirection == "desc") query = query.OrderByDescending(e => e.Date);
-                    break;
-                }
-                case "id":
-                {
-                    if (sort.SortDirection == "asc") query = query.OrderBy(e => e.Id);
-                    if (sort.SortDirection == "desc") query = query.OrderByDescending(e => e.Id);
-                    break;
-                }
-                default:
-                {
-                    query = query.OrderByDescending(e => e.Date).ThenBy(e => e.Title);
-                    break;
-                }
-            }
-
+            if (filter.Query != null) query = query.Where(model => model.Title.Contains(filter.Query));
+            if (filter.ContractorId.HasValue) query = query.Where(model => model.ContractorId == filter.ContractorId.Value);
+            if (filter.DateFrom.HasValue) query = query.Where(model => model.Date >= filter.DateFrom.Value);
+            if (filter.DateTo.HasValue) query = query.Where(model => model.Date <= filter.DateTo.Value);
             return query;
         }
     }

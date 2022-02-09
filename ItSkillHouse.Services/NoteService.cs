@@ -46,10 +46,14 @@ namespace ItSkillHouse.Services
             return new ResultResponse<TModel>(noteDto);
         }
 
-        public async Task<ListResponse<TModel>> GetAsync<TModel>()
+        public async Task<ListResponse<TModel>> GetAsync<TModel>(ListNotesRequest request)
         {
-            var notes = await _noteRepository.GetAsync();
-            var notesCount = await _noteRepository.CountAsync();
+            var filter = _mapper.Map<ListNotesRequest, NotesFilter>(request);
+            var sort = _mapper.Map<ListNotesRequest, Sort>(request);
+            var paging = _mapper.Map<ListNotesRequest, Paging>(request);
+            
+            var notes = await _noteRepository.GetAsync(filter, sort, paging);
+            var notesCount = await _noteRepository.CountAsync(filter);
 
             var notesDtosList = _mapper.Map<List<Note>, List<TModel>>(notes);
             return new ListResponse<TModel>(notesDtosList, notesCount);

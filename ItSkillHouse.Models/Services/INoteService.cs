@@ -8,7 +8,7 @@ namespace ItSkillHouse.Models.Services
     {
         Task<ResultResponse<TModel>> AddAsync<TModel>(AddNoteRequest request);
         Task<ResultResponse<TModel>> EditAsync<TModel>(int id, EditNoteRequest request);
-        Task<ListResponse<TModel>> GetAsync<TModel>();
+        Task<ListResponse<TModel>> GetAsync<TModel>(ListNotesRequest request);
         Task<ResultResponse<TModel>> GetAsync<TModel>(int id);
         Task DeleteAsync(int id);
     }

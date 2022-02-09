@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
 using ItSkillHouse.Contracts;
@@ -7,6 +9,7 @@ using ItSkillHouse.Contracts.Authentication;
 using ItSkillHouse.Models;
 using ItSkillHouse.Models.Repositories;
 using ItSkillHouse.Models.Services;
+using Microsoft.AspNetCore.Http;
 
 namespace ItSkillHouse.Services
 {
@@ -18,6 +21,7 @@ namespace ItSkillHouse.Services
         private readonly ITokenService _tokenService;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        private readonly HttpContext _httpContext;
 
         public AuthenticationService
         (
@@ -26,7 +30,8 @@ namespace ItSkillHouse.Services
             IUnitOfWork unitOfWork,
             IEncryptionService encryptionService,
             ITokenService tokenService,
-            ITokenRepository tokenRepository
+            ITokenRepository tokenRepository,
+            IHttpContextAccessor httpContextAccessor
         )
         {
             _tokenService = tokenService;
@@ -35,6 +40,7 @@ namespace ItSkillHouse.Services
             _mapper = mapper;
             _userRepository = userRepository;
             _tokenRepository = tokenRepository;
+            _httpContext = httpContextAccessor.HttpContext;
         }
 
         public async Task<ResultResponse<Tokens>> LoginAsync(LoginRequest request)
@@ -85,7 +91,6 @@ namespace ItSkillHouse.Services
             if (refreshToken == null) throw new Exception("Valid token is not found");
 
             var newRefreshToken = _tokenService.GenerateRefreshToken(refreshToken.UserId);
-            refreshToken.User.Tokens.Add(refreshToken);
             refreshToken.Revoked = DateTime.UtcNow;
             
             _tokenRepository.Update(refreshToken);
@@ -94,6 +99,19 @@ namespace ItSkillHouse.Services
             
             var tokens = new Tokens { RefreshToken = newRefreshToken.Value, Token = _tokenService.GenerateToken(refreshToken.User.Id) };
             return new ResultResponse<Tokens>(tokens);
+        }
+        
+        public async Task<LoggedUserDto> GetLoggedUserAsync()
+        {
+            if (_httpContext.User.Identity is not {IsAuthenticated: true}) return null;
+
+            var id = _httpContext.User.Claims.FirstOrDefault(claim => claim.Type == ClaimTypes.NameIdentifier)?.Value;
+            if (id == null) return null;
+
+            var user = await _userRepository.GetAsync(user => user.Id == int.Parse(id));
+            if (user == null) return null;
+
+           return _mapper.Map<User, LoggedUserDto>(user);
         }
     }
 }

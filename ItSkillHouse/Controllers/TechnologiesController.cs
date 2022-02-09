@@ -25,19 +25,11 @@ namespace ItSkillHouse.Controllers
             return Ok(response);
         }
 
-        [HttpDelete("{id}")]
-        [Authorize]
-        public async Task<IActionResult> Delete([FromRoute] int id)
-        {
-            await _technologyService.DeleteAsync(id);
-            return Ok();
-        }
-
         [HttpGet]
         [Authorize]
-        public async Task<IActionResult> List([FromQuery] ListTechnologiesRequest request)
+        public async Task<IActionResult> List()
         {
-            var response = await _technologyService.GetAsync<TechnologyDto>(request);
+            var response = await _technologyService.GetAsync<TechnologyDto>();
             return Ok(response);
         }
     }

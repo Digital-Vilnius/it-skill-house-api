@@ -22,6 +22,7 @@ namespace ItSkillHouse.Repositories.DI
             services.AddScoped<ITagRepository, TagRepository>();
             services.AddScoped<IProfessionRepository, ProfessionRepository>();
             services.AddScoped<IEventRepository, EventRepository>();
+            services.AddScoped<IEmailRepository, EmailRepository>();
         }
     }
 }

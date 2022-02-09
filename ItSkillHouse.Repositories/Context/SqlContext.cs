@@ -21,13 +21,15 @@ namespace ItSkillHouse.Repositories.Context
             OnRecruiterModelCreating(modelBuilder);
             
             OnUserModelCreating(modelBuilder);
+            OnEmailModelCreating(modelBuilder);
+            OnUserEmailModelCreating(modelBuilder);
             OnTokenModelCreating(modelBuilder);
             
             OnContractorTechnologyModelCreating(modelBuilder);
             OnContractorModelCreating(modelBuilder);
             OnContractorTagModelCreating(modelBuilder);
         }
-        
+
         private static void OnTechnologyModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder
@@ -77,6 +79,31 @@ namespace ItSkillHouse.Repositories.Context
                 .Entity<User>()
                 .Property(user => user.Email)
                 .HasConversion(email => email.ToLower(), email => email);
+        }
+        
+        private static void OnEmailModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Email>()
+                .HasOne(email => email.Sender)
+                .WithMany(user => user.SendEmails)
+                .HasForeignKey(email => email.SenderId)
+                .OnDelete(DeleteBehavior.Restrict);
+        }
+        
+        private static void OnUserEmailModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<RecipientEmail>()
+                .HasKey(userEmail => new { userEmail.RecipientId, userEmail.EmailId });
+
+            modelBuilder.Entity<RecipientEmail>()
+                .HasOne(userEmail => userEmail.Recipient)
+                .WithMany(user => user.ReceivedEmails)
+                .HasForeignKey(userEmail => userEmail.RecipientId);
+
+            modelBuilder.Entity<RecipientEmail>()
+                .HasOne(userEmail => userEmail.Email)
+                .WithMany(email => email.Recipients)
+                .HasForeignKey(userEmail => userEmail.EmailId);
         }
         
         private static void OnContractorModelCreating(ModelBuilder modelBuilder)
@@ -163,10 +190,13 @@ namespace ItSkillHouse.Repositories.Context
         public DbSet<Recruiter> Recruiters { get; set; }
 
         public DbSet<Token> Tokens { get; set; }
+        
         public DbSet<User> Users { get; set; }
+        public DbSet<RecipientEmail> RecipientsEmails { get; set; }
         
         public DbSet<Event> Events { get; set; }
         public DbSet<Note> Notes { get; set; }
+        public DbSet<Email> Emails { get; set; }
 
         public DbSet<Contractor> Contractors { get; set; }
         public DbSet<ContractorTechnology> ContractorsTechnologies { get; set; }

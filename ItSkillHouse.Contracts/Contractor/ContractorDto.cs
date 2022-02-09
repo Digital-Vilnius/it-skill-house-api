@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using ItSkillHouse.Contracts.Email;
 using ItSkillHouse.Contracts.Event;
 using ItSkillHouse.Contracts.Note;
 using ItSkillHouse.Contracts.Profession;
@@ -11,6 +12,12 @@ namespace ItSkillHouse.Contracts.Contractor
 {
     public class ContractorDto : BaseDto
     {
+        public string LinkedInUrl { get; set; }
+        
+        public int? CodaId { get; set; }
+        public int? CinodeId { get; set; }
+        
+        public int UserId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Email { get; set; }
@@ -18,30 +25,27 @@ namespace ItSkillHouse.Contracts.Contractor
         
         public string CountryCode { get; set; }
         public string City { get; set; }
-        
-        public decimal Rate { get; set; }
+
+        public decimal? Rate { get; set; }
         public string Currency { get; set; }
-        
-        public EventDto NearestEvent { get; set; }
-        public ProfessionDto Profession { get; set; }
-        public RecruitersListItemDto Recruiter { get; set; }
-        public TechnologyDto MainTechnology { get; set; }
 
-        public List<TechnologyDto> Technologies { get; set; }
-        public List<NoteDto> Notes { get; set; }
-        public List<TagDto> Tags { get; set; }
-
-        public DateTime ExperienceSince { get; set; }
-        public DateTime AvailableFrom { get; set; }
-        
-        public string LinkedInUrl { get; set; }
-        public int CodaId { get; set; }
-        public int CinodeId { get; set; }
+        public DateTime? ExperienceSince { get; set; }
+        public DateTime? AvailableFrom { get; set; }
         
         public bool IsAvailable { get; set; }
         public bool IsRemote { get; set; }
         public bool IsPublic { get; set; }
         public bool HasContract { get; set; }
         public bool IsOnSite { get; set; }
+        
+        public EmailDto LastEmail { get; set; }
+        public EventDto NearestEvent { get; set; }
+        public ProfessionDto Profession { get; set; }
+        public RecruiterDto Recruiter { get; set; }
+        
+        public List<NoteDto> Notes { get; set; }
+        public List<TagDto> Tags { get; set; }
+        public List<TechnologyDto> Technologies { get; set; }
+        public List<TechnologyDto> MainTechnologies { get; set; }
     }
 }

@@ -19,19 +19,21 @@ namespace ItSkillHouse.Services.DI
                 configure.AddProfile<TagProfile>();
                 configure.AddProfile<ProfessionProfile>();
                 configure.AddProfile<EventProfile>();
+                configure.AddProfile<EmailProfile>();
             }, typeof(ServicesModule));
             
-            services.AddScoped<IAuthenticationService, AuthenticationService>();
-            services.AddScoped<IUserService, UserService>();
-            services.AddScoped<ITechnologyService, TechnologyService>();
             services.AddScoped<IEncryptionService, EncryptionService>();
             services.AddScoped<ITokenService, TokenService>();
+
+            services.AddScoped<IAuthenticationService, AuthenticationService>();
+            services.AddScoped<ITechnologyService, TechnologyService>();
             services.AddScoped<INoteService, NoteService>();
             services.AddScoped<IContractorService, ContractorService>();
             services.AddScoped<IRecruiterService, RecruiterService>();
             services.AddScoped<ITagService, TagService>();
             services.AddScoped<IProfessionService, ProfessionService>();
             services.AddScoped<IEventService, EventService>();
+            services.AddScoped<IEmailService, EmailService>();
         }
     }
 }

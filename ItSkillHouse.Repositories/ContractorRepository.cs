@@ -22,14 +22,16 @@ namespace ItSkillHouse.Repositories
             return query
                 .Include(contractor => contractor.Notes)
                 .Include(contractor => contractor.Events)
-                .Include(contractor => contractor.User)
                 .Include(contractor => contractor.Profession)
                 .Include(contractor => contractor.Recruiter)
                 .ThenInclude(recruiter => recruiter.User)
                 .Include(contractor => contractor.Technologies)
                 .ThenInclude(technology => technology.Technology)
                 .Include(contractor => contractor.Tags)
-                .ThenInclude(tag => tag.Tag);
+                .ThenInclude(tag => tag.Tag)
+                .Include(contractor => contractor.User)
+                .ThenInclude(user => user.ReceivedEmails)
+                .ThenInclude(receivedEmail => receivedEmail.Email);
         }
 
         public async Task<List<Contractor>> GetAsync(ContractorsFilter filter, Sort sort, Paging paging)
@@ -82,8 +84,8 @@ namespace ItSkillHouse.Repositories
             
             if (filter.CountriesCodes.Count > 0) query = query.Where(contractor => filter.CountriesCodes.Contains(contractor.CountryCode));
             if (filter.RecruitersIds.Count > 0) query = query.Where(contractor => filter.RecruitersIds.Contains(contractor.RecruiterId));
-            if (filter.ProfessionsIds.Count > 0) query = query.Where(contractor => filter.ProfessionsIds.Contains(contractor.ProfessionId));
-            if (filter.MainTechnologiesIds.Count > 0) query = query.Where(contractor => filter.MainTechnologiesIds.Contains(contractor.Technologies.FirstOrDefault(technology => technology.IsMain == true).TechnologyId));
+            if (filter.ProfessionsIds.Count > 0) query = query.Where(contractor => filter.ProfessionsIds.Contains(contractor.ProfessionId.Value));
+            if (filter.MainTechnologiesIds.Count > 0) query = query.Where(contractor => contractor.Technologies.Any(technology => filter.MainTechnologiesIds.Contains(technology.TechnologyId) && technology.IsMain == true));
             if (filter.TechnologiesIds.Count > 0) query = query.Where(contractor => contractor.Technologies.Any(technology => filter.TechnologiesIds.Contains(technology.TechnologyId) && technology.IsMain == false));
             return query;
         }
@@ -92,12 +94,6 @@ namespace ItSkillHouse.Repositories
         {
             switch (sort.SortBy)
             {
-                case "mainTechnology":
-                {
-                    if (sort.SortDirection == "asc") query = query.OrderBy(contractor => contractor.Technologies.FirstOrDefault(technology => technology.IsMain).Technology.Name);
-                    if (sort.SortDirection == "desc") query = query.OrderByDescending(contractor => contractor.Technologies.FirstOrDefault(technology => technology.IsMain).Technology.Name);
-                    break;
-                }
                 case "availableFrom":
                 {
                     if (sort.SortDirection == "asc") query = query.OrderBy(contractor => contractor.AvailableFrom);
@@ -116,10 +112,22 @@ namespace ItSkillHouse.Repositories
                     if (sort.SortDirection == "desc") query = query.OrderByDescending(contractor => contractor.Events.Where(e => e.Date >= DateTime.UtcNow).OrderByDescending(e => e.Date).FirstOrDefault().Date);
                     break;
                 }
+                case "mailed":
+                {
+                    if (sort.SortDirection == "asc") query = query.OrderBy(contractor => contractor.User.ReceivedEmails.Select(receivedEmail => receivedEmail.Email).OrderByDescending(email => email.Created).FirstOrDefault());
+                    if (sort.SortDirection == "desc") query = query.OrderByDescending(contractor => contractor.User.ReceivedEmails.Select(receivedEmail => receivedEmail.Email).OrderByDescending(email => email.Created).FirstOrDefault());
+                    break;
+                }
                 case "isRemote":
                 {
                     if (sort.SortDirection == "asc") query = query.OrderBy(contractor => contractor.IsRemote);
                     if (sort.SortDirection == "desc") query = query.OrderByDescending(contractor => contractor.IsRemote);
+                    break;
+                }
+                case "country":
+                {
+                    if (sort.SortDirection == "asc") query = query.OrderBy(contractor => contractor.CountryCode);
+                    if (sort.SortDirection == "desc") query = query.OrderByDescending(contractor => contractor.CountryCode);
                     break;
                 }
                 case "isAvailable":

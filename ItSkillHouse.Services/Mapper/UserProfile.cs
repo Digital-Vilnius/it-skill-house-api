@@ -8,11 +8,7 @@ namespace ItSkillHouse.Services.Mapper
     {
         public UserProfile()
         {
-            CreateMap<ListUsersRequest, UsersFilter>();
-            CreateMap<AddUserRequest, User>();
-            CreateMap<EditUserRequest, User>();
             CreateMap<User, UserDto>();
-            CreateMap<User, UsersListItemDto>();
         }
     }
 }

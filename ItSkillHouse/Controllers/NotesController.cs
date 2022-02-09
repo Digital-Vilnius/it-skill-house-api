@@ -43,9 +43,9 @@ namespace ItSkillHouse.Controllers
 
         [HttpGet]
         [Authorize]
-        public async Task<IActionResult> List()
+        public async Task<IActionResult> List(ListNotesRequest request)
         {
-            var response = await _noteService.GetAsync<NoteDto>();
+            var response = await _noteService.GetAsync<NoteDto>(request);
             return Ok(response);
         }
         

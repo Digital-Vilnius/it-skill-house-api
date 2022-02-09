@@ -9,5 +9,6 @@ namespace ItSkillHouse.Models.Services
         Task<ResultResponse<Tokens>> LoginAsync(LoginRequest request);
         Task<ResultResponse<Tokens>> RegisterAsync(RegisterRequest request);
         Task<ResultResponse<Tokens>> RefreshToken(RefreshTokenRequest request);
+        Task<LoggedUserDto> GetLoggedUserAsync();
     }
 }

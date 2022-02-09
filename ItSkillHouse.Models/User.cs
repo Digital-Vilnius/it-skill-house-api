@@ -17,5 +17,7 @@ namespace ItSkillHouse.Models
         public Contractor Contractor { get; set; }
         public Recruiter Recruiter { get; set; }
         public List<Token> Tokens { get; set; }
+        public List<RecipientEmail> ReceivedEmails { get; set; }
+        public List<Email> SendEmails { get; set; }
     }
 }

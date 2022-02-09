@@ -1,8 +1,9 @@
-﻿using System;
+﻿using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
 using ItSkillHouse.Contracts.Contractor;
 using ItSkillHouse.Models;
+using ItSkillHouse.Services.Mapper.Resolvers;
 
 namespace ItSkillHouse.Services.Mapper
 {
@@ -14,21 +15,29 @@ namespace ItSkillHouse.Services.Mapper
             CreateMap<AddContractorRequest, Contractor>()
                 .ForMember(
                     dest => dest.User,
-                    opt => opt.MapFrom(src => new User {Email = src.Email, Phone = src.Phone, FirstName = src.FirstName, LastName = src.LastName})
+                    opt => opt.MapFrom(src => new User {Email = src.Email, FirstName = src.FirstName, LastName = src.LastName})
+                )
+                .ForMember(
+                    dest => dest.Notes,
+                    opt => opt.MapFrom(src => new List<Note>{new (){Content = src.Note}})
                 )
                 .ForMember(
                     dest => dest.Technologies,
-                    opt => opt.MapFrom(src => src.TechnologiesIds.Select(id => new ContractorTechnology {TechnologyId = id}))
+                    opt => opt.MapFrom<TechnologiesResolver>()
                 )
                 .ForMember(
                     dest => dest.Tags,
                     opt => opt.MapFrom(src => src.TagsIds.Select(id => new ContractorTag {TagId = id}))
                 );
-            
+
             CreateMap<EditContractorRequest, Contractor>()
                 .ForMember(
                     dest => dest.Technologies,
                     opt => opt.MapFrom(src => src.TechnologiesIds.Select(id => new ContractorTechnology {TechnologyId = id}))
+                )
+                .ForMember(
+                    dest => dest.Technologies,
+                    opt => opt.MapFrom<TechnologiesResolver>()
                 )
                 .ForMember(
                     dest => dest.Tags,
@@ -36,6 +45,16 @@ namespace ItSkillHouse.Services.Mapper
                 );
 
             CreateMap<Contractor, ContractorDto>()
+                .ForMember(
+                    dest => dest.LastEmail,
+                    opt => opt.MapFrom(src =>
+                        src.User.ReceivedEmails.Select(receivedEmail => receivedEmail.Email)
+                            .OrderByDescending(email => email.Created).FirstOrDefault())
+                )
+                .ForMember(
+                    dest => dest.UserId,
+                    opt => opt.MapFrom(src => src.UserId)
+                )
                 .ForMember(
                     dest => dest.FirstName,
                     opt => opt.MapFrom(src => src.User.FirstName)
@@ -54,7 +73,9 @@ namespace ItSkillHouse.Services.Mapper
                 )
                 .ForMember(
                     dest => dest.Technologies,
-                    opt => opt.MapFrom(src => src.Technologies.Where(technology => technology.IsMain == false).ToList().Select(technology => technology.Technology))
+                    opt => opt.MapFrom(src =>
+                        src.Technologies.Where(technology => technology.IsMain == false).ToList()
+                            .Select(technology => technology.Technology))
                 )
                 .ForMember(
                     dest => dest.NearestEvent,
@@ -65,8 +86,8 @@ namespace ItSkillHouse.Services.Mapper
                     opt => opt.MapFrom(src => src.Tags.Select(tag => tag.Tag))
                 )
                 .ForMember(
-                    dest => dest.MainTechnology,
-                    opt => opt.MapFrom(src => src.Technologies.FirstOrDefault(technology => technology.IsMain).Technology)
+                    dest => dest.MainTechnologies,
+                    opt => opt.MapFrom(src => src.Technologies.Where(technology => technology.IsMain == true).ToList().Select(technology => technology.Technology))
                 );
         }
     }

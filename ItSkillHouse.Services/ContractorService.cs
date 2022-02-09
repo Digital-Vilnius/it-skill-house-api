@@ -31,7 +31,6 @@ namespace ItSkillHouse.Services
             if (duplicate != null) throw new Exception("User with this email is already exist");
 
             var contractor = _mapper.Map<AddContractorRequest, Contractor>(request);
-            contractor.Technologies.Add(new ContractorTechnology{TechnologyId = request.MainTechnologyId, IsMain = true});
             await _contractorRepository.AddAsync(contractor);
             await _unitOfWork.SaveChangesAsync();
             
@@ -45,7 +44,6 @@ namespace ItSkillHouse.Services
             if (contractor == null) throw new Exception("Contractor is not found");
 
             contractor = _mapper.Map(request, contractor);
-            contractor.Technologies.Add(new ContractorTechnology{TechnologyId = request.MainTechnologyId, IsMain = true});
             _contractorRepository.Update(contractor);
             await _unitOfWork.SaveChangesAsync();
             

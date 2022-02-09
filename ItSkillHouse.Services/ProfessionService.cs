@@ -36,26 +36,13 @@ namespace ItSkillHouse.Services
             return new ResultResponse<TModel>(professionDto);
         }
 
-        public async Task<ListResponse<TModel>> GetAsync<TModel>(ListProfessionsRequest request)
+        public async Task<ListResponse<TModel>> GetAsync<TModel>()
         {
-            var filter = _mapper.Map<ListProfessionsRequest, ProfessionsFilter>(request);
-            var sort = _mapper.Map<ListProfessionsRequest, Sort>(request);
-            var paging = _mapper.Map<ListProfessionsRequest, Paging>(request);
-            
-            var professions = await _professionRepository.GetAsync(filter, sort, paging);
-            var professionsCount = await _professionRepository.CountAsync(filter);
+            var professions = await _professionRepository.GetAsync();
+            var professionsCount = await _professionRepository.CountAsync();
 
             var professionsDtosList = _mapper.Map<List<Profession>, List<TModel>>(professions);
             return new ListResponse<TModel>(professionsDtosList, professionsCount);
-        }
-
-        public async Task DeleteAsync(int id)
-        {
-            var profession = await _professionRepository.GetByIdAsync(id);
-            if (profession == null) throw new Exception("Profession is not found");
-
-            _professionRepository.Delete(profession);
-            await _unitOfWork.SaveChangesAsync();
         }
     }
 }

@@ -9,6 +9,7 @@ namespace ItSkillHouse.Services.Mapper
         public AuthenticationProfile()
         {
             CreateMap<RegisterRequest, User>();
+            CreateMap<User, LoggedUserDto>();
         }
     }
 }

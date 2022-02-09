@@ -36,26 +36,13 @@ namespace ItSkillHouse.Services
             return new ResultResponse<TModel>(tagDto);
         }
 
-        public async Task<ListResponse<TModel>> GetAsync<TModel>(ListTagsRequest request)
+        public async Task<ListResponse<TModel>> GetAsync<TModel>()
         {
-            var filter = _mapper.Map<ListTagsRequest, TagsFilter>(request);
-            var sort = _mapper.Map<ListTagsRequest, Sort>(request);
-            var paging = _mapper.Map<ListTagsRequest, Paging>(request);
-            
-            var tags = await _tagRepository.GetAsync(filter, sort, paging);
-            var tagsCount = await _tagRepository.CountAsync(filter);
+            var tags = await _tagRepository.GetAsync();
+            var tagsCount = await _tagRepository.CountAsync();
 
             var tagsDtosList = _mapper.Map<List<Tag>, List<TModel>>(tags);
             return new ListResponse<TModel>(tagsDtosList, tagsCount);
-        }
-
-        public async Task DeleteAsync(int id)
-        {
-            var tag = await _tagRepository.GetByIdAsync(id);
-            if (tag == null) throw new Exception("Tag is not found");
-
-            _tagRepository.Delete(tag);
-            await _unitOfWork.SaveChangesAsync();
         }
     }
 }
