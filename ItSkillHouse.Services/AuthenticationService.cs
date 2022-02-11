@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -17,7 +16,6 @@ namespace ItSkillHouse.Services
     {
         private readonly IUserRepository _userRepository;
         private readonly IEncryptionService _encryptionService;
-        private readonly ITokenRepository _tokenRepository;
         private readonly ITokenService _tokenService;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
@@ -30,7 +28,6 @@ namespace ItSkillHouse.Services
             IUnitOfWork unitOfWork,
             IEncryptionService encryptionService,
             ITokenService tokenService,
-            ITokenRepository tokenRepository,
             IHttpContextAccessor httpContextAccessor
         )
         {
@@ -39,7 +36,6 @@ namespace ItSkillHouse.Services
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _userRepository = userRepository;
-            _tokenRepository = tokenRepository;
             _httpContext = httpContextAccessor.HttpContext;
         }
 
@@ -51,15 +47,12 @@ namespace ItSkillHouse.Services
             var isPasswordValid = _encryptionService.VerifyHash(request.Password, user.PasswordHash, user.PasswordSalt);
             if (!isPasswordValid) throw new Exception("Password is not correct");
 
-            var refreshToken = _tokenService.GenerateRefreshToken(user.Id);
-            if (user.Tokens == null) user.Tokens = new List<Token>{ refreshToken }; 
-            else user.Tokens.Add(refreshToken);
-
+            user.RefreshToken = _tokenService.GenerateRefreshToken();
             user.LastLoginDate = DateTime.Now;
             _userRepository.Update(user);
             await _unitOfWork.SaveChangesAsync();
             
-            var tokens = new Tokens { RefreshToken = refreshToken.Value, Token = _tokenService.GenerateToken(user.Id) };
+            var tokens = new Tokens { RefreshToken = user.RefreshToken, Token = _tokenService.GenerateToken(user.Id) };
             return new ResultResponse<Tokens>(tokens);
         }
 
@@ -70,34 +63,27 @@ namespace ItSkillHouse.Services
             
             var user = _mapper.Map<RegisterRequest, User>(request);
             user.LastLoginDate = DateTime.Now;
-            
-            var refreshToken = _tokenService.GenerateRefreshToken();
-            if (user.Tokens == null) user.Tokens = new List<Token>{ refreshToken }; 
-            else user.Tokens.Add(refreshToken);
-            
+            user.RefreshToken = _tokenService.GenerateRefreshToken();
             user.PasswordSalt = _encryptionService.CreateSalt();
             user.PasswordHash = _encryptionService.CreateHash(request.Password, user.PasswordSalt);
 
             await _userRepository.AddAsync(user);
             await _unitOfWork.SaveChangesAsync();
             
-            var tokens = new Tokens { RefreshToken = refreshToken.Value, Token = _tokenService.GenerateToken(user.Id) };
+            var tokens = new Tokens { RefreshToken = user.RefreshToken, Token = _tokenService.GenerateToken(user.Id) };
             return new ResultResponse<Tokens>(tokens);
         }
 
         public async Task<ResultResponse<Tokens>> RefreshToken(RefreshTokenRequest request)
         {
-            var refreshToken = await _tokenRepository.GetValidRefreshToken(request.RefreshToken);
-            if (refreshToken == null) throw new Exception("Valid token is not found");
+            var user = await _userRepository.GetAsync(user => user.RefreshToken == request.RefreshToken);
+            if (user == null) throw new Exception("User is not found");
 
-            var newRefreshToken = _tokenService.GenerateRefreshToken(refreshToken.UserId);
-            refreshToken.Revoked = DateTime.UtcNow;
-            
-            _tokenRepository.Update(refreshToken);
-            await _tokenRepository.AddAsync(newRefreshToken);
+            user.RefreshToken = _tokenService.GenerateRefreshToken();
+            _userRepository.Update(user);
             await _unitOfWork.SaveChangesAsync();
             
-            var tokens = new Tokens { RefreshToken = newRefreshToken.Value, Token = _tokenService.GenerateToken(refreshToken.User.Id) };
+            var tokens = new Tokens { RefreshToken = user.RefreshToken, Token = _tokenService.GenerateToken(user.Id) };
             return new ResultResponse<Tokens>(tokens);
         }
         

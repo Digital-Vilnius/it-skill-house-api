@@ -25,33 +25,12 @@ namespace ItSkillHouse.Services
             _issuer = configuration["Jwt:Issuer"];
         }
         
-        public Token GenerateRefreshToken(int userId)
+        public string GenerateRefreshToken()
         {
             var randomHash = new byte[64];
             var cryptoServiceProvider = new RNGCryptoServiceProvider();
             cryptoServiceProvider.GetBytes(randomHash);
-
-            return new Token
-            {
-                Type = "RefreshToken",
-                UserId = userId,
-                Expires = DateTime.UtcNow.AddMonths(1),
-                Value = Convert.ToBase64String(randomHash)
-            };
-        }
-        
-        public Token GenerateRefreshToken()
-        {
-            var randomHash = new byte[64];
-            var cryptoServiceProvider = new RNGCryptoServiceProvider();
-            cryptoServiceProvider.GetBytes(randomHash);
-
-            return new Token
-            {
-                Type = "RefreshToken",
-                Expires = DateTime.UtcNow.AddMonths(1),
-                Value = Convert.ToBase64String(randomHash)
-            };
+            return Convert.ToBase64String(randomHash);
         }
 
         public string GenerateToken(int id)
@@ -65,7 +44,7 @@ namespace ItSkillHouse.Services
                 Issuer = _issuer,
                 Audience = _audience,
                 Subject = claims,
-                Expires = DateTime.UtcNow.AddMinutes(15),
+                Expires = DateTime.UtcNow.AddMinutes(1),
                 SigningCredentials = credentials
             };
 

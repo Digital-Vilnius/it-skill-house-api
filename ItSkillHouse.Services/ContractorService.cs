@@ -30,7 +30,8 @@ namespace ItSkillHouse.Services
             var duplicate = await _userRepository.GetAsync(user => user.Email == request.Email);
             if (duplicate != null) throw new Exception("User with this email is already exist");
 
-            var contractor = _mapper.Map<AddContractorRequest, Contractor>(request);
+            var contractor = _mapper.Map<EditContractorRequest, Contractor>(request);
+
             await _contractorRepository.AddAsync(contractor);
             await _unitOfWork.SaveChangesAsync();
             
@@ -44,6 +45,13 @@ namespace ItSkillHouse.Services
             if (contractor == null) throw new Exception("Contractor is not found");
 
             contractor = _mapper.Map(request, contractor);
+
+            contractor.User.FirstName = request.FirstName;
+            contractor.User.LastName = request.LastName;
+            contractor.User.Email = request.Email;
+            contractor.User.Phone = request.Phone;
+            contractor.User.Updated = DateTime.Now;
+            
             _contractorRepository.Update(contractor);
             await _unitOfWork.SaveChangesAsync();
             
@@ -78,6 +86,7 @@ namespace ItSkillHouse.Services
             var contractor = await _contractorRepository.GetByIdAsync(id);
             if (contractor == null) throw new Exception("Contractor is not found");
 
+            _userRepository.Delete(contractor.User);
             _contractorRepository.Delete(contractor);
             await _unitOfWork.SaveChangesAsync();
         }
