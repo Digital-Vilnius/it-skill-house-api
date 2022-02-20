@@ -1,23 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace ItSkillHouse.Models
 {
     public class User : BaseModel
     {
-        public string Phone { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
+        [Required]
         public string Email { get; set; }
-        public string Status { get; set; }
-        public byte[] PasswordSalt { get; set; }
-        public byte[] PasswordHash { get; set; }
-        public DateTime? LastLoginDate { get; set; }
-        public string RefreshToken { get; set; }
         
-        public Contractor Contractor { get; set; }
-        public Recruiter Recruiter { get; set; }
-        public List<RecipientEmail> ReceivedEmails { get; set; }
-        public List<Email> SendEmails { get; set; }
+        [Required]
+        public string FirstName { get; set; }
+        
+        [Required]
+        public string LastName { get; set; }
+
+        public List<Contractor> Contractors { get; set; }
     }
 }

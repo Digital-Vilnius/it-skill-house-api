@@ -7,19 +7,20 @@ using ItSkillHouse.Contracts.Contractor;
 using ItSkillHouse.Models;
 using ItSkillHouse.Models.Repositories;
 using ItSkillHouse.Models.Services;
+using Microsoft.Identity.Web;
 
 namespace ItSkillHouse.Services
 {
     public class ContractorService : IContractorService
     {
         private readonly IContractorRepository _contractorRepository;
-        private readonly IUserRepository _userRepository;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        private readonly ITokenAcquisition _tokenAcquisition;
 
-        public ContractorService(IContractorRepository contractorRepository, IMapper mapper, IUnitOfWork unitOfWork, IUserRepository userRepository)
+        public ContractorService(IContractorRepository contractorRepository, IMapper mapper, IUnitOfWork unitOfWork, ITokenAcquisition tokenAcquisition)
         {
-            _userRepository = userRepository;
+            _tokenAcquisition = tokenAcquisition;
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _contractorRepository = contractorRepository;
@@ -27,8 +28,8 @@ namespace ItSkillHouse.Services
         
         public async Task<ResultResponse<TModel>> AddAsync<TModel>(AddContractorRequest request)
         {
-            var duplicate = await _userRepository.GetAsync(user => user.Email == request.Email);
-            if (duplicate != null) throw new Exception("User with this email is already exist");
+            var duplicate = await _contractorRepository.GetAsync(contractor => contractor.Email == request.Email);
+            if (duplicate != null) throw new Exception("Contractor with this email is already exist");
 
             var contractor = _mapper.Map<EditContractorRequest, Contractor>(request);
 
@@ -45,13 +46,6 @@ namespace ItSkillHouse.Services
             if (contractor == null) throw new Exception("Contractor is not found");
 
             contractor = _mapper.Map(request, contractor);
-
-            contractor.User.FirstName = request.FirstName;
-            contractor.User.LastName = request.LastName;
-            contractor.User.Email = request.Email;
-            contractor.User.Phone = request.Phone;
-            contractor.User.Updated = DateTime.Now;
-            
             _contractorRepository.Update(contractor);
             await _unitOfWork.SaveChangesAsync();
             
@@ -61,6 +55,7 @@ namespace ItSkillHouse.Services
 
         public async Task<ListResponse<TModel>> GetAsync<TModel>(ListContractorsRequest request)
         {
+            var token = await _tokenAcquisition.GetAccessTokenForUserAsync(new []{"mail.send"});
             var filter = _mapper.Map<ListContractorsRequest, ContractorsFilter>(request);
             var sort = _mapper.Map<ListContractorsRequest, Sort>(request);
             var paging = _mapper.Map<ListContractorsRequest, Paging>(request);
@@ -85,8 +80,7 @@ namespace ItSkillHouse.Services
         {
             var contractor = await _contractorRepository.GetByIdAsync(id);
             if (contractor == null) throw new Exception("Contractor is not found");
-
-            _userRepository.Delete(contractor.User);
+            
             _contractorRepository.Delete(contractor);
             await _unitOfWork.SaveChangesAsync();
         }

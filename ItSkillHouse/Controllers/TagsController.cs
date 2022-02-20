@@ -8,6 +8,7 @@ namespace ItSkillHouse.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
     public class TagsController : ControllerBase
     {
         private readonly ITagService _tagService;
@@ -18,7 +19,6 @@ namespace ItSkillHouse.Controllers
         }
         
         [HttpPost]
-        [Authorize]
         public async Task<IActionResult> Add([FromBody] AddTagRequest request)
         {
             var response = await _tagService.AddAsync<TagDto>(request);
@@ -26,7 +26,6 @@ namespace ItSkillHouse.Controllers
         }
 
         [HttpGet]
-        [Authorize]
         public async Task<IActionResult> List()
         {
             var response = await _tagService.GetAsync<TagDto>();

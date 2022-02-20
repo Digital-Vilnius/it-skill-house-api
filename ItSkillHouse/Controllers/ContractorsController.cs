@@ -8,6 +8,7 @@ namespace ItSkillHouse.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
     public class ContractorsController : ControllerBase
     {
         private readonly IContractorService _contractorService;
@@ -18,7 +19,6 @@ namespace ItSkillHouse.Controllers
         }
         
         [HttpPost]
-        [Authorize]
         public async Task<IActionResult> Add([FromBody] AddContractorRequest request)
         {
             var response = await _contractorService.AddAsync<ContractorDto>(request);
@@ -26,7 +26,6 @@ namespace ItSkillHouse.Controllers
         }
         
         [HttpPut("{id}")]
-        [Authorize]
         public async Task<IActionResult> Edit([FromRoute] int id, [FromBody] EditContractorRequest request)
         {
             var response = await _contractorService.EditAsync<ContractorDto>(id, request);
@@ -34,7 +33,6 @@ namespace ItSkillHouse.Controllers
         }
 
         [HttpDelete("{id}")]
-        [Authorize]
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
             await _contractorService.DeleteAsync(id);
@@ -42,7 +40,6 @@ namespace ItSkillHouse.Controllers
         }
 
         [HttpGet]
-        [Authorize]
         public async Task<IActionResult> List([FromQuery] ListContractorsRequest request)
         {
             var response = await _contractorService.GetAsync<ContractorDto>(request);
@@ -50,7 +47,6 @@ namespace ItSkillHouse.Controllers
         }
         
         [HttpGet("{id}")]
-        [Authorize]
         public async Task<IActionResult> Get([FromRoute] int id)
         {
             var response = await _contractorService.GetAsync<ContractorDto>(id);

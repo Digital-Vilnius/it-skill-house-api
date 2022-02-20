@@ -24,14 +24,10 @@ namespace ItSkillHouse.Repositories
                 .Include(contractor => contractor.Events)
                 .Include(contractor => contractor.Profession)
                 .Include(contractor => contractor.Recruiter)
-                .ThenInclude(recruiter => recruiter.User)
                 .Include(contractor => contractor.Technologies)
                 .ThenInclude(technology => technology.Technology)
                 .Include(contractor => contractor.Tags)
-                .ThenInclude(tag => tag.Tag)
-                .Include(contractor => contractor.User)
-                .ThenInclude(user => user.ReceivedEmails)
-                .ThenInclude(receivedEmail => receivedEmail.Email);
+                .ThenInclude(tag => tag.Tag);
         }
 
         public async Task<List<Contractor>> GetAsync(ContractorsFilter filter, Sort sort, Paging paging)
@@ -58,13 +54,13 @@ namespace ItSkillHouse.Repositories
         {
             if (filter.Keyword != null)
             {
-                query = query.Where(contractor => contractor.User.FirstName.Contains(filter.Keyword) 
-                                                  || contractor.User.LastName.Contains(filter.Keyword) 
-                                                  || contractor.User.Email.Contains(filter.Keyword)
+                query = query.Where(contractor => contractor.FirstName.Contains(filter.Keyword) 
+                                                  || contractor.LastName.Contains(filter.Keyword) 
+                                                  || contractor.Email.Contains(filter.Keyword)
                                                   || contractor.Profession.Name.Contains(filter.Keyword)
-                                                  || contractor.User.Phone.Contains(filter.Keyword)
-                                                  || contractor.Recruiter.User.FirstName.Contains(filter.Keyword) 
-                                                  || contractor.Recruiter.User.LastName.Contains(filter.Keyword));
+                                                  || contractor.Phone.Contains(filter.Keyword)
+                                                  || contractor.Recruiter.FirstName.Contains(filter.Keyword) 
+                                                  || contractor.Recruiter.LastName.Contains(filter.Keyword));
             }
             
             if (filter.RateFrom.HasValue) query = query.Where(contractor => contractor.Rate >= filter.RateFrom.Value);
@@ -110,12 +106,6 @@ namespace ItSkillHouse.Repositories
                 {
                     if (sort.SortDirection == "asc") query = query.OrderBy(contractor => contractor.Events.Where(e => e.Date >= DateTime.UtcNow).OrderByDescending(e => e.Date).FirstOrDefault().Date);
                     if (sort.SortDirection == "desc") query = query.OrderByDescending(contractor => contractor.Events.Where(e => e.Date >= DateTime.UtcNow).OrderByDescending(e => e.Date).FirstOrDefault().Date);
-                    break;
-                }
-                case "mailed":
-                {
-                    if (sort.SortDirection == "asc") query = query.OrderBy(contractor => contractor.User.ReceivedEmails.Select(receivedEmail => receivedEmail.Email).OrderByDescending(email => email.Created).FirstOrDefault());
-                    if (sort.SortDirection == "desc") query = query.OrderByDescending(contractor => contractor.User.ReceivedEmails.Select(receivedEmail => receivedEmail.Email).OrderByDescending(email => email.Created).FirstOrDefault());
                     break;
                 }
                 case "isRemote":
@@ -168,14 +158,14 @@ namespace ItSkillHouse.Repositories
                 }
                 case "recruiter":
                 {
-                    if (sort.SortDirection == "asc") query = query.OrderBy(contractor => contractor.Recruiter.User.FirstName + contractor.Recruiter.User.LastName);
-                    if (sort.SortDirection == "desc") query = query.OrderByDescending(contractor => contractor.Recruiter.User.FirstName + contractor.Recruiter.User.LastName);
+                    if (sort.SortDirection == "asc") query = query.OrderBy(contractor => contractor.Recruiter.FirstName + contractor.Recruiter.LastName);
+                    if (sort.SortDirection == "desc") query = query.OrderByDescending(contractor => contractor.Recruiter.FirstName + contractor.Recruiter.LastName);
                     break;
                 }
                 case "fullName":
                 {
-                    if (sort.SortDirection == "asc") query = query.OrderBy(contractor => contractor.User.FirstName + contractor.User.LastName);
-                    if (sort.SortDirection == "desc") query = query.OrderByDescending(contractor => contractor.User.FirstName + contractor.User.LastName);
+                    if (sort.SortDirection == "asc") query = query.OrderBy(contractor => contractor.FirstName + contractor.LastName);
+                    if (sort.SortDirection == "desc") query = query.OrderByDescending(contractor => contractor.FirstName + contractor.LastName);
                     break;
                 }
                 case "created":
@@ -192,20 +182,20 @@ namespace ItSkillHouse.Repositories
                 }
                 case "firstName":
                 {
-                    if (sort.SortDirection == "asc") query = query.OrderBy(contractor => contractor.User.FirstName);
-                    if (sort.SortDirection == "desc") query = query.OrderByDescending(contractor => contractor.User.FirstName);
+                    if (sort.SortDirection == "asc") query = query.OrderBy(contractor => contractor.FirstName);
+                    if (sort.SortDirection == "desc") query = query.OrderByDescending(contractor => contractor.FirstName);
                     break;
                 }
                 case "email":
                 {
-                    if (sort.SortDirection == "asc") query = query.OrderBy(contractor => contractor.User.Email);
-                    if (sort.SortDirection == "desc") query = query.OrderByDescending(contractor => contractor.User.Email);
+                    if (sort.SortDirection == "asc") query = query.OrderBy(contractor => contractor.Email);
+                    if (sort.SortDirection == "desc") query = query.OrderByDescending(contractor => contractor.Email);
                     break;
                 }
                 case "lastName":
                 {
-                    if (sort.SortDirection == "asc") query = query.OrderBy(contractor => contractor.User.LastName);
-                    if (sort.SortDirection == "desc") query = query.OrderByDescending(contractor => contractor.User.LastName);
+                    if (sort.SortDirection == "asc") query = query.OrderBy(contractor => contractor.LastName);
+                    if (sort.SortDirection == "desc") query = query.OrderByDescending(contractor => contractor.LastName);
                     break;
                 }
                 case "id":

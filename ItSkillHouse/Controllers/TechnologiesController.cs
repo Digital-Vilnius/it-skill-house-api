@@ -8,6 +8,7 @@ namespace ItSkillHouse.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
     public class TechnologiesController : ControllerBase
     {
         private readonly ITechnologyService _technologyService;
@@ -18,7 +19,6 @@ namespace ItSkillHouse.Controllers
         }
         
         [HttpPost]
-        [Authorize]
         public async Task<IActionResult> Add([FromBody] AddTechnologyRequest request)
         {
             var response = await _technologyService.AddAsync<TechnologyDto>(request);
@@ -26,7 +26,6 @@ namespace ItSkillHouse.Controllers
         }
 
         [HttpGet]
-        [Authorize]
         public async Task<IActionResult> List()
         {
             var response = await _technologyService.GetAsync<TechnologyDto>();

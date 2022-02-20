@@ -16,10 +16,6 @@ namespace ItSkillHouse.Services.Mapper
 
             CreateMap<AddContractorRequest, Contractor>()
                 .ForMember(
-                    dest => dest.User,
-                    opt => opt.MapFrom(src => new User {Email = src.Email, FirstName = src.FirstName, LastName = src.LastName, Created = DateTime.Now})
-                )
-                .ForMember(
                     dest => dest.Notes,
                     opt => opt.MapFrom(src => new List<Note> {new() {Content = src.Note, Created = DateTime.Now}})
                 );
@@ -35,32 +31,6 @@ namespace ItSkillHouse.Services.Mapper
                 );
 
             CreateMap<Contractor, ContractorDto>()
-                .ForMember(
-                    dest => dest.LastEmail,
-                    opt => opt.MapFrom(src =>
-                        src.User.ReceivedEmails.Select(receivedEmail => receivedEmail.Email)
-                            .OrderByDescending(email => email.Created).FirstOrDefault())
-                )
-                .ForMember(
-                    dest => dest.UserId,
-                    opt => opt.MapFrom(src => src.UserId)
-                )
-                .ForMember(
-                    dest => dest.FirstName,
-                    opt => opt.MapFrom(src => src.User.FirstName)
-                )
-                .ForMember(
-                    dest => dest.Phone,
-                    opt => opt.MapFrom(src => src.User.Phone)
-                )
-                .ForMember(
-                    dest => dest.LastName,
-                    opt => opt.MapFrom(src => src.User.LastName)
-                )
-                .ForMember(
-                    dest => dest.Email,
-                    opt => opt.MapFrom(src => src.User.Email)
-                )
                 .ForMember(
                     dest => dest.Technologies,
                     opt => opt.MapFrom(src =>

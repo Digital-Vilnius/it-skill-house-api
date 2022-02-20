@@ -8,6 +8,7 @@ namespace ItSkillHouse.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
     public class ProfessionsController : ControllerBase
     {
         private readonly IProfessionService _professionService;
@@ -18,7 +19,6 @@ namespace ItSkillHouse.Controllers
         }
         
         [HttpPost]
-        [Authorize]
         public async Task<IActionResult> Add([FromBody] AddProfessionRequest request)
         {
             var response = await _professionService.AddAsync<ProfessionDto>(request);
@@ -26,7 +26,6 @@ namespace ItSkillHouse.Controllers
         }
 
         [HttpGet]
-        [Authorize]
         public async Task<IActionResult> List()
         {
             var response = await _professionService.GetAsync<ProfessionDto>();

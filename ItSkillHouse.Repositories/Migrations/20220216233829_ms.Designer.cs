@@ -4,6 +4,7 @@ using ItSkillHouse.Repositories.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ItSkillHouse.Repositories.Migrations
 {
     [DbContext(typeof(SqlContext))]
-    partial class SqlContextModelSnapshot : ModelSnapshot
+    [Migration("20220216233829_ms")]
+    partial class ms
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -43,7 +45,6 @@ namespace ItSkillHouse.Repositories.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("CountryCode")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("Created")
@@ -53,14 +54,12 @@ namespace ItSkillHouse.Repositories.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime?>("ExperienceSince")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("FirstName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("HasContract")
@@ -79,7 +78,6 @@ namespace ItSkillHouse.Repositories.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("LastName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LinkedInUrl")
@@ -103,7 +101,8 @@ namespace ItSkillHouse.Repositories.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("Email")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("[Email] IS NOT NULL");
 
                     b.HasIndex("Phone")
                         .IsUnique()
@@ -215,7 +214,6 @@ namespace ItSkillHouse.Repositories.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("Content")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("ContractorId")
@@ -252,7 +250,6 @@ namespace ItSkillHouse.Repositories.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime?>("Updated")
@@ -261,7 +258,8 @@ namespace ItSkillHouse.Repositories.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("Name")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("[Name] IS NOT NULL");
 
                     b.ToTable("Professions");
                 });
@@ -281,7 +279,6 @@ namespace ItSkillHouse.Repositories.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime?>("Updated")
@@ -290,7 +287,8 @@ namespace ItSkillHouse.Repositories.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("Name")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("[Name] IS NOT NULL");
 
                     b.ToTable("Tags");
                 });
@@ -310,7 +308,6 @@ namespace ItSkillHouse.Repositories.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime?>("Updated")
@@ -319,7 +316,8 @@ namespace ItSkillHouse.Repositories.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("Name")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("[Name] IS NOT NULL");
 
                     b.ToTable("Technologies");
                 });
@@ -336,18 +334,15 @@ namespace ItSkillHouse.Repositories.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("FirstName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
                     b.Property<string>("LastName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("Updated")
@@ -356,7 +351,8 @@ namespace ItSkillHouse.Repositories.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("Email")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("[Email] IS NOT NULL");
 
                     b.ToTable("Users");
                 });

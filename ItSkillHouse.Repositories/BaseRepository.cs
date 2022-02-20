@@ -37,7 +37,16 @@ namespace ItSkillHouse.Repositories
             model.Updated = DateTime.Now;
             Context.Set<TModel>().Update(model);
         }
-        
+
+        public async Task<List<TModel>> GetByIdsAsync(List<int> ids)
+        {
+            IQueryable<TModel> models = Context.Set<TModel>();
+            models = FormatQuery(models);
+            models = models.Where(model => model.IsDeleted == false);
+            models = models.Where(model => ids.Contains(model.Id));
+            return await models.ToListAsync();
+        }
+
         public async Task<TModel> GetAsync(Expression<Func<TModel, bool>> filter)
         {
             IQueryable<TModel> models = Context.Set<TModel>();

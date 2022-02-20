@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using ItSkillHouse.Contracts.Recruiter;
+using ItSkillHouse.Contracts.User;
 using ItSkillHouse.Models.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -8,20 +8,20 @@ namespace ItSkillHouse.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class RecruitersController : ControllerBase
+    [Authorize]
+    public class UsersController : ControllerBase
     {
-        private readonly IRecruiterService _recruiterService;
+        private readonly IUserService _userService;
 
-        public RecruitersController(IRecruiterService recruiterService)
+        public UsersController(IUserService userService)
         {
-            _recruiterService = recruiterService;
+            _userService = userService;
         }
 
         [HttpGet]
-        [Authorize]
         public async Task<IActionResult> List()
         {
-            var response = await _recruiterService.GetAsync<RecruiterDto>();
+            var response = await _userService.GetAsync<UserDto>();
             return Ok(response);
         }
     }

@@ -8,6 +8,7 @@ namespace ItSkillHouse.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
     public class EventsController : ControllerBase
     {
         private readonly IEventService _eventService;
@@ -18,7 +19,6 @@ namespace ItSkillHouse.Controllers
         }
         
         [HttpPost]
-        [Authorize]
         public async Task<IActionResult> Add([FromBody] AddEventRequest request)
         {
             var response = await _eventService.AddAsync<EventDto>(request);
@@ -26,7 +26,6 @@ namespace ItSkillHouse.Controllers
         }
         
         [HttpPut("{id}")]
-        [Authorize]
         public async Task<IActionResult> Edit([FromRoute] int id, [FromBody] EditEventRequest request)
         {
             var response = await _eventService.EditAsync<EventDto>(id, request);
@@ -34,7 +33,6 @@ namespace ItSkillHouse.Controllers
         }
 
         [HttpDelete("{id}")]
-        [Authorize]
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
             await _eventService.DeleteAsync(id);
@@ -42,7 +40,6 @@ namespace ItSkillHouse.Controllers
         }
 
         [HttpGet]
-        [Authorize]
         public async Task<IActionResult> List([FromQuery] ListEventsRequest request)
         {
             var response = await _eventService.GetAsync<EventDto>(request);
@@ -50,7 +47,6 @@ namespace ItSkillHouse.Controllers
         }
         
         [HttpGet("{id}")]
-        [Authorize]
         public async Task<IActionResult> Get([FromRoute] int id)
         {
             var response = await _eventService.GetAsync<EventDto>(id);

@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using ItSkillHouse.Contracts.Email;
 using ItSkillHouse.Contracts.Event;
 using ItSkillHouse.Contracts.Note;
 using ItSkillHouse.Contracts.Profession;
-using ItSkillHouse.Contracts.Recruiter;
 using ItSkillHouse.Contracts.Tag;
 using ItSkillHouse.Contracts.Technology;
+using ItSkillHouse.Contracts.User;
 
 namespace ItSkillHouse.Contracts.Contractor
 {
@@ -17,7 +16,6 @@ namespace ItSkillHouse.Contracts.Contractor
         public int? CodaId { get; set; }
         public int? CinodeId { get; set; }
         
-        public int UserId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Email { get; set; }
@@ -38,10 +36,9 @@ namespace ItSkillHouse.Contracts.Contractor
         public bool HasContract { get; set; }
         public bool IsOnSite { get; set; }
         
-        public EmailDto LastEmail { get; set; }
         public EventDto NearestEvent { get; set; }
         public ProfessionDto Profession { get; set; }
-        public RecruiterDto Recruiter { get; set; }
+        public UserDto Recruiter { get; set; }
         
         public List<NoteDto> Notes { get; set; }
         public List<TagDto> Tags { get; set; }

@@ -11,22 +11,17 @@ namespace ItSkillHouse.Repositories.Context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            OnUserModelCreating(modelBuilder);
+            
             OnProfessionModelCreating(modelBuilder);
             OnTagModelCreating(modelBuilder);
             OnTechnologyModelCreating(modelBuilder);
-            
-            OnNoteModelCreating(modelBuilder);
-            OnEventModelCreating(modelBuilder);
-
-            OnRecruiterModelCreating(modelBuilder);
-            
-            OnUserModelCreating(modelBuilder);
-            OnEmailModelCreating(modelBuilder);
-            OnUserEmailModelCreating(modelBuilder);
 
             OnContractorTechnologyModelCreating(modelBuilder);
             OnContractorModelCreating(modelBuilder);
             OnContractorTagModelCreating(modelBuilder);
+            OnNoteModelCreating(modelBuilder);
+            OnEventModelCreating(modelBuilder);
         }
 
         private static void OnTechnologyModelCreating(ModelBuilder modelBuilder)
@@ -53,66 +48,26 @@ namespace ItSkillHouse.Repositories.Context
                 .IsUnique();
         }
 
-        private static void OnRecruiterModelCreating(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<Recruiter>()
-                .HasOne(recruiter => recruiter.User)
-                .WithOne(user => user.Recruiter)
-                .HasForeignKey<Recruiter>(recruiter => recruiter.UserId)
-                .OnDelete(DeleteBehavior.Restrict);
-        }
-
         private static void OnUserModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .Entity<User>()
                 .HasIndex(user => user.Email)
                 .IsUnique();
-            
+        }
+
+        private static void OnContractorModelCreating(ModelBuilder modelBuilder)
+        {
             modelBuilder
-                .Entity<User>()
-                .HasIndex(user => user.Phone)
+                .Entity<Contractor>()
+                .HasIndex(contractor => contractor.Email)
                 .IsUnique();
             
             modelBuilder
-                .Entity<User>()
-                .Property(user => user.Email)
-                .HasConversion(email => email.ToLower(), email => email);
-        }
-        
-        private static void OnEmailModelCreating(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<Email>()
-                .HasOne(email => email.Sender)
-                .WithMany(user => user.SendEmails)
-                .HasForeignKey(email => email.SenderId)
-                .OnDelete(DeleteBehavior.Restrict);
-        }
-        
-        private static void OnUserEmailModelCreating(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<RecipientEmail>()
-                .HasKey(userEmail => new { userEmail.RecipientId, userEmail.EmailId });
+                .Entity<Contractor>()
+                .HasIndex(contractor => contractor.Phone)
+                .IsUnique();
 
-            modelBuilder.Entity<RecipientEmail>()
-                .HasOne(userEmail => userEmail.Recipient)
-                .WithMany(user => user.ReceivedEmails)
-                .HasForeignKey(userEmail => userEmail.RecipientId);
-
-            modelBuilder.Entity<RecipientEmail>()
-                .HasOne(userEmail => userEmail.Email)
-                .WithMany(email => email.Recipients)
-                .HasForeignKey(userEmail => userEmail.EmailId);
-        }
-        
-        private static void OnContractorModelCreating(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<Contractor>()
-                .HasOne(contractor => contractor.User)
-                .WithOne(user => user.Contractor)
-                .HasForeignKey<Contractor>(contractor => contractor.UserId)
-                .OnDelete(DeleteBehavior.Restrict);
-            
             modelBuilder.Entity<Contractor>()
                 .HasOne(contractor => contractor.Profession)
                 .WithMany(profession => profession.Contractors)
@@ -178,14 +133,10 @@ namespace ItSkillHouse.Repositories.Context
         public DbSet<Tag> Tags { get; set; }
         public DbSet<Profession> Professions { get; set; }
         
-        public DbSet<Recruiter> Recruiters { get; set; }
-
         public DbSet<User> Users { get; set; }
-        public DbSet<RecipientEmail> RecipientsEmails { get; set; }
-        
+
         public DbSet<Event> Events { get; set; }
         public DbSet<Note> Notes { get; set; }
-        public DbSet<Email> Emails { get; set; }
 
         public DbSet<Contractor> Contractors { get; set; }
         public DbSet<ContractorTechnology> ContractorsTechnologies { get; set; }

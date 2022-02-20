@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 
@@ -7,13 +8,25 @@ namespace ItSkillHouse.Models
 {
     public class Contractor : BaseModel
     {
-        public string LinkedInUrl { get; set; }
+        [Required]
+        public string FirstName { get; set; }
         
+        [Required]
+        public string LastName { get; set; }
+        
+        [Required]
+        public string Email { get; set; }
+
+        [Required]
         public string CountryCode { get; set; }
+        
+        public string Phone { get; set; }
         public string City { get; set; }
         
         public int? CodaId { get; set; }
         public int? CinodeId { get; set; }
+        
+        public string LinkedInUrl { get; set; }
         
         public bool IsOnSite { get; set; }
         public bool IsRemote { get; set; }
@@ -27,14 +40,12 @@ namespace ItSkillHouse.Models
         public DateTime? AvailableFrom { get; set; }
         public DateTime? ExperienceSince { get; set; }
 
-        public int UserId { get; set; }
-        public User User { get; set; }
-        
         public int? ProfessionId { get; set; }
         public Profession Profession { get; set; }
         
+        [Required]
         public int RecruiterId { get; set; }
-        public Recruiter Recruiter { get; set; }
+        public User Recruiter { get; set; }
         
         public List<ContractorTag> Tags { get; set; }
         public List<ContractorTechnology> Technologies { get; set; }
