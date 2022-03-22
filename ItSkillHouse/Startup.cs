@@ -29,7 +29,7 @@ namespace ItSkillHouse
             {
                 options.AddPolicy(CorsPolicy, builder =>
                 {
-                    builder.WithOrigins("http://localhost:3000")
+                    builder.WithOrigins("http://localhost:3000", "https://itskillhouse.vytautassaulis.lt")
                         .AllowAnyHeader()
                         .AllowAnyMethod();
                 });
@@ -61,10 +61,10 @@ namespace ItSkillHouse
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ItSkillHouse v1"));
             }
 
+            app.UseSwagger();
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ItSkillHouse v1"));
             app.UseCors(CorsPolicy);
             app.UseHttpsRedirection();
             app.UseRouting();

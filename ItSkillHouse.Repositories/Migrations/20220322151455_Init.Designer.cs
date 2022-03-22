@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ItSkillHouse.Repositories.Migrations
 {
     [DbContext(typeof(SqlContext))]
-    [Migration("20220208011955_NotesFixes")]
-    partial class NotesFixes
+    [Migration("20220322151455_Init")]
+    partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -45,6 +45,7 @@ namespace ItSkillHouse.Repositories.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("CountryCode")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("Created")
@@ -53,26 +54,41 @@ namespace ItSkillHouse.Repositories.Migrations
                     b.Property<string>("Currency")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("ExperienceSince")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<bool?>("HasContract")
+                    b.Property<int?>("ExperienceSince")
+                        .HasColumnType("int");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("HasContract")
                         .HasColumnType("bit");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
-                    b.Property<bool?>("IsOnSite")
+                    b.Property<bool>("IsOnSite")
                         .HasColumnType("bit");
 
-                    b.Property<bool?>("IsPublic")
+                    b.Property<bool>("IsPublic")
                         .HasColumnType("bit");
 
-                    b.Property<bool?>("IsRemote")
+                    b.Property<bool>("IsRemote")
                         .HasColumnType("bit");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LinkedInUrl")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Phone")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int?>("ProfessionId")
                         .HasColumnType("int");
@@ -86,17 +102,18 @@ namespace ItSkillHouse.Repositories.Migrations
                     b.Property<DateTime?>("Updated")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
+
+                    b.HasIndex("Email")
+                        .IsUnique();
+
+                    b.HasIndex("Phone")
+                        .IsUnique()
+                        .HasFilter("[Phone] IS NOT NULL");
 
                     b.HasIndex("ProfessionId");
 
                     b.HasIndex("RecruiterId");
-
-                    b.HasIndex("UserId")
-                        .IsUnique();
 
                     b.ToTable("Contractors");
                 });
@@ -147,39 +164,6 @@ namespace ItSkillHouse.Repositories.Migrations
                     b.HasIndex("TechnologyId");
 
                     b.ToTable("ContractorsTechnologies");
-                });
-
-            modelBuilder.Entity("ItSkillHouse.Models.Email", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("Body")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("SenderId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Subject")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("Updated")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("SenderId");
-
-                    b.ToTable("Emails");
                 });
 
             modelBuilder.Entity("ItSkillHouse.Models.Event", b =>
@@ -233,6 +217,7 @@ namespace ItSkillHouse.Repositories.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("Content")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("ContractorId")
@@ -269,6 +254,7 @@ namespace ItSkillHouse.Repositories.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime?>("Updated")
@@ -277,53 +263,9 @@ namespace ItSkillHouse.Repositories.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("Name")
-                        .IsUnique()
-                        .HasFilter("[Name] IS NOT NULL");
-
-                    b.ToTable("Professions");
-                });
-
-            modelBuilder.Entity("ItSkillHouse.Models.RecipientEmail", b =>
-                {
-                    b.Property<int>("RecipientId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("EmailId")
-                        .HasColumnType("int");
-
-                    b.HasKey("RecipientId", "EmailId");
-
-                    b.HasIndex("EmailId");
-
-                    b.ToTable("RecipientsEmails");
-                });
-
-            modelBuilder.Entity("ItSkillHouse.Models.Recruiter", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime?>("Updated")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("Recruiters");
+                    b.ToTable("Professions");
                 });
 
             modelBuilder.Entity("ItSkillHouse.Models.Tag", b =>
@@ -341,6 +283,7 @@ namespace ItSkillHouse.Repositories.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime?>("Updated")
@@ -349,8 +292,7 @@ namespace ItSkillHouse.Repositories.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("Name")
-                        .IsUnique()
-                        .HasFilter("[Name] IS NOT NULL");
+                        .IsUnique();
 
                     b.ToTable("Tags");
                 });
@@ -370,6 +312,7 @@ namespace ItSkillHouse.Repositories.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime?>("Updated")
@@ -378,49 +321,9 @@ namespace ItSkillHouse.Repositories.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("Name")
-                        .IsUnique()
-                        .HasFilter("[Name] IS NOT NULL");
+                        .IsUnique();
 
                     b.ToTable("Technologies");
-                });
-
-            modelBuilder.Entity("ItSkillHouse.Models.Token", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("Expires")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime?>("Revoked")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Type")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("Updated")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Value")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Tokens");
                 });
 
             modelBuilder.Entity("ItSkillHouse.Models.User", b =>
@@ -435,30 +338,18 @@ namespace ItSkillHouse.Repositories.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("FirstName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
-                    b.Property<DateTime?>("LastLoginDate")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("LastName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<byte[]>("PasswordHash")
-                        .HasColumnType("varbinary(max)");
-
-                    b.Property<byte[]>("PasswordSalt")
-                        .HasColumnType("varbinary(max)");
-
-                    b.Property<string>("Phone")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Status")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("Updated")
@@ -467,12 +358,7 @@ namespace ItSkillHouse.Repositories.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("Email")
-                        .IsUnique()
-                        .HasFilter("[Email] IS NOT NULL");
-
-                    b.HasIndex("Phone")
-                        .IsUnique()
-                        .HasFilter("[Phone] IS NOT NULL");
+                        .IsUnique();
 
                     b.ToTable("Users");
                 });
@@ -484,23 +370,15 @@ namespace ItSkillHouse.Repositories.Migrations
                         .HasForeignKey("ProfessionId")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("ItSkillHouse.Models.Recruiter", "Recruiter")
+                    b.HasOne("ItSkillHouse.Models.User", "Recruiter")
                         .WithMany("Contractors")
                         .HasForeignKey("RecruiterId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("ItSkillHouse.Models.User", "User")
-                        .WithOne("Contractor")
-                        .HasForeignKey("ItSkillHouse.Models.Contractor", "UserId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Profession");
 
                     b.Navigation("Recruiter");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("ItSkillHouse.Models.ContractorTag", b =>
@@ -541,17 +419,6 @@ namespace ItSkillHouse.Repositories.Migrations
                     b.Navigation("Technology");
                 });
 
-            modelBuilder.Entity("ItSkillHouse.Models.Email", b =>
-                {
-                    b.HasOne("ItSkillHouse.Models.User", "Sender")
-                        .WithMany("SendEmails")
-                        .HasForeignKey("SenderId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Sender");
-                });
-
             modelBuilder.Entity("ItSkillHouse.Models.Event", b =>
                 {
                     b.HasOne("ItSkillHouse.Models.Contractor", "Contractor")
@@ -574,47 +441,6 @@ namespace ItSkillHouse.Repositories.Migrations
                     b.Navigation("Contractor");
                 });
 
-            modelBuilder.Entity("ItSkillHouse.Models.RecipientEmail", b =>
-                {
-                    b.HasOne("ItSkillHouse.Models.Email", "Email")
-                        .WithMany("Recipients")
-                        .HasForeignKey("EmailId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ItSkillHouse.Models.User", "Recipient")
-                        .WithMany("ReceivedEmails")
-                        .HasForeignKey("RecipientId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Email");
-
-                    b.Navigation("Recipient");
-                });
-
-            modelBuilder.Entity("ItSkillHouse.Models.Recruiter", b =>
-                {
-                    b.HasOne("ItSkillHouse.Models.User", "User")
-                        .WithOne("Recruiter")
-                        .HasForeignKey("ItSkillHouse.Models.Recruiter", "UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("ItSkillHouse.Models.Token", b =>
-                {
-                    b.HasOne("ItSkillHouse.Models.User", "User")
-                        .WithMany("Tokens")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("ItSkillHouse.Models.Contractor", b =>
                 {
                     b.Navigation("Events");
@@ -626,17 +452,7 @@ namespace ItSkillHouse.Repositories.Migrations
                     b.Navigation("Technologies");
                 });
 
-            modelBuilder.Entity("ItSkillHouse.Models.Email", b =>
-                {
-                    b.Navigation("Recipients");
-                });
-
             modelBuilder.Entity("ItSkillHouse.Models.Profession", b =>
-                {
-                    b.Navigation("Contractors");
-                });
-
-            modelBuilder.Entity("ItSkillHouse.Models.Recruiter", b =>
                 {
                     b.Navigation("Contractors");
                 });
@@ -653,15 +469,7 @@ namespace ItSkillHouse.Repositories.Migrations
 
             modelBuilder.Entity("ItSkillHouse.Models.User", b =>
                 {
-                    b.Navigation("Contractor");
-
-                    b.Navigation("ReceivedEmails");
-
-                    b.Navigation("Recruiter");
-
-                    b.Navigation("SendEmails");
-
-                    b.Navigation("Tokens");
+                    b.Navigation("Contractors");
                 });
 #pragma warning restore 612, 618
         }

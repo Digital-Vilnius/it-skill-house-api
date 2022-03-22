@@ -18,8 +18,8 @@ namespace ItSkillHouse.Contracts.Contractor
         public bool? IsOnSite { get; set; }
         public decimal? RateFrom { get; set; }
         public decimal? RateTo { get; set; }
-        public DateTime? ExperienceFrom { get; set; }
-        public DateTime? ExperienceTo { get; set; }
+        public int? ExperienceFrom { get; set; }
+        public int? ExperienceTo { get; set; }
         public DateTime? AvailableFrom { get; set; }
         public DateTime? AvailableTo { get; set; }
     }

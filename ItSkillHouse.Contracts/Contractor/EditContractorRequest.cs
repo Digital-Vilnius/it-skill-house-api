@@ -22,7 +22,7 @@ namespace ItSkillHouse.Contracts.Contractor
         public string Currency { get; set; }
         
         public DateTime? AvailableFrom { get; set; }
-        public DateTime? ExperienceSince { get; set; }
+        public int? ExperienceSince { get; set; }
 
         public bool IsRemote { get; set; }
         public bool IsPublic { get; set; }

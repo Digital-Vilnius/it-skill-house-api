@@ -27,7 +27,7 @@ namespace ItSkillHouse.Contracts.Contractor
         public decimal? Rate { get; set; }
         public string Currency { get; set; }
 
-        public DateTime? ExperienceSince { get; set; }
+        public int? ExperienceSince { get; set; }
         public DateTime? AvailableFrom { get; set; }
         
         public bool IsAvailable { get; set; }

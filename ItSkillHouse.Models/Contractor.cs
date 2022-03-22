@@ -36,9 +36,10 @@ namespace ItSkillHouse.Models
         [Column(TypeName = "decimal(10,2)")]
         public decimal? Rate { get; set; }
         public string Currency { get; set; }
-        
+
         public DateTime? AvailableFrom { get; set; }
-        public DateTime? ExperienceSince { get; set; }
+
+        public int? ExperienceSince { get; set; }
 
         public int? ProfessionId { get; set; }
         public Profession Profession { get; set; }

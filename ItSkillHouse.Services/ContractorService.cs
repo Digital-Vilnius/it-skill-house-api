@@ -7,7 +7,6 @@ using ItSkillHouse.Contracts.Contractor;
 using ItSkillHouse.Models;
 using ItSkillHouse.Models.Repositories;
 using ItSkillHouse.Models.Services;
-using Microsoft.Identity.Web;
 
 namespace ItSkillHouse.Services
 {
@@ -16,11 +15,9 @@ namespace ItSkillHouse.Services
         private readonly IContractorRepository _contractorRepository;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
-        private readonly ITokenAcquisition _tokenAcquisition;
 
-        public ContractorService(IContractorRepository contractorRepository, IMapper mapper, IUnitOfWork unitOfWork, ITokenAcquisition tokenAcquisition)
+        public ContractorService(IContractorRepository contractorRepository, IMapper mapper, IUnitOfWork unitOfWork)
         {
-            _tokenAcquisition = tokenAcquisition;
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _contractorRepository = contractorRepository;
@@ -55,7 +52,6 @@ namespace ItSkillHouse.Services
 
         public async Task<ListResponse<TModel>> GetAsync<TModel>(ListContractorsRequest request)
         {
-            var token = await _tokenAcquisition.GetAccessTokenForUserAsync(new []{"mail.send"});
             var filter = _mapper.Map<ListContractorsRequest, ContractorsFilter>(request);
             var sort = _mapper.Map<ListContractorsRequest, Sort>(request);
             var paging = _mapper.Map<ListContractorsRequest, Paging>(request);
