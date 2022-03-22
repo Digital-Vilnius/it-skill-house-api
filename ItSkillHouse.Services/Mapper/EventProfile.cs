@@ -8,8 +8,7 @@ namespace ItSkillHouse.Services.Mapper
     {
         public EventProfile()
         {
-            CreateMap<AddEventRequest, Event>();
-            CreateMap<EditEventRequest, Event>();
+            CreateMap<SaveEventRequest, Event>();
             CreateMap<ListEventsRequest, EventsFilter>();
             CreateMap<Event, EventDto>();
         }

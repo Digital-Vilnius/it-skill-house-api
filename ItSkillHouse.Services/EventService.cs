@@ -23,9 +23,9 @@ namespace ItSkillHouse.Services
             _eventRepository = eventRepository;
         }
         
-        public async Task<ResultResponse<TModel>> AddAsync<TModel>(AddEventRequest request)
+        public async Task<ResultResponse<TModel>> AddAsync<TModel>(SaveEventRequest request)
         {
-            var e = _mapper.Map<AddEventRequest, Event>(request);
+            var e = _mapper.Map<SaveEventRequest, Event>(request);
             await _eventRepository.AddAsync(e);
             await _unitOfWork.SaveChangesAsync();
             
@@ -33,7 +33,7 @@ namespace ItSkillHouse.Services
             return new ResultResponse<TModel>(eventDto);
         }
 
-        public async Task<ResultResponse<TModel>> EditAsync<TModel>(int id, EditEventRequest request)
+        public async Task<ResultResponse<TModel>> EditAsync<TModel>(int id, SaveEventRequest request)
         {
             var e = await _eventRepository.GetByIdAsync(id);
             if (e == null) throw new Exception("Event is not found");

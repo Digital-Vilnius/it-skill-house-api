@@ -6,7 +6,7 @@ namespace ItSkillHouse.Models.Services
 {
     public interface ITechnologyService
     {
-        Task<ResultResponse<TModel>> AddAsync<TModel>(AddTechnologyRequest request);
+        Task<ResultResponse<TModel>> AddAsync<TModel>(SaveTechnologyRequest request);
         Task<ListResponse<TModel>> GetAsync<TModel>();
     }
 }

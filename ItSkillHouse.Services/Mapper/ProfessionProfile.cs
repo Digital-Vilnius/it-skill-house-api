@@ -8,7 +8,7 @@ namespace ItSkillHouse.Services.Mapper
     {
         public ProfessionProfile()
         {
-            CreateMap<AddProfessionRequest, Profession>();
+            CreateMap<SaveProfessionRequest, Profession>();
 
             CreateMap<Profession, ProfessionDto>()
                 .ForMember(

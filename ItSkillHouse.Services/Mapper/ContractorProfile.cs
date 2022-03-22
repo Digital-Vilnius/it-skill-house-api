@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using AutoMapper;
 using ItSkillHouse.Contracts.Contractor;
 using ItSkillHouse.Models;
@@ -14,13 +12,7 @@ namespace ItSkillHouse.Services.Mapper
         {
             CreateMap<ListContractorsRequest, ContractorsFilter>();
 
-            CreateMap<AddContractorRequest, Contractor>()
-                .ForMember(
-                    dest => dest.Notes,
-                    opt => opt.MapFrom(src => new List<Note> {new() {Content = src.Note, Created = DateTime.Now}})
-                );
-
-            CreateMap<EditContractorRequest, Contractor>()
+            CreateMap<SaveContractorRequest, Contractor>()
                 .ForMember(
                     dest => dest.Technologies,
                     opt => opt.MapFrom<TechnologiesResolver>()

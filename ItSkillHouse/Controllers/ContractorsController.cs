@@ -19,14 +19,14 @@ namespace ItSkillHouse.Controllers
         }
         
         [HttpPost]
-        public async Task<IActionResult> Add([FromBody] AddContractorRequest request)
+        public async Task<IActionResult> Add([FromBody] SaveContractorRequest request)
         {
             var response = await _contractorService.AddAsync<ContractorDto>(request);
             return Ok(response);
         }
         
         [HttpPut("{id}")]
-        public async Task<IActionResult> Edit([FromRoute] int id, [FromBody] EditContractorRequest request)
+        public async Task<IActionResult> Edit([FromRoute] int id, [FromBody] SaveContractorRequest request)
         {
             var response = await _contractorService.EditAsync<ContractorDto>(id, request);
             return Ok(response);

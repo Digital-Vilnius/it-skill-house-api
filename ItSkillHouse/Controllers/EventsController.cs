@@ -19,14 +19,14 @@ namespace ItSkillHouse.Controllers
         }
         
         [HttpPost]
-        public async Task<IActionResult> Add([FromBody] AddEventRequest request)
+        public async Task<IActionResult> Add([FromBody] SaveEventRequest request)
         {
             var response = await _eventService.AddAsync<EventDto>(request);
             return Ok(response);
         }
         
         [HttpPut("{id}")]
-        public async Task<IActionResult> Edit([FromRoute] int id, [FromBody] EditEventRequest request)
+        public async Task<IActionResult> Edit([FromRoute] int id, [FromBody] SaveEventRequest request)
         {
             var response = await _eventService.EditAsync<EventDto>(id, request);
             return Ok(response);

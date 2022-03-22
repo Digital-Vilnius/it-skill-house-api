@@ -8,8 +8,7 @@ namespace ItSkillHouse.Services.Mapper
     {
         public NoteProfile()
         {
-            CreateMap<AddNoteRequest, Note>();
-            CreateMap<EditNoteRequest, Note>();
+            CreateMap<SaveNoteRequest, Note>();
             CreateMap<ListNotesRequest, NotesFilter>();
             CreateMap<Note, NoteDto>();
         }

@@ -19,14 +19,14 @@ namespace ItSkillHouse.Controllers
         }
         
         [HttpPost]
-        public async Task<IActionResult> Add([FromBody] AddNoteRequest request)
+        public async Task<IActionResult> Add([FromBody] SaveNoteRequest request)
         {
             var response = await _noteService.AddAsync<NoteDto>(request);
             return Ok(response);
         }
         
         [HttpPut("{id}")]
-        public async Task<IActionResult> Edit([FromRoute] int id, [FromBody] EditNoteRequest request)
+        public async Task<IActionResult> Edit([FromRoute] int id, [FromBody] SaveNoteRequest request)
         {
             var response = await _noteService.EditAsync<NoteDto>(id, request);
             return Ok(response);

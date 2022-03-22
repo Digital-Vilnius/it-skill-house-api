@@ -23,9 +23,9 @@ namespace ItSkillHouse.Services
             _noteRepository = noteRepository;
         }
         
-        public async Task<ResultResponse<TModel>> AddAsync<TModel>(AddNoteRequest request)
+        public async Task<ResultResponse<TModel>> AddAsync<TModel>(SaveNoteRequest request)
         {
-            var note = _mapper.Map<AddNoteRequest, Note>(request);
+            var note = _mapper.Map<SaveNoteRequest, Note>(request);
             await _noteRepository.AddAsync(note);
             await _unitOfWork.SaveChangesAsync();
             
@@ -33,7 +33,7 @@ namespace ItSkillHouse.Services
             return new ResultResponse<TModel>(noteDto);
         }
 
-        public async Task<ResultResponse<TModel>> EditAsync<TModel>(int id, EditNoteRequest request)
+        public async Task<ResultResponse<TModel>> EditAsync<TModel>(int id, SaveNoteRequest request)
         {
             var note = await _noteRepository.GetByIdAsync(id);
             if (note == null) throw new Exception("Note is not found");

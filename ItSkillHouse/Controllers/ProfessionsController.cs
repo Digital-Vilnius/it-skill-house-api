@@ -19,7 +19,7 @@ namespace ItSkillHouse.Controllers
         }
         
         [HttpPost]
-        public async Task<IActionResult> Add([FromBody] AddProfessionRequest request)
+        public async Task<IActionResult> Add([FromBody] SaveProfessionRequest request)
         {
             var response = await _professionService.AddAsync<ProfessionDto>(request);
             return Ok(response);

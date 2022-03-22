@@ -10,7 +10,6 @@ namespace ItSkillHouse.Services.DI
         {
             services.AddAutoMapper(configure => {
                 configure.AddProfile<BaseProfile>();
-                configure.AddProfile<AuthenticationProfile>();
                 configure.AddProfile<TechnologyProfile>();
                 configure.AddProfile<NoteProfile>();
                 configure.AddProfile<ContractorProfile>();
@@ -19,8 +18,7 @@ namespace ItSkillHouse.Services.DI
                 configure.AddProfile<ProfessionProfile>();
                 configure.AddProfile<EventProfile>();
             }, typeof(ServicesModule));
-
-            services.AddScoped<IAuthenticationService, AuthenticationService>();
+            
             services.AddScoped<ITechnologyService, TechnologyService>();
             services.AddScoped<INoteService, NoteService>();
             services.AddScoped<IContractorService, ContractorService>();

@@ -23,12 +23,12 @@ namespace ItSkillHouse.Services
             _technologyRepository = technologyRepository;
         }
         
-        public async Task<ResultResponse<TModel>> AddAsync<TModel>(AddTechnologyRequest request)
+        public async Task<ResultResponse<TModel>> AddAsync<TModel>(SaveTechnologyRequest request)
         {
             var duplicate = await _technologyRepository.GetAsync(technology => technology.Name == request.Name);
             if (duplicate != null) throw new Exception("Technology with this name is already exist");
             
-            var technology = _mapper.Map<AddTechnologyRequest, Technology>(request);
+            var technology = _mapper.Map<SaveTechnologyRequest, Technology>(request);
             await _technologyRepository.AddAsync(technology);
             await _unitOfWork.SaveChangesAsync();
             

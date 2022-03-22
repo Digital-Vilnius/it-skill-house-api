@@ -2,7 +2,7 @@
 
 namespace ItSkillHouse.Contracts.Event
 {
-    public class AddEventRequest
+    public class SaveEventRequest
     {
         public string Title { get; set; }
         public string Content { get; set; }

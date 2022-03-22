@@ -23,12 +23,12 @@ namespace ItSkillHouse.Services
             _professionRepository = professionRepository;
         }
         
-        public async Task<ResultResponse<TModel>> AddAsync<TModel>(AddProfessionRequest request)
+        public async Task<ResultResponse<TModel>> AddAsync<TModel>(SaveProfessionRequest request)
         {
             var duplicate = await _professionRepository.GetAsync(profession => profession.Name == request.Name);
             if (duplicate != null) throw new Exception("Profession with this name is already exist");
             
-            var profession = _mapper.Map<AddProfessionRequest, Profession>(request);
+            var profession = _mapper.Map<SaveProfessionRequest, Profession>(request);
             await _professionRepository.AddAsync(profession);
             await _unitOfWork.SaveChangesAsync();
             

@@ -23,12 +23,12 @@ namespace ItSkillHouse.Services
             _contractorRepository = contractorRepository;
         }
         
-        public async Task<ResultResponse<TModel>> AddAsync<TModel>(AddContractorRequest request)
+        public async Task<ResultResponse<TModel>> AddAsync<TModel>(SaveContractorRequest request)
         {
             var duplicate = await _contractorRepository.GetAsync(contractor => contractor.Email == request.Email);
             if (duplicate != null) throw new Exception("Contractor with this email is already exist");
 
-            var contractor = _mapper.Map<EditContractorRequest, Contractor>(request);
+            var contractor = _mapper.Map<SaveContractorRequest, Contractor>(request);
 
             await _contractorRepository.AddAsync(contractor);
             await _unitOfWork.SaveChangesAsync();
@@ -37,7 +37,7 @@ namespace ItSkillHouse.Services
             return new ResultResponse<TModel>(contractorDto);
         }
 
-        public async Task<ResultResponse<TModel>> EditAsync<TModel>(int id, EditContractorRequest request)
+        public async Task<ResultResponse<TModel>> EditAsync<TModel>(int id, SaveContractorRequest request)
         {
             var contractor = await _contractorRepository.GetByIdAsync(id);
             if (contractor == null) throw new Exception("Contractor is not found");

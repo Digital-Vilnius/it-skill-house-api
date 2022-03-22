@@ -6,7 +6,7 @@ namespace ItSkillHouse.Models.Services
 {
     public interface ITagService
     {
-        Task<ResultResponse<TModel>> AddAsync<TModel>(AddTagRequest request);
+        Task<ResultResponse<TModel>> AddAsync<TModel>(SaveTagRequest request);
         Task<ListResponse<TModel>> GetAsync<TModel>();
     }
 }

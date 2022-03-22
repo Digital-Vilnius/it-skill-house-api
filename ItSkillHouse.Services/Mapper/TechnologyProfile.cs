@@ -8,7 +8,7 @@ namespace ItSkillHouse.Services.Mapper
     {
         public TechnologyProfile()
         {
-            CreateMap<AddTechnologyRequest, Technology>();
+            CreateMap<SaveTechnologyRequest, Technology>();
             
             CreateMap<Technology, TechnologyDto>()
                 .ForMember(

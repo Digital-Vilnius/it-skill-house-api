@@ -8,7 +8,8 @@ namespace ItSkillHouse.Services.Mapper
     {
         public TagProfile()
         {
-            CreateMap<AddTagRequest, Tag>();
+            CreateMap<SaveTagRequest, Tag>();
+            
             CreateMap<Tag, TagDto>()
                 .ForMember(
                     dest => dest.Count,

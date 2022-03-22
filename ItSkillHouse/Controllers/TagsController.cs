@@ -19,7 +19,7 @@ namespace ItSkillHouse.Controllers
         }
         
         [HttpPost]
-        public async Task<IActionResult> Add([FromBody] AddTagRequest request)
+        public async Task<IActionResult> Add([FromBody] SaveTagRequest request)
         {
             var response = await _tagService.AddAsync<TagDto>(request);
             return Ok(response);

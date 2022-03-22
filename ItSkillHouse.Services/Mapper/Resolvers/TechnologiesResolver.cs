@@ -6,12 +6,13 @@ using ItSkillHouse.Models;
 
 namespace ItSkillHouse.Services.Mapper.Resolvers
 {
-    public class TechnologiesResolver : IValueResolver<EditContractorRequest, object, List<ContractorTechnology>>
+    public class TechnologiesResolver : IValueResolver<SaveContractorRequest, object, List<ContractorTechnology>>
     {
-        public List<ContractorTechnology> Resolve(EditContractorRequest request, object destination, List<ContractorTechnology> destMember, ResolutionContext context)
+        public List<ContractorTechnology> Resolve(SaveContractorRequest request, object destination, List<ContractorTechnology> destMember, ResolutionContext context)
         {
             var mainTechnologies = request.MainTechnologiesIds.Select(id => new ContractorTechnology { TechnologyId = id, IsMain = true });
-            var otherTechnologies = request.TechnologiesIds.Select(id => new ContractorTechnology { TechnologyId = id });
+            var otherTechnologies = request.TechnologiesIds != null ? request.TechnologiesIds.Select(id => new ContractorTechnology { TechnologyId = id }) : new List<ContractorTechnology>();
+            
             return mainTechnologies.Concat(otherTechnologies).ToList();
         }
     }

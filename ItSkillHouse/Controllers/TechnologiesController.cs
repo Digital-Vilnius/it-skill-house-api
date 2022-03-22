@@ -19,7 +19,7 @@ namespace ItSkillHouse.Controllers
         }
         
         [HttpPost]
-        public async Task<IActionResult> Add([FromBody] AddTechnologyRequest request)
+        public async Task<IActionResult> Add([FromBody] SaveTechnologyRequest request)
         {
             var response = await _technologyService.AddAsync<TechnologyDto>(request);
             return Ok(response);

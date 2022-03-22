@@ -23,12 +23,12 @@ namespace ItSkillHouse.Services
             _tagRepository = tagRepository;
         }
 
-        public async Task<ResultResponse<TModel>> AddAsync<TModel>(AddTagRequest request)
+        public async Task<ResultResponse<TModel>> AddAsync<TModel>(SaveTagRequest request)
         {
             var duplicate = await _tagRepository.GetAsync(tag => tag.Name == request.Name);
             if (duplicate != null) throw new Exception("Tag with this name is already exist");
             
-            var tag = _mapper.Map<AddTagRequest, Tag>(request);
+            var tag = _mapper.Map<SaveTagRequest, Tag>(request);
             await _tagRepository.AddAsync(tag);
             await _unitOfWork.SaveChangesAsync();
             
