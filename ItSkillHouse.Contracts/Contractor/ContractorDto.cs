@@ -39,8 +39,8 @@ namespace ItSkillHouse.Contracts.Contractor
         public EventDto NearestEvent { get; set; }
         public ProfessionDto Profession { get; set; }
         public UserDto Recruiter { get; set; }
+        public NoteDto LastNote { get; set; }
         
-        public List<NoteDto> Notes { get; set; }
         public List<TagDto> Tags { get; set; }
         public List<TechnologyDto> Technologies { get; set; }
         public List<TechnologyDto> MainTechnologies { get; set; }

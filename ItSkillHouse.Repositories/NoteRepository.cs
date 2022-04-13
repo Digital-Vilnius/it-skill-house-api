@@ -15,6 +15,11 @@ namespace ItSkillHouse.Repositories
         public NoteRepository(SqlContext context) : base(context)
         {
         }
+        
+        protected override IQueryable<Note> FormatQuery(IQueryable<Note> query)
+        {
+            return query.Include(note => note.CreatedBy);
+        }
 
         public async Task<List<Note>> GetAsync(NotesFilter filter, Sort sort, Paging paging)
         {

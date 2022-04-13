@@ -27,6 +27,7 @@ namespace ItSkillHouse.Services.DI
             services.AddScoped<IProfessionService, ProfessionService>();
             services.AddScoped<IEventService, EventService>();
             services.AddScoped<IEmailService, EmailService>();
+            services.AddScoped<IAuthService, AuthService>();
         }
     }
 }

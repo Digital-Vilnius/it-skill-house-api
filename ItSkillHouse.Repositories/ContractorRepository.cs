@@ -63,15 +63,10 @@ namespace ItSkillHouse.Repositories
                                                   || contractor.Recruiter.LastName.Contains(filter.Keyword));
             }
             
-            if (filter.RateFrom.HasValue) query = query.Where(contractor => contractor.Rate >= filter.RateFrom.Value);
-            if (filter.RateTo.HasValue) query = query.Where(contractor => contractor.Rate <= filter.RateTo.Value);
-            
-            if (filter.AvailableFrom.HasValue) query = query.Where(contractor => contractor.AvailableFrom >= filter.AvailableFrom.Value);
-            if (filter.AvailableTo.HasValue) query = query.Where(contractor => contractor.AvailableFrom <= filter.AvailableTo.Value);
-            
-            if (filter.ExperienceFrom.HasValue) query = query.Where(contractor => contractor.ExperienceSince >= filter.ExperienceFrom.Value);
-            if (filter.ExperienceTo.HasValue) query = query.Where(contractor => contractor.ExperienceSince <= filter.ExperienceTo.Value);
-            
+            if (filter.RateTo.HasValue) query = query.Where(contractor => !contractor.Rate.HasValue || contractor.Rate <= filter.RateTo.Value);
+            if (filter.AvailableFrom.HasValue) query = query.Where(contractor => !contractor.AvailableFrom.HasValue || contractor.AvailableFrom >= filter.AvailableFrom.Value);
+            if (filter.ExperienceFrom.HasValue) query = query.Where(contractor => !contractor.ExperienceSince.HasValue || contractor.ExperienceSince >= filter.ExperienceFrom.Value);
+
             if (filter.IsPublic.HasValue) query = query.Where(contractor => contractor.IsPublic == filter.IsPublic.Value);
             if (filter.IsRemote.HasValue) query = query.Where(contractor => contractor.IsRemote == filter.IsRemote.Value);
             if (filter.IsAvailable.HasValue) query = query.Where(contractor => contractor.AvailableFrom <= DateTime.UtcNow == filter.IsAvailable.Value);
@@ -80,7 +75,8 @@ namespace ItSkillHouse.Repositories
             
             if (filter.CountriesCodes.Count > 0) query = query.Where(contractor => filter.CountriesCodes.Contains(contractor.CountryCode));
             if (filter.RecruitersIds.Count > 0) query = query.Where(contractor => filter.RecruitersIds.Contains(contractor.RecruiterId));
-            if (filter.ProfessionsIds.Count > 0) query = query.Where(contractor => filter.ProfessionsIds.Contains(contractor.ProfessionId.Value));
+            if (filter.ProfessionsIds.Count > 0) query = query.Where(contractor => !contractor.ProfessionId.HasValue || filter.ProfessionsIds.Contains(contractor.ProfessionId.Value));
+            if (filter.TagsIds.Count > 0) query = query.Where(contractor => contractor.Tags.Any(tag => filter.TagsIds.Contains(tag.TagId)));
             if (filter.MainTechnologiesIds.Count > 0) query = query.Where(contractor => contractor.Technologies.Any(technology => filter.MainTechnologiesIds.Contains(technology.TechnologyId) && technology.IsMain == true));
             if (filter.TechnologiesIds.Count > 0) query = query.Where(contractor => contractor.Technologies.Any(technology => filter.TechnologiesIds.Contains(technology.TechnologyId) && technology.IsMain == false));
             return query;
@@ -106,6 +102,12 @@ namespace ItSkillHouse.Repositories
                 {
                     if (sort.SortDirection == "asc") query = query.OrderBy(contractor => contractor.Events.Where(e => e.Date >= DateTime.UtcNow).OrderByDescending(e => e.Date).FirstOrDefault().Date);
                     if (sort.SortDirection == "desc") query = query.OrderByDescending(contractor => contractor.Events.Where(e => e.Date >= DateTime.UtcNow).OrderByDescending(e => e.Date).FirstOrDefault().Date);
+                    break;
+                }
+                case "lastNote":
+                {
+                    if (sort.SortDirection == "asc") query = query.OrderBy(contractor => contractor.Notes.Where(note => note.Created >= DateTime.UtcNow).OrderByDescending(note => note.Created).FirstOrDefault().Created);
+                    if (sort.SortDirection == "desc") query = query.OrderByDescending(contractor => contractor.Notes.Where(note => note.Created >= DateTime.UtcNow).OrderByDescending(note => note.Created).FirstOrDefault().Created);
                     break;
                 }
                 case "isRemote":

@@ -100,7 +100,7 @@ namespace ItSkillHouse.Repositories.Context
         private static void OnContractorTechnologyModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<ContractorTechnology>()
-                .HasKey(contractorTechnology => new { contractorTechnology.ContractorId, contractorTechnology.TechnologyId });
+                .HasKey(contractorTechnology => new { contractorTechnology.ContractorId, contractorTechnology.TechnologyId, contractorTechnology.IsMain });
 
             modelBuilder.Entity<ContractorTechnology>()
                 .HasOne(contractorTechnology => contractorTechnology.Contractor)

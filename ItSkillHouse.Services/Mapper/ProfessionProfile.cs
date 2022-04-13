@@ -9,12 +9,7 @@ namespace ItSkillHouse.Services.Mapper
         public ProfessionProfile()
         {
             CreateMap<SaveProfessionRequest, Profession>();
-
-            CreateMap<Profession, ProfessionDto>()
-                .ForMember(
-                    dest => dest.Count,
-                    opt => opt.MapFrom(src => src.Contractors.Count)
-                );
+            CreateMap<Profession, ProfessionDto>();
         }
     }
 }

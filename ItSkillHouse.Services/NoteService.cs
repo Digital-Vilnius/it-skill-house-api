@@ -13,11 +13,13 @@ namespace ItSkillHouse.Services
     public class NoteService : INoteService
     {
         private readonly INoteRepository _noteRepository;
+        private readonly IAuthService _authService;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public NoteService(INoteRepository noteRepository, IMapper mapper, IUnitOfWork unitOfWork)
+        public NoteService(INoteRepository noteRepository, IMapper mapper, IUnitOfWork unitOfWork, IAuthService authService)
         {
+            _authService = authService;
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _noteRepository = noteRepository;
@@ -25,7 +27,10 @@ namespace ItSkillHouse.Services
         
         public async Task<ResultResponse<TModel>> AddAsync<TModel>(SaveNoteRequest request)
         {
+            var currentUser = await _authService.GetCurrentUserAsync();
+            
             var note = _mapper.Map<SaveNoteRequest, Note>(request);
+            note.CreatedById = currentUser.Id;
             await _noteRepository.AddAsync(note);
             await _unitOfWork.SaveChangesAsync();
             

@@ -34,6 +34,10 @@ namespace ItSkillHouse.Services.Mapper
                     opt => opt.MapFrom(src => src.NearestEvent)
                 )
                 .ForMember(
+                    dest => dest.LastNote,
+                    opt => opt.MapFrom(src => src.Notes.OrderByDescending(note => note.Created).FirstOrDefault())
+                )
+                .ForMember(
                     dest => dest.Tags,
                     opt => opt.MapFrom(src => src.Tags.Select(tag => tag.Tag))
                 )

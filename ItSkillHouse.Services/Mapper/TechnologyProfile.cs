@@ -9,12 +9,7 @@ namespace ItSkillHouse.Services.Mapper
         public TechnologyProfile()
         {
             CreateMap<SaveTechnologyRequest, Technology>();
-            
-            CreateMap<Technology, TechnologyDto>()
-                .ForMember(
-                    dest => dest.Count,
-                    opt => opt.MapFrom(src => src.Contractors.Count)
-                );
+            CreateMap<Technology, TechnologyDto>();
         }
     }
 }

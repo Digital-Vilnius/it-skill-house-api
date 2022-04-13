@@ -9,12 +9,7 @@ namespace ItSkillHouse.Services.Mapper
         public TagProfile()
         {
             CreateMap<SaveTagRequest, Tag>();
-            
-            CreateMap<Tag, TagDto>()
-                .ForMember(
-                    dest => dest.Count,
-                    opt => opt.MapFrom(src => src.Contractors.Count)
-                );
+            CreateMap<Tag, TagDto>();
         }
     }
 }

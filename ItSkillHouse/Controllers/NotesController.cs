@@ -40,7 +40,7 @@ namespace ItSkillHouse.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> List(ListNotesRequest request)
+        public async Task<IActionResult> List([FromQuery] ListNotesRequest request)
         {
             var response = await _noteService.GetAsync<NoteDto>(request);
             return Ok(response);
