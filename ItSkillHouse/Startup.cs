@@ -29,7 +29,7 @@ namespace ItSkillHouse
             {
                 options.AddPolicy(CorsPolicy, builder =>
                 {
-                    builder.WithOrigins("http://localhost:3000", "https://itskillhouse.vytautassaulis.lt")
+                    builder.WithOrigins("http://localhost:3000", "http://localhost:4200", "https://itskillhouse.vytautassaulis.lt")
                         .AllowAnyHeader()
                         .AllowAnyMethod();
                 });

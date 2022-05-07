@@ -8,7 +8,6 @@ namespace ItSkillHouse.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    [Authorize]
     public class ContractorsController : ControllerBase
     {
         private readonly IContractorService _contractorService;

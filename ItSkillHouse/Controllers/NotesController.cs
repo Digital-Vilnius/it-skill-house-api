@@ -1,14 +1,12 @@
 ﻿using System.Threading.Tasks;
 using ItSkillHouse.Contracts.Note;
 using ItSkillHouse.Models.Services;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ItSkillHouse.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    [Authorize]
     public class NotesController : ControllerBase
     {
         private readonly INoteService _noteService;
